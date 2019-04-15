@@ -37,7 +37,7 @@
     <string name="action_reboot_system">重启</string>
     <string name="action_reboot_system_content">确认重启系统?</string>
     <string name="action_soft_reboot_system">软重启</string>
-    <string name="action_soft_reboot_content">确认要软重启系统吗？</string>
+    <string name="action_soft_reboot_content">确认软重启系统？</string>
     <string name="action_restart_system_ui">重启SystemUI</string>
     <string name="action_restart_system_ui_message">确认重启SystemUI？</string>
 </resources>
