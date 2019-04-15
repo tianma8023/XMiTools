@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:summary="@string/pref_module_instruction_summary"
+        android:title="@string/pref_module_instruction_title"/>
+
+    <PreferenceCategory
+        android:title="@string/pref_status_bar_title">
+
+        <SwitchPreference
+            android:key="@string/pref_show_sec_in_status_bar"
+            android:summary="@string/pref_show_sec_in_status_bar_summary"
+            android:title="@string/pref_show_sec_in_status_bar_title"/>
+
+        <SwitchPreference
+            android:key="@string/pref_show_status_bar_clock_in_center"
+            android:summary="@string/pref_show_clock_in_center_summary"
+            android:title="@string/pref_show_clock_in_center_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_keyguard_title">
+
+        <SwitchPreference
+            android:key="@string/pref_show_sec_in_keyguard_horizontal"
+            android:summary="@string/pref_show_sec_in_keyguard_horizontal_summary"
+            android:title="@string/pref_show_sec_in_keyguard_horizontal_title"/>
+
+        <SwitchPreference
+            android:key="@string/pref_show_sec_in_keyguard_vertical"
+            android:summary="@string/pref_show_sec_in_keyguard_vertical_summary"
+            android:title="@string/pref_show_sec_in_keyguard_vertical_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_other_title">
+
+        <SwitchPreference
+            android:key="@string/pref_hide_launcher_icon"
+            android:summary="@string/pref_hide_launcher_icon_summary"
+            android:title="@string/pref_hide_launcher_icon_title"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_about_title">
+
+        <Preference
+            android:key="@string/pref_module_status"
+            android:title="@string/pref_module_status_title"/>
+
+        <Preference
+            android:key="@string/pref_app_version"
+            android:title="@string/version_title"/>
+
+        <Preference
+            android:key="@string/pref_source_code"
+            android:summary="@string/pref_source_code_summary"
+            android:title="@string/pref_source_code_title"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

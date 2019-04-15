@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="preferenceTheme">@style/MyPreferenceStyle</item>
+    </style>
+
+    <style name="MyPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="preferenceCategoryStyle">@style/MyPreferenceCategoryStyle</item>
+    </style>
+
+    <style name="MyPreferenceCategoryStyle" parent="@style/Preference.Category.Material">
+        <item name="android:layout">@layout/preference_category</item>
+    </style>
+
+</resources>
