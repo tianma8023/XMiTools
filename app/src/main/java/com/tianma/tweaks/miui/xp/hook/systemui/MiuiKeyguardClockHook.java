@@ -2,20 +2,21 @@ package com.tianma.tweaks.miui.xp.hook.systemui;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.os.SystemClock;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tianma.tweaks.miui.utils.ReflectionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 
-import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -183,7 +184,6 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         try {
-//                            LinearLayout miuiKeyguardClock = (LinearLayout) param.thisObject;
                             int sec = Calendar.getInstance().get(Calendar.SECOND);
                             String secStr = String.format(Locale.getDefault(), "%02d", sec);
 
@@ -210,13 +210,24 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         try {
-                            KeyguardClockHandler handler = new KeyguardClockHandler(Looper.getMainLooper(), param.thisObject);
-                            handler.sendEmptyMessage(KeyguardClockHandler.MSG_UPDATE_TIME);
+                            mSecondsHandler = new SecondsHandler(Looper.getMainLooper(), param.thisObject);
+//                            mSecondsHandler.sendEmptyMessage(SecondsHandler.MSG_UPDATE_TIME);
+                            mSecondsHandler.post(mSecondsTicker);
 
                             if (mShowVerticalSec) {
                                 mVerticalToHorizontalAnim2 = new AnimatorSet();
                                 mHorizontalToVerticalAnim2 = new AnimatorSet();
                             }
+
+                            // register receiver
+                            LinearLayout keyguardClock = (LinearLayout) param.thisObject;
+
+                            IntentFilter filter = new IntentFilter();
+                            filter.addAction(Intent.ACTION_SCREEN_ON);
+                            filter.addAction(Intent.ACTION_USER_PRESENT);
+                            filter.addAction(Intent.ACTION_SCREEN_OFF);
+
+                            keyguardClock.getContext().registerReceiver(mScreenReceiver, filter);
                         } catch (Throwable e) {
                             XLog.e("", e);
                         }
@@ -224,29 +235,25 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
                 });
     }
 
-    private static class KeyguardClockHandler extends Handler {
-        static final int MSG_UPDATE_TIME = 0x13;
+    private SecondsHandler mSecondsHandler;
 
-        private Object keyguardClockObj;
-        private Method updateClockMethod;
-
-        private long mLastUpdate = 0L;
-        private long mCurrentTime;
-
-        private KeyguardClockHandler(Looper looper, Object keyguardClockObj) {
-            super(looper);
-            this.keyguardClockObj = keyguardClockObj;
-            updateClockMethod = ReflectionUtils.getDeclaredMethod(keyguardClockObj.getClass(), "updateTime");
-        }
+    private final Runnable mSecondsTicker = new Runnable() {
 
         @Override
-        public void handleMessage(Message msg) {
-            sendEmptyMessageDelayed(MSG_UPDATE_TIME, 499L);
-            mCurrentTime = SystemClock.elapsedRealtime();
-            if (mCurrentTime - mLastUpdate >= 998L) {
-                ReflectionUtils.invoke(updateClockMethod, keyguardClockObj);
-                mLastUpdate = mCurrentTime;
-            }
+        public void run() {
+            long now = SystemClock.uptimeMillis();
+            long next = now + (1000 - now % 1000);
+            mSecondsHandler.postAtTime(this, next);
+            XposedHelpers.callMethod(mSecondsHandler.mKeyguardClockObj, "updateTime");
+        }
+    };
+
+    private static class SecondsHandler extends Handler {
+        private Object mKeyguardClockObj;
+
+        private SecondsHandler(Looper looper, Object keyguardClockObj) {
+            super(looper);
+            this.mKeyguardClockObj = keyguardClockObj;
         }
     }
 
@@ -377,5 +384,22 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
                     }
                 });
     }
+
+    private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (Intent.ACTION_SCREEN_ON.equals(action)) {
+                if (mSecondsHandler != null) {
+                    mSecondsHandler.post(mSecondsTicker);
+                }
+            } else if (Intent.ACTION_USER_PRESENT.equals(action)
+                    || Intent.ACTION_SCREEN_OFF.equals(action)) {
+                if (mSecondsHandler != null) {
+                    mSecondsHandler.removeCallbacks(mSecondsTicker);
+                }
+            }
+        }
+    };
 
 }
