@@ -21,12 +21,15 @@ public class SystemUIHook extends BaseHook {
             XLog.d("Hooking SystemUI...");
 
             XSharedPreferences xsp = new XSharedPreferences(BuildConfig.APPLICATION_ID);
+            try {
+                xsp.makeWorldReadable();
+            } catch (Throwable t) {
+                XLog.e("", t);
+            }
 
             new StatusBarClockHook(lpparam.classLoader, xsp).startHook();
             new MiuiKeyguardClockHook(lpparam.classLoader, xsp).startHook();
             new PhoneStatusBarViewHook(lpparam.classLoader, xsp).startHook();
         }
     }
-
-
 }
