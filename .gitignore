@@ -79,3 +79,11 @@ fastlane/readme.md
 /build
 /captures
 .externalNativeBuild
+
+# eclipse
+.settings/
+*.project
+*/.classpath
+
+# vscode
+.vscode/*
