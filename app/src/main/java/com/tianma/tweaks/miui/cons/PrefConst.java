@@ -17,4 +17,5 @@ public interface PrefConst {
     String APP_VERSION = "app_version";
     String MODULE_STATUS = "module_status";
     String SOURCE_CODE = "source_code";
+    String DONATE_BY_ALIPAY = "donate_by_alipay";
 }

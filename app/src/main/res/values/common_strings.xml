@@ -15,6 +15,7 @@
     <string name="pref_app_version">app_version</string>
     <string name="pref_module_status">module_status</string>
     <string name="pref_source_code">source_code</string>
+    <string name="pref_donate_by_alipay">donate_by_alipay</string>
     <!-- shared preference key end -->
 
 </resources>

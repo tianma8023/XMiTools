@@ -15,6 +15,7 @@ import com.tianma.tweaks.miui.R;
 import com.tianma.tweaks.miui.cons.AppConst;
 import com.tianma.tweaks.miui.cons.PrefConst;
 import com.tianma.tweaks.miui.utils.ModuleUtils;
+import com.tianma.tweaks.miui.utils.PackageUtils;
 import com.tianma.tweaks.miui.utils.RootUtils;
 import com.tianma.tweaks.miui.utils.StorageUtils;
 import com.tianma.tweaks.miui.utils.Utils;
@@ -43,6 +44,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
         findPreference(PrefConst.HIDE_LAUNCHER_ICON).setOnPreferenceChangeListener(this);
 
         findPreference(PrefConst.SOURCE_CODE).setOnPreferenceClickListener(this);
+        findPreference(PrefConst.DONATE_BY_ALIPAY).setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -71,6 +73,8 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
         String key = preference.getKey();
         if (PrefConst.SOURCE_CODE.equals(key)) {
             showSourceCode();
+        } else if (PrefConst.DONATE_BY_ALIPAY.equals(key)) {
+            donateByAlipay();
         } else {
             return false;
         }
@@ -114,6 +118,10 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
         }
     }
 
+    private void donateByAlipay() {
+        PackageUtils.startAlipayDonatePage(mActivity);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
@@ -131,6 +139,9 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
             case R.id.action_restart_system_ui:
                 performRestartSystemUI();
                 break;
+            case R.id.action_taichi_users_notice:
+                showTaiChiUsersNotice();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -140,7 +151,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
     private void performRebootSystem() {
         new MaterialDialog.Builder(mActivity)
                 .title(R.string.action_reboot_system)
-                .content(R.string.action_reboot_system_content)
+                .content(R.string.prompt_reboot_system_message)
                 .positiveText(R.string.confirm)
                 .onPositive(((dialog, which) -> RootUtils.reboot()))
                 .negativeText(R.string.cancel)
@@ -150,7 +161,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
     private void preformSoftRebootSystem() {
         new MaterialDialog.Builder(mActivity)
                 .title(R.string.action_soft_reboot_system)
-                .content(R.string.action_soft_reboot_content)
+                .content(R.string.prompt_soft_reboot_message)
                 .positiveText(R.string.confirm)
                 .onPositive(((dialog, which) -> RootUtils.softReboot()))
                 .negativeText(R.string.cancel)
@@ -160,10 +171,21 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
     private void performRestartSystemUI() {
         new MaterialDialog.Builder(mActivity)
                 .title(R.string.action_restart_system_ui)
-                .content(R.string.action_restart_system_ui_message)
+                .content(R.string.prompt_restart_system_ui_message)
                 .positiveText(R.string.confirm)
                 .onPositive((dialog, which) -> RootUtils.restartSystemUI())
                 .negativeText(R.string.cancel)
+                .show();
+    }
+
+    private void showTaiChiUsersNotice() {
+        new MaterialDialog.Builder(mActivity)
+                .title(R.string.action_taichi_users_notice)
+                .content(R.string.prompt_taichi_users_notice_message)
+                .positiveText(R.string.check_module)
+                .onPositive((dialog, which) -> PackageUtils.startCheckModuleInTaiChi(mActivity))
+                .negativeText(R.string.add_applications)
+                .onNegative((dialog, which) -> PackageUtils.startAddAppsInTaiChi(mActivity))
                 .show();
     }
 

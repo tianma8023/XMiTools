@@ -18,4 +18,9 @@
         android:title="@string/action_restart_system_ui"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_taichi_users_notice"
+        android:title="@string/action_taichi_users_notice"
+        app:showAsAction="never"/>
+
 </menu>
