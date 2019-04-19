@@ -10,6 +10,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,6 +70,7 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
             hookPlayVerticalToHorizontalAnim();
             hookPlayHorizontalToVerticalAnim();
             hookClearAnim();
+//            hookNotificationPanelView();
         } catch (Throwable t) {
             XLog.e("Error occurs when hook MiuiKeyguardClock", t);
         }
@@ -401,5 +405,55 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
             }
         }
     };
+
+    private void hookNotificationPanelView() {
+        hookNPVOnFinishInflate();
+    }
+
+
+    private void hookNPVOnFinishInflate() {
+        String className = "com.android.systemui.statusbar.phone.NotificationPanelView";
+        findAndHookMethod(className,
+                mClassLoader,
+                "onFinishInflate", new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+
+                        FrameLayout npv = (FrameLayout) param.thisObject;
+//                        for (int i = 0; i < npv.getChildCount(); i++) {
+//                            View view = npv.getChildAt(i);
+//                            XLog.d("%s", view.getClass().getName());
+//                        }
+                        traverseViewTree(npv, 0);
+                    }
+
+                    void print(int depth, View view) {
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < depth; i++) {
+                            sb.append("\t");
+                        }
+                        sb.append("|---");
+                        sb.append(view.getClass().getName());
+                        if (view instanceof TextView) {
+                            sb.append(" (")
+                                    .append(((TextView) view).getText())
+                                    .append(")");
+                        }
+                        XLog.d("%s", sb.toString());
+                    }
+
+                    void traverseViewTree(View rootView, int depth) {
+                        print(depth, rootView);
+                        if (rootView instanceof ViewGroup) {
+                            ViewGroup vg = (ViewGroup) rootView;
+                            depth++;
+                            for (int i = 0; i < vg.getChildCount(); i++) {
+                                View view = vg.getChildAt(i);
+                                traverseViewTree(view, depth);
+                            }
+                        }
+                    }
+                });
+    }
 
 }

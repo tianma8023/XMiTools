@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
@@ -35,18 +34,7 @@ public class StatusBarClockHook extends BaseSubHook {
 
     private Class<?> mClockClass;
 
-    private List<BroadcastSubReceiver> mSubReceivers = new ArrayList<>();
-
-    private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            for (BroadcastSubReceiver subReceiver : mSubReceivers) {
-                if (subReceiver != null) {
-                    subReceiver.onBroadcastReceived(context, intent);
-                }
-            }
-        }
-    };
+    private List<TextView> mClockViews = new ArrayList<>();
 
     public StatusBarClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
@@ -86,7 +74,7 @@ public class StatusBarClockHook extends BaseSubHook {
     private String addInSecond(String timeStr) {
         int sec = Calendar.getInstance().get(Calendar.SECOND);
         String secStr = String.format(Locale.getDefault(), "%02d", sec);
-        return timeStr.replaceAll("\\d+:\\d+", "$0:" + secStr);
+        return timeStr.replaceAll("(\\d+:\\d+)(:\\d+)?", "$1:" + secStr);
     }
 
     private void hookClockConstructor() {
@@ -98,73 +86,23 @@ public class StatusBarClockHook extends BaseSubHook {
                             TextView clock = (TextView) param.thisObject;
                             Resources res = clock.getResources();
                             int id = clock.getId();
-                            if (id == getId(res, "clock") || id == getId(res, "big_time")) {
-                                StatusBarClock statusBarClock = new StatusBarClock(clock);
-                                if (!mSubReceivers.contains(statusBarClock)) {
-                                    statusBarClock.showSeconds();
-                                    mSubReceivers.add(statusBarClock);
+                            if (id == getId(res, "clock") ||
+                                    id == getId(res, "big_time")
+                                    || id == getId(res, "date_time")) {
+                                // 允许的 id = R.id.clock(状态栏), R.id.big_time(下拉通知栏), no_id(横屏下拉通知栏)
+                                if (!mClockViews.contains(clock)) {
+                                    mClockViews.add(clock);
                                 }
                             }
                         } catch (Throwable e) {
                             XLog.e("", e);
                         }
-
                     }
 
                     private int getId(Resources res, String name) {
                         return res.getIdentifier(name, "id", SystemUIHook.PACKAGE_NAME);
                     }
                 });
-    }
-
-    private class StatusBarClock implements BroadcastSubReceiver {
-
-        private Handler mSecondsHandler;
-        private TextView mClock;
-
-        StatusBarClock(TextView clockView) {
-            mClock = clockView;
-            mSecondsHandler = new Handler(clockView.getContext().getMainLooper());
-        }
-
-        private void showSeconds() {
-            mSecondsHandler.post(mSecondsTicker);
-        }
-
-        private final Runnable mSecondsTicker = new Runnable() {
-
-            @Override
-            public void run() {
-                long now = SystemClock.uptimeMillis();
-                long next = now + (1000 - now % 1000);
-                mSecondsHandler.postAtTime(this, next);
-                XposedHelpers.callMethod(mClock, "updateClock");
-            }
-        };
-
-        @Override
-        public void onBroadcastReceived(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (Intent.ACTION_SCREEN_OFF.equals(action)) {
-                mSecondsHandler.removeCallbacks(mSecondsTicker);
-            } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                mSecondsHandler.postAtTime(mSecondsTicker,
-                        SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
-            }
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof StatusBarClock)) return false;
-            StatusBarClock that = (StatusBarClock) o;
-            return Objects.equals(mClock, that.mClock);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(mClock);
-        }
     }
 
     private void hookStatusBar() {
@@ -186,11 +124,44 @@ public class StatusBarClockHook extends BaseSubHook {
                             IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
                             filter.addAction(Intent.ACTION_SCREEN_ON);
                             context.registerReceiver(mScreenReceiver, filter);
+
+                            mSecondsHandler = new Handler(context.getMainLooper());
+                            mSecondsHandler.post(mSecondsTicker);
                         } catch (Throwable t) {
                             XLog.e("", t);
                         }
                     }
                 });
     }
+
+    private Handler mSecondsHandler;
+
+    private final Runnable mSecondsTicker = new Runnable() {
+
+        @Override
+        public void run() {
+            long now = SystemClock.uptimeMillis();
+            long next = now + (1000 - now % 1000);
+            mSecondsHandler.postAtTime(this, next);
+            for (TextView clockView : mClockViews) {
+                if (clockView != null) {
+                    XposedHelpers.callMethod(clockView, "updateClock");
+                }
+            }
+        }
+    };
+
+    private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                mSecondsHandler.removeCallbacks(mSecondsTicker);
+            } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
+                mSecondsHandler.postAtTime(mSecondsTicker,
+                        SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
+            }
+        }
+    };
 
 }
