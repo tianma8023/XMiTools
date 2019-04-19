@@ -17,9 +17,9 @@
 
     <string name="pref_keyguard_title">锁屏界面</string>
     <string name="pref_show_sec_in_keyguard_horizontal_title">水平时钟显秒</string>
-    <string name="pref_show_sec_in_keyguard_horizontal_summary">锁屏界面水平时钟显示秒数</string>
+    <string name="pref_show_sec_in_keyguard_horizontal_summary">水平时钟显示秒数(适用于系统默认锁屏)</string>
     <string name="pref_show_sec_in_keyguard_vertical_title">垂直时钟显秒</string>
-    <string name="pref_show_sec_in_keyguard_vertical_summary">锁屏界面垂直时钟显示秒数</string>
+    <string name="pref_show_sec_in_keyguard_vertical_summary">垂直时钟显示秒数(适用于系统默认锁屏)</string>
 
     <string name="pref_other_title">其他</string>
     <string name="pref_hide_launcher_icon_summary">隐藏后可从模块列表中进入</string>
