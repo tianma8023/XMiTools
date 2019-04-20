@@ -70,6 +70,7 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
             hookPlayVerticalToHorizontalAnim();
             hookPlayHorizontalToVerticalAnim();
             hookClearAnim();
+            hookSetDarkMode();
 //            hookNotificationPanelView();
         } catch (Throwable t) {
             XLog.e("Error occurs when hook MiuiKeyguardClock", t);
@@ -379,11 +380,14 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        if (mHorizontalToVerticalAnim2 != null) {
+                            mHorizontalToVerticalAnim2.cancel();
+                        }
                         if (mVerticalToHorizontalAnim2 != null) {
                             mVerticalToHorizontalAnim2.cancel();
-                            if (mVerticalSec != null) {
-                                mVerticalSec.clearAnimation();
-                            }
+                        }
+                        if (mVerticalSec != null) {
+                            mVerticalSec.clearAnimation();
                         }
                     }
                 });
@@ -405,6 +409,30 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
             }
         }
     };
+
+    // com.android.keyguard.MiuiKeyguardClock#clearAnim()
+    private void hookSetDarkMode() {
+        findAndHookMethod(mMiuiKeyguardClockCls,
+                "setDarkMode",
+                boolean.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        super.afterHookedMethod(param);
+                        if (mHorizontalSec != null) {
+                            mHorizontalSec.setTextColor(mHorizontalMin.getTextColors());
+                        }
+
+                        if (mHorizontalDot2 != null) {
+                            mHorizontalDot2.setTextColor(mHorizontalDot.getTextColors());
+                        }
+
+                        if (mVerticalSec != null) {
+                            mVerticalSec.setTextColor(mVerticalMin.getTextColors());
+                        }
+                    }
+                });
+    }
 
     private void hookNotificationPanelView() {
         hookNPVOnFinishInflate();
