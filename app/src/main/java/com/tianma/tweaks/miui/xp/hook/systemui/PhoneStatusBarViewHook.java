@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tianma.tweaks.miui.cons.PrefConst;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
@@ -30,16 +31,27 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
 
     private LinearLayout mCenterLayout;
 
+    private boolean mAlignmentCenter = false;
+    private boolean mAlignmentRight = false;
+
     PhoneStatusBarViewHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
     }
 
     public void startHook() {
-        if (XSPUtils.showStatusBarClockInCenter(xsp)) {
+        String alignment = XSPUtils.getStatusBarClockAlignment(xsp);
+        if (PrefConst.ALIGNMENT_CENTER.equals(alignment)) {
+            mAlignmentCenter = true;
+        } else if (PrefConst.ALIGNMENT_RIGHT.equals(alignment)) {
+            mAlignmentRight = true;
+        }
+        if (mAlignmentCenter || mAlignmentRight) {
             try {
                 XLog.d("Hooking PhoneStatusBarView...");
                 hookSetBar();
-                hookGetActualWidth();
+                if (mAlignmentCenter) {
+                    hookGetActualWidth();
+                }
             } catch (Throwable t) {
                 XLog.d("Error occurs when hook PhoneStatusBarView", t);
             }
@@ -71,21 +83,28 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
         LinearLayout statusBarContents = phoneStatusBarView.findViewById(
                 res.getIdentifier("status_bar_contents", "id", PACKAGE_NAME));
 
-        // 注入新的居中的layout 到 phoneStatusBarView 中去
-        mCenterLayout = new LinearLayout(context);
-        LinearLayout.LayoutParams lp =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        mCenterLayout.setLayoutParams(lp);
-        mCenterLayout.setGravity(Gravity.CENTER);
-        phoneStatusBarView.addView(mCenterLayout);
-
         TextView clock = statusBarContents.findViewById(
                 res.getIdentifier("clock", "id", PACKAGE_NAME));
-
         ((ViewGroup) clock.getParent()).removeView(clock);
-        clock.setPaddingRelative(2, 0, 2, 0);
-        clock.setGravity(Gravity.CENTER);
-        mCenterLayout.addView(clock);
+
+        if (mAlignmentCenter) {
+            // 注入新的居中的layout 到 phoneStatusBarView 中去
+            mCenterLayout = new LinearLayout(context);
+            LinearLayout.LayoutParams lp =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            mCenterLayout.setLayoutParams(lp);
+            mCenterLayout.setGravity(Gravity.CENTER);
+            phoneStatusBarView.addView(mCenterLayout);
+
+            clock.setPaddingRelative(2, 0, 2, 0);
+            clock.setGravity(Gravity.CENTER);
+            mCenterLayout.addView(clock);
+        } else if (mAlignmentRight) { // 居右对齐
+            LinearLayout rightAreaLayout = statusBarContents.findViewById(
+                    res.getIdentifier("system_icons", "id", PACKAGE_NAME));
+            clock.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+            rightAreaLayout.addView(clock);
+        }
     }
 
     private void hookGetActualWidth() {

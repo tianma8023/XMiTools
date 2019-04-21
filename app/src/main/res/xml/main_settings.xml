@@ -15,11 +15,13 @@
             android:summary="@string/pref_show_sec_in_status_bar_summary"
             android:title="@string/pref_show_sec_in_status_bar_title"/>
 
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="@string/pref_show_status_bar_clock_in_center"
-            android:summary="@string/pref_show_clock_in_center_summary"
-            android:title="@string/pref_show_clock_in_center_title"/>
+        <ListPreference
+            android:defaultValue="@string/alignment_left_value"
+            android:entries="@array/alignment_entry_list"
+            android:entryValues="@array/alignment_value_list"
+            android:key="@string/pref_status_bar_clock_alignment"
+            android:summary="%s"
+            android:title="@string/pref_status_bar_clock_alignment_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -67,8 +69,8 @@
 
         <Preference
             android:key="@string/pref_donate_by_alipay"
-            android:title="@string/pref_donate_by_alipay_title"
-            android:summary="@string/pref_donate_by_alipay_summary"/>
+            android:summary="@string/pref_donate_by_alipay_summary"
+            android:title="@string/pref_donate_by_alipay_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

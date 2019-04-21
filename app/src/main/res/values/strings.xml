@@ -12,8 +12,10 @@
     <string name="pref_status_bar_title">状态栏</string>
     <string name="pref_show_sec_in_status_bar_title">时钟显秒</string>
     <string name="pref_show_sec_in_status_bar_summary">状态栏时钟显示秒数</string>
-    <string name="pref_show_clock_in_center_title">时间居中</string>
-    <string name="pref_show_clock_in_center_summary">状态栏时间居中显示</string>
+    <string name="pref_status_bar_clock_alignment_title">时钟对齐方式</string>
+    <string name="alignment_left_entry">居左</string>
+    <string name="alignment_center_entry">居中</string>
+    <string name="alignment_right_entry">居右</string>
 
     <string name="pref_keyguard_title">锁屏界面</string>
     <string name="pref_show_sec_in_keyguard_horizontal_title">水平时钟显秒</string>

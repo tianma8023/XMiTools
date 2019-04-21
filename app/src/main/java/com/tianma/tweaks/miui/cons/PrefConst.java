@@ -4,8 +4,10 @@ public interface PrefConst {
 
     String SHOW_SEC_IN_STATUS_BAR= "show_sec_in_status_bar";
     boolean SHOW_SEC_IN_STATUS_BAR_DEFAULT = false;
-    String SHOW_STATUS_BAR_CLOCK_IN_CENTER = "show_status_bar_clock_in_center";
-    boolean SHOW_STATUS_BAR_CLOCK_IN_CENTER_DEFAULT = false;
+    String STATUS_BAR_CLOCK_ALIGNMENT = "status_bar_clock_alignment";
+    String ALIGNMENT_LEFT = "left";
+    String ALIGNMENT_CENTER = "center";
+    String ALIGNMENT_RIGHT = "right";
 
     String SHOW_SEC_IN_KEYGUARD_HORIZONTAL = "show_sec_in_keyguard_horizontal";
     boolean SHOW_SEC_IN_KEYGUARD_HORIZONTAL_DEFAULT = false;

@@ -2,14 +2,14 @@ package com.tianma.tweaks.miui.utils;
 
 import de.robv.android.xposed.XSharedPreferences;
 
+import static com.tianma.tweaks.miui.cons.PrefConst.ALIGNMENT_LEFT;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_KEYGUARD_HORIZONTAL;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_KEYGUARD_HORIZONTAL_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_KEYGUARD_VERTICAL;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_KEYGUARD_VERTICAL_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_STATUS_BAR;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_STATUS_BAR_DEFAULT;
-import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_STATUS_BAR_CLOCK_IN_CENTER;
-import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_STATUS_BAR_CLOCK_IN_CENTER_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_ALIGNMENT;
 
 public class XSPUtils {
 
@@ -20,8 +20,8 @@ public class XSPUtils {
         return xsp.getBoolean(SHOW_SEC_IN_STATUS_BAR, SHOW_SEC_IN_STATUS_BAR_DEFAULT);
     }
 
-    public static boolean showStatusBarClockInCenter(XSharedPreferences xsp) {
-        return xsp.getBoolean(SHOW_STATUS_BAR_CLOCK_IN_CENTER, SHOW_STATUS_BAR_CLOCK_IN_CENTER_DEFAULT);
+    public static String getStatusBarClockAlignment(XSharedPreferences xsp) {
+        return xsp.getString(STATUS_BAR_CLOCK_ALIGNMENT, ALIGNMENT_LEFT);
     }
 
     public static boolean showSecInKeyguardHorizontal(XSharedPreferences xsp) {

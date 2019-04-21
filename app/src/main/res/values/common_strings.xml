@@ -5,7 +5,7 @@
     <!-- shared preference key -->
     <string name="pref_enable">pref_enable</string>
     <string name="pref_show_sec_in_status_bar">show_sec_in_status_bar</string>
-    <string name="pref_show_status_bar_clock_in_center">show_status_bar_clock_in_center</string>
+    <string name="pref_status_bar_clock_alignment">status_bar_clock_alignment</string>
 
     <string name="pref_show_sec_in_keyguard_horizontal">show_sec_in_keyguard_horizontal</string>
     <string name="pref_show_sec_in_keyguard_vertical">show_sec_in_keyguard_vertical</string>
@@ -18,4 +18,21 @@
     <string name="pref_donate_by_alipay">donate_by_alipay</string>
     <!-- shared preference key end -->
 
+    <!-- alignment -->
+    <string-array name="alignment_entry_list">
+        <item>@string/alignment_left_entry</item>
+        <item>@string/alignment_center_entry</item>
+        <item>@string/alignment_right_entry</item>
+    </string-array>
+
+    <string-array name="alignment_value_list">
+        <item>@string/alignment_left_value</item>
+        <item>@string/alignment_center_value</item>
+        <item>@string/alignment_right_value</item>
+    </string-array>
+
+    <string name="alignment_left_value">left</string>
+    <string name="alignment_center_value">center</string>
+    <string name="alignment_right_value">right</string>
+    <!-- alignment end -->
 </resources>
