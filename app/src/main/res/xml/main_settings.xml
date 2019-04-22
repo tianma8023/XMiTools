@@ -6,22 +6,58 @@
         android:summary="@string/pref_module_instruction_summary"
         android:title="@string/pref_module_instruction_title"/>
 
+    <Preference
+        android:key="@string/pref_module_status"
+        android:title="@string/pref_module_status_title"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/pref_main_switch"
+        android:title="@string/pref_main_switch_title"/>
+
     <PreferenceCategory
         android:title="@string/pref_status_bar_title">
 
         <SwitchPreference
             android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
             android:key="@string/pref_show_sec_in_status_bar"
             android:summary="@string/pref_show_sec_in_status_bar_summary"
             android:title="@string/pref_show_sec_in_status_bar_title"/>
 
         <ListPreference
             android:defaultValue="@string/alignment_left_value"
+            android:dependency="@string/pref_main_switch"
             android:entries="@array/alignment_entry_list"
             android:entryValues="@array/alignment_value_list"
             android:key="@string/pref_status_bar_clock_alignment"
             android:summary="%s"
             android:title="@string/pref_status_bar_clock_alignment_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_status_bar_clock_format_enable"
+            android:title="@string/pref_status_bar_clock_format_enable_title"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/status_bar_clock_format_default"
+            android:dependency="@string/pref_status_bar_clock_format_enable"
+            android:dialogMessage="@string/pref_status_bar_clock_format_message"
+            android:key="@string/pref_status_bar_clock_format"
+            android:title="@string/pref_status_bar_clock_format_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_dropdown_status_bar_title">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_show_sec_in_dropdown_status_bar"
+            android:summary="@string/pref_show_sec_in_dropdown_status_bar_summary"
+            android:title="@string/pref_show_sec_in_dropdown_status_bar_title"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -29,12 +65,14 @@
 
         <SwitchPreference
             android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
             android:key="@string/pref_show_sec_in_keyguard_horizontal"
             android:summary="@string/pref_show_sec_in_keyguard_horizontal_summary"
             android:title="@string/pref_show_sec_in_keyguard_horizontal_title"/>
 
         <SwitchPreference
             android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
             android:key="@string/pref_show_sec_in_keyguard_vertical"
             android:summary="@string/pref_show_sec_in_keyguard_vertical_summary"
             android:title="@string/pref_show_sec_in_keyguard_vertical_title"/>
@@ -53,10 +91,6 @@
 
     <PreferenceCategory
         android:title="@string/pref_about_title">
-
-        <Preference
-            android:key="@string/pref_module_status"
-            android:title="@string/pref_module_status_title"/>
 
         <Preference
             android:key="@string/pref_app_version"

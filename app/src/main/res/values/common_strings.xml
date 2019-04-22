@@ -3,9 +3,16 @@
 <resources>
 
     <!-- shared preference key -->
-    <string name="pref_enable">pref_enable</string>
+    <string name="pref_module_status">module_status</string>
+    <string name="pref_main_switch">main_switch</string>
+
     <string name="pref_show_sec_in_status_bar">show_sec_in_status_bar</string>
     <string name="pref_status_bar_clock_alignment">status_bar_clock_alignment</string>
+    <string name="pref_status_bar_clock_format_enable">status_bar_clock_format_enable</string>
+    <string name="pref_status_bar_clock_format">status_bar_clock_format</string>
+    <string name="status_bar_clock_format_default">HH:mm:ss</string>
+
+    <string name="pref_show_sec_in_dropdown_status_bar">show_sec_in_dropdown_status_bar</string>
 
     <string name="pref_show_sec_in_keyguard_horizontal">show_sec_in_keyguard_horizontal</string>
     <string name="pref_show_sec_in_keyguard_vertical">show_sec_in_keyguard_vertical</string>
@@ -13,7 +20,6 @@
     <string name="pref_hide_launcher_icon">hide_launcher_icon</string>
 
     <string name="pref_app_version">app_version</string>
-    <string name="pref_module_status">module_status</string>
     <string name="pref_source_code">source_code</string>
     <string name="pref_donate_by_alipay">donate_by_alipay</string>
     <!-- shared preference key end -->

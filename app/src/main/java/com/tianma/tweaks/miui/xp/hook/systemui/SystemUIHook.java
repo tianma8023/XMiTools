@@ -3,6 +3,7 @@ package com.tianma.tweaks.miui.xp.hook.systemui;
 
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseHook;
 
 import de.robv.android.xposed.XSharedPreferences;
@@ -27,9 +28,11 @@ public class SystemUIHook extends BaseHook {
                 XLog.e("", t);
             }
 
-            new StatusBarClockHook(lpparam.classLoader, xsp).startHook();
-            new MiuiKeyguardClockHook(lpparam.classLoader, xsp).startHook();
-            new PhoneStatusBarViewHook(lpparam.classLoader, xsp).startHook();
+            if (XSPUtils.isMainSwitchEnabled(xsp)) {
+                new StatusBarClockHook(lpparam.classLoader, xsp).startHook();
+                new MiuiKeyguardClockHook(lpparam.classLoader, xsp).startHook();
+                new PhoneStatusBarViewHook(lpparam.classLoader, xsp).startHook();
+            }
         }
     }
 }

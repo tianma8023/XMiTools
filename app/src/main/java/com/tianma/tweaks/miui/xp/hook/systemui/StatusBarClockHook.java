@@ -13,8 +13,10 @@ import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,22 +38,45 @@ public class StatusBarClockHook extends BaseSubHook {
 
     private List<TextView> mClockViews = new ArrayList<>();
 
+    /**
+     * 状态栏是否显示秒数
+     */
+    private boolean mShowSecInStatusBar;
+    /**
+     * 下拉状态栏是否显示秒数
+     */
+    private boolean mShowSecInDropdownStatusBar;
+    /**
+     * 是否自定义状态栏时间格式
+     */
+    private boolean mStatusBarClockFormatEnabled;
+    private SimpleDateFormat mStatusBarClockFormat;
+
     public StatusBarClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
     }
 
     @Override
     public void startHook() {
-        if (XSPUtils.showSecInStatusBar(xsp)) {
-            try {
-                XLog.d("Hooking StatusBar Clock...");
-                mClockClass = XposedHelpers.findClass(CLASS_CLOCK, mClassLoader);
-                hookStatusBar();
-                hookClockUpdateClock();
-                hookClockConstructor();
-            } catch (Throwable t) {
-                XLog.e("Error occurs when hook StatusBar Clock", t);
+        try {
+            XLog.d("Hooking StatusBar Clock...");
+            mShowSecInStatusBar = XSPUtils.showSecInStatusBar(xsp);
+            mStatusBarClockFormatEnabled = XSPUtils.isStatusBarClockFormatEnabled(xsp);
+            mShowSecInDropdownStatusBar = XSPUtils.showSecInDropdownStatusBar(xsp);
+            if (mStatusBarClockFormatEnabled) {
+                String timeFormat = XSPUtils.getStatusBarClockFormat(xsp);
+                mStatusBarClockFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
             }
+            if (mShowSecInStatusBar || mStatusBarClockFormatEnabled || mShowSecInDropdownStatusBar) {
+                mClockClass = XposedHelpers.findClass(CLASS_CLOCK, mClassLoader);
+                if (mShowSecInStatusBar || mShowSecInDropdownStatusBar) {
+                    hookStatusBar();
+                    hookClockConstructor();
+                }
+                hookClockUpdateClock();
+            }
+        } catch (Throwable t) {
+            XLog.e("Error occurs when hook StatusBar Clock", t);
         }
     }
 
@@ -63,7 +88,28 @@ public class StatusBarClockHook extends BaseSubHook {
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         try {
                             TextView clockView = (TextView) param.thisObject;
-                            clockView.setText(addInSecond(clockView.getText().toString()));
+                            Resources res = clockView.getResources();
+                            int id = clockView.getId();
+                            String timeStr = clockView.getText().toString();
+                            if (id == getId(res, "clock")) {
+                                if (mStatusBarClockFormatEnabled) {
+                                    timeStr = getCustomFormatTime();
+                                } else if (mShowSecInStatusBar) {
+                                    timeStr = addInSecond(timeStr);
+                                } else {
+                                    return;
+                                }
+                            } else if (id == getId(res, "big_time")
+                                    || id == getId(res, "date_time")) {
+                                if (mShowSecInDropdownStatusBar) {
+                                    timeStr = addInSecond(timeStr);
+                                } else {
+                                    return;
+                                }
+                            } else {
+                                return;
+                            }
+                            clockView.setText(timeStr);
                         } catch (Throwable t) {
                             XLog.e("", t);
                         }
@@ -71,10 +117,18 @@ public class StatusBarClockHook extends BaseSubHook {
                 });
     }
 
-    private String addInSecond(String timeStr) {
+    private String addInSecond(String originalTimeStr) {
         int sec = Calendar.getInstance().get(Calendar.SECOND);
         String secStr = String.format(Locale.getDefault(), "%02d", sec);
-        return timeStr.replaceAll("(\\d+:\\d+)(:\\d+)?", "$1:" + secStr);
+        return originalTimeStr.replaceAll("(\\d+:\\d+)(:\\d+)?", "$1:" + secStr);
+    }
+
+    private String getCustomFormatTime() {
+        return mStatusBarClockFormat.format(new Date());
+    }
+
+    private int getId(Resources res, String name) {
+        return res.getIdentifier(name, "id", SystemUIHook.PACKAGE_NAME);
     }
 
     private void hookClockConstructor() {
@@ -86,10 +140,13 @@ public class StatusBarClockHook extends BaseSubHook {
                             TextView clock = (TextView) param.thisObject;
                             Resources res = clock.getResources();
                             int id = clock.getId();
-                            if (id == getId(res, "clock") ||
-                                    id == getId(res, "big_time")
-                                    || id == getId(res, "date_time")) {
-                                // 允许的 id = R.id.clock(状态栏), R.id.big_time(下拉通知栏), no_id(横屏下拉通知栏)
+                            if (id == getId(res, "clock") && mShowSecInStatusBar) {
+                                if (!mClockViews.contains(clock)) {
+                                    mClockViews.add(clock);
+                                }
+                            } else if ((id == getId(res, "big_time")
+                                    || id == getId(res, "date_time"))
+                                    && mShowSecInDropdownStatusBar) {
                                 if (!mClockViews.contains(clock)) {
                                     mClockViews.add(clock);
                                 }
@@ -97,10 +154,6 @@ public class StatusBarClockHook extends BaseSubHook {
                         } catch (Throwable e) {
                             XLog.e("", e);
                         }
-                    }
-
-                    private int getId(Resources res, String name) {
-                        return res.getIdentifier(name, "id", SystemUIHook.PACKAGE_NAME);
                     }
                 });
     }
