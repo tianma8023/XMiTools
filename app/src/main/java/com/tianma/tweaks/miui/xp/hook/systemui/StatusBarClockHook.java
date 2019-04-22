@@ -80,6 +80,7 @@ public class StatusBarClockHook extends BaseSubHook {
         }
     }
 
+    // com.android.systemui.statusbar.policy.Clock#updateClock
     private void hookClockUpdateClock() {
         XposedHelpers.findAndHookMethod(mClockClass,
                 "updateClock",
@@ -131,6 +132,7 @@ public class StatusBarClockHook extends BaseSubHook {
         return res.getIdentifier(name, "id", SystemUIHook.PACKAGE_NAME);
     }
 
+    // com.android.systemui.statusbar.policy.Clock#access()
     private void hookClockConstructor() {
         XposedBridge.hookAllConstructors(mClockClass,
                 new XC_MethodHook() {

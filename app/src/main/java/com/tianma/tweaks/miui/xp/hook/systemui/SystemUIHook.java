@@ -19,7 +19,7 @@ public class SystemUIHook extends BaseHook {
     @Override
     public void onLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (PACKAGE_NAME.equals(lpparam.packageName)) {
-            XLog.d("Hooking SystemUI...");
+            XLog.i("Hooking SystemUI...");
 
             XSharedPreferences xsp = new XSharedPreferences(BuildConfig.APPLICATION_ID);
             try {

@@ -18,8 +18,8 @@ public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit 
 
     {
         mHookList = new ArrayList<>();
-        mHookList.add(new SystemUIHook()); // SystemUI Hook
         mHookList.add(new ModuleUtilsHook()); // MiuiTweaks Hook
+        mHookList.add(new SystemUIHook()); // SystemUI Hook
     }
 
     @Override

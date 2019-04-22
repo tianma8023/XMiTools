@@ -5,7 +5,7 @@ import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.utils.ModuleUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 
-import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -34,7 +34,12 @@ public class ModuleUtilsHook extends BaseHook {
 
         XposedHelpers.findAndHookMethod(className, lpparam.classLoader,
                 "isModuleActive",
-                XC_MethodReplacement.returnConstant(true));
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        param.setResult(true);
+                    }
+                });
     }
 
 }
