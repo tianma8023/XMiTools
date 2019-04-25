@@ -3,6 +3,7 @@ package com.tianma.tweaks.miui.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -60,6 +61,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
 
         showVersionInfo();
         showModuleStatus();
+        showStatusBarClockFormat();
     }
 
     @Override
@@ -107,6 +109,13 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
         } else {
             preference.setSummary(R.string.module_status_inactive);
         }
+    }
+
+    private void showStatusBarClockFormat() {
+        Preference preference = findPreference(PrefConst.STATUS_BAR_CLOCK_FORMAT);
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        String timeFormat = sp.getString(PrefConst.STATUS_BAR_CLOCK_FORMAT, PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT);
+        preference.setSummary(timeFormat);
     }
 
     private void hideOrShowLauncherIcon(boolean hide) {
