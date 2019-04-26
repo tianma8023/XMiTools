@@ -43,6 +43,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
         addPreferencesFromResource(R.xml.main_settings);
 
         findPreference(PrefConst.HIDE_LAUNCHER_ICON).setOnPreferenceChangeListener(this);
+        findPreference(PrefConst.STATUS_BAR_CLOCK_FORMAT).setOnPreferenceChangeListener(this);
 
         findPreference(PrefConst.SOURCE_CODE).setOnPreferenceClickListener(this);
         findPreference(PrefConst.DONATE_BY_ALIPAY).setOnPreferenceClickListener(this);
@@ -61,7 +62,12 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
 
         showVersionInfo();
         showModuleStatus();
-        showStatusBarClockFormat();
+
+        Preference preference = findPreference(PrefConst.STATUS_BAR_CLOCK_FORMAT);
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        String timeFormat = sp
+                .getString(PrefConst.STATUS_BAR_CLOCK_FORMAT, PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT);
+        showStatusBarClockFormat(preference, timeFormat);
     }
 
     @Override
@@ -88,6 +94,8 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
         String key = preference.getKey();
         if (PrefConst.HIDE_LAUNCHER_ICON.equals(key)) {
             hideOrShowLauncherIcon((Boolean) newValue);
+        } else if (PrefConst.STATUS_BAR_CLOCK_FORMAT.equals(key)) {
+            showStatusBarClockFormat(preference, (String) newValue);
         } else {
             return false;
         }
@@ -111,11 +119,8 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
         }
     }
 
-    private void showStatusBarClockFormat() {
-        Preference preference = findPreference(PrefConst.STATUS_BAR_CLOCK_FORMAT);
-        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
-        String timeFormat = sp.getString(PrefConst.STATUS_BAR_CLOCK_FORMAT, PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT);
-        preference.setSummary(timeFormat);
+    private void showStatusBarClockFormat(Preference preference, String newValue) {
+        preference.setSummary(newValue);
     }
 
     private void hideOrShowLauncherIcon(boolean hide) {

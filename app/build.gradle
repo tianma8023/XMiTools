@@ -23,6 +23,10 @@ android {
         buildConfigField("boolean", "LOG_TO_EDXPOSED", "true")
     }
 
+    lintOptions{
+        disable 'MissingTranslation'
+    }
+
     signingConfigs {
         release {
             storeFile key

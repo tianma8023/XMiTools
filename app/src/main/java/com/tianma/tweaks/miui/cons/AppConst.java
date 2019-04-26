@@ -6,7 +6,7 @@ public interface AppConst {
 
     /* MiTweaks begin */
     String MAIN_ACTIVITY_ALIAS = BuildConfig.APPLICATION_ID + ".app.MainActivityAlias";
-    String PROJECT_SOURCE_CODE_URL = "https://github.com/tianma8023/MiTweaks";
+    String PROJECT_SOURCE_CODE_URL = "https://github.com/tianma8023/XMiuiClock";
     /* MiTweaks end */
 
 
