@@ -8,6 +8,7 @@
 
     <string name="pref_module_instruction_title">Activation Statement</string>
     <string name="pref_module_instruction_summary">Reboot or restart SystemUI to activate it</string>
+    <string name="pref_main_switch_title">Main switch</string>
 
     <string name="pref_status_bar_title">Status Bar</string>
     <string name="pref_show_sec_in_status_bar_title">Show seconds</string>
@@ -16,6 +17,9 @@
     <string name="alignment_left_entry">Left</string>
     <string name="alignment_center_entry">Center</string>
     <string name="alignment_right_entry">Right</string>
+    <string name="pref_status_bar_clock_color_enable_title">Custom clock color</string>
+    <string name="clock_color">Clock color</string>
+    <string name="date_color">Date color</string>
     <string name="pref_status_bar_clock_format_enable_title">Custom clock time format</string>
     <string name="pref_status_bar_clock_format_title">Clock time format</string>
     <string name="pref_status_bar_clock_format_message"> </string>
@@ -59,5 +63,4 @@
     <string name="taichi_install_prompt">Please install Taichi</string>
     <string name="taichi_enable_prompt">Please enable Taichi</string>
     <string name="pref_donate_by_alipay_summary">I am kawaii, donate me (.❛ ᴗ ❛.)</string>
-    <string name="pref_main_switch_title">Main switch</string>
 </resources>

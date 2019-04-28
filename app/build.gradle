@@ -96,4 +96,7 @@ dependencies {
 
     // Material Dialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+    // color picker preference
+    implementation 'com.jaredrummler:colorpicker:1.1.0'
 }

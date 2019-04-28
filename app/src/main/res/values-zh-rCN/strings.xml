@@ -9,6 +9,7 @@
 
     <string name="pref_module_instruction_title">生效说明</string>
     <string name="pref_module_instruction_summary">重启系统或重启SystemUI后重新生效(右上角)</string>
+    <string name="pref_main_switch_title">总开关</string>
 
     <string name="pref_status_bar_title">状态栏</string>
     <string name="pref_show_sec_in_status_bar_title">时间显秒</string>
@@ -17,6 +18,9 @@
     <string name="alignment_left_entry">居左</string>
     <string name="alignment_center_entry">居中</string>
     <string name="alignment_right_entry">居右</string>
+    <string name="pref_status_bar_clock_color_enable_title">自定义时间颜色</string>
+    <string name="clock_color">时间颜色</string>
+    <string name="date_color">日期颜色</string>
     <string name="pref_status_bar_clock_format_enable_title">自定义时间格式</string>
     <string name="pref_status_bar_clock_format_title">时间格式</string>
     <string name="pref_status_bar_clock_format_message">示例：\n\n1. yy.MM.dd E a HH:mm:ss > 年.月.日 星期 上/下午 时:分:秒 > 19.04.21 周日 下午 23:25:45\n\n2. 我HH很mm可ss爱 > 我时很分可秒爱 > 我07很25可09爱\n\n3. HH:mm:ss > 时:分:秒 > 16:07:08\n\n4. H:m:s > 时:分:秒 > 16:7:8</string>
@@ -60,5 +64,4 @@
     <string name="taichi_install_prompt">请先安装太极</string>
     <string name="taichi_enable_prompt">请先启用太极</string>
     <string name="pref_donate_by_alipay_summary">我很可爱，请给我钱 (.❛ ᴗ ❛.)</string>
-    <string name="pref_main_switch_title">总开关</string>
 </resources>

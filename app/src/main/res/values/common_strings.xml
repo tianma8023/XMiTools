@@ -8,14 +8,19 @@
 
     <string name="pref_show_sec_in_status_bar">show_sec_in_status_bar</string>
     <string name="pref_status_bar_clock_alignment">status_bar_clock_alignment</string>
+    <string name="pref_status_bar_clock_color_enable">status_bar_clock_color_enable</string>
+    <string name="pref_status_bar_clock_color">status_bar_clock_color</string>
     <string name="pref_status_bar_clock_format_enable">status_bar_clock_format_enable</string>
     <string name="pref_status_bar_clock_format">status_bar_clock_format</string>
     <string name="status_bar_clock_format_default">HH:mm:ss</string>
 
     <string name="pref_show_sec_in_dropdown_status_bar">show_sec_in_dropdown_status_bar</string>
+    <string name="pref_dropdown_status_bar_clock_color">dropdown_status_bar_clock_color</string>
+    <string name="pref_dropdown_status_bar_date_color">dropdown_status_bar_date_color</string>
 
     <string name="pref_show_sec_in_keyguard_horizontal">show_sec_in_keyguard_horizontal</string>
     <string name="pref_show_sec_in_keyguard_vertical">show_sec_in_keyguard_vertical</string>
+    <string name="pref_keyguard_clock_color">keyguard_clock_color</string>
 
     <string name="pref_hide_launcher_icon">hide_launcher_icon</string>
 

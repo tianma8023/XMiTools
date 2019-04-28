@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.ArrayMap;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.utils.XLog;
@@ -14,29 +16,30 @@ import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 /**
- * StatusBar Clock hook. 状态栏显秒
+ * StatusBar Clock hook. 状态栏Hook
  */
 public class StatusBarClockHook extends BaseSubHook {
 
-    private static final String CLASS_CLOCK = "com.android.systemui.statusbar.policy.Clock";
+    private static final String PKG_STATUS_BAR = "com.android.systemui.statusbar";
+    private static final String CLS_CLOCK = PKG_STATUS_BAR + ".policy.Clock";
+    private static final String CLASS_STATUS_BAR = PKG_STATUS_BAR + ".phone.StatusBar";
 
-    private static final String CLASS_STATUS_BAR = "com.android.systemui.statusbar.phone.StatusBar";
+    private Class<?> mClockCls;
 
-    private Class<?> mClockClass;
-
-    private List<TextView> mClockViews = new ArrayList<>();
+    private Set<TextView> mClockViews = new HashSet<>();
 
     /**
      * 状态栏是否显示秒数
@@ -52,28 +55,63 @@ public class StatusBarClockHook extends BaseSubHook {
     private boolean mStatusBarClockFormatEnabled;
     private SimpleDateFormat mStatusBarClockFormat;
 
+    /**
+     * 是否自定义状态栏时间颜色
+     */
+    private boolean mStatusBarClockColorEnabled;
+    /**
+     * 状态栏时间颜色
+     */
+    private int mStatusBarClockColor;
+    /**
+     * 下拉状态栏时间颜色
+     */
+    private int mDropdownStatusBarClockColor;
+    /**
+     * 下拉状态栏日期颜色
+     */
+    private int mDropdownStatusBarDateColor;
+
+    private ArrayMap<String, Integer> mNameIdMap = new ArrayMap<>();
+
     public StatusBarClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
+
+        mShowSecInStatusBar = XSPUtils.showSecInStatusBar(xsp);
+        mStatusBarClockFormatEnabled = XSPUtils.isStatusBarClockFormatEnabled(xsp);
+        mShowSecInDropdownStatusBar = XSPUtils.showSecInDropdownStatusBar(xsp);
+
+        if (mStatusBarClockFormatEnabled) {
+            String timeFormat = XSPUtils.getStatusBarClockFormat(xsp);
+            mStatusBarClockFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
+        }
+
+        mStatusBarClockColorEnabled = XSPUtils.isStatusBarClockColorEnabled(xsp);
+        if (mStatusBarClockColorEnabled) {
+            mStatusBarClockColor = XSPUtils.getStatusBarClockColor(xsp);
+        }
+
+        mDropdownStatusBarClockColor = XSPUtils.getDropdownStatusBarClockColor(xsp);
+        mDropdownStatusBarDateColor = XSPUtils.getDropdownStatusBarDateColor(xsp);
     }
 
     @Override
     public void startHook() {
         try {
             XLog.d("Hooking StatusBar Clock...");
-            mShowSecInStatusBar = XSPUtils.showSecInStatusBar(xsp);
-            mStatusBarClockFormatEnabled = XSPUtils.isStatusBarClockFormatEnabled(xsp);
-            mShowSecInDropdownStatusBar = XSPUtils.showSecInDropdownStatusBar(xsp);
-            if (mStatusBarClockFormatEnabled) {
-                String timeFormat = XSPUtils.getStatusBarClockFormat(xsp);
-                mStatusBarClockFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
-            }
+            mClockCls = XposedHelpers.findClass(CLS_CLOCK, mClassLoader);
+
+            hookClockConstructor();
+
             if (mShowSecInStatusBar || mStatusBarClockFormatEnabled || mShowSecInDropdownStatusBar) {
-                mClockClass = XposedHelpers.findClass(CLASS_CLOCK, mClassLoader);
                 if (mShowSecInStatusBar || mShowSecInDropdownStatusBar) {
                     hookStatusBar();
-                    hookClockConstructor();
                 }
                 hookClockUpdateClock();
+            }
+
+            if (mStatusBarClockColorEnabled) {
+                hookOnDarkChanged();
             }
         } catch (Throwable t) {
             XLog.e("Error occurs when hook StatusBar Clock", t);
@@ -82,7 +120,7 @@ public class StatusBarClockHook extends BaseSubHook {
 
     // com.android.systemui.statusbar.policy.Clock#updateClock
     private void hookClockUpdateClock() {
-        XposedHelpers.findAndHookMethod(mClockClass,
+        XposedHelpers.findAndHookMethod(mClockCls,
                 "updateClock",
                 new XC_MethodHook() {
                     @Override
@@ -128,13 +166,17 @@ public class StatusBarClockHook extends BaseSubHook {
         return mStatusBarClockFormat.format(new Date());
     }
 
-    private int getId(Resources res, String name) {
-        return res.getIdentifier(name, "id", SystemUIHook.PACKAGE_NAME);
+    private Integer getId(Resources res, String name) {
+        if (!mNameIdMap.containsKey(name)) {
+            int id = res.getIdentifier(name, "id", SystemUIHook.PACKAGE_NAME);
+            mNameIdMap.put(name, id);
+        }
+        return mNameIdMap.get(name);
     }
 
     // com.android.systemui.statusbar.policy.Clock#access()
     private void hookClockConstructor() {
-        XposedBridge.hookAllConstructors(mClockClass,
+        XposedBridge.hookAllConstructors(mClockCls,
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -142,22 +184,45 @@ public class StatusBarClockHook extends BaseSubHook {
                             TextView clock = (TextView) param.thisObject;
                             Resources res = clock.getResources();
                             int id = clock.getId();
-                            if (id == getId(res, "clock") && mShowSecInStatusBar) {
-                                if (!mClockViews.contains(clock)) {
+                            if (id == getId(res, "clock")) {
+                                if (mShowSecInStatusBar) {
                                     mClockViews.add(clock);
                                 }
-                            } else if ((id == getId(res, "big_time")
-                                    || id == getId(res, "date_time"))
-                                    && mShowSecInDropdownStatusBar) {
-                                if (!mClockViews.contains(clock)) {
+                                if (mStatusBarClockColorEnabled) {
+                                    clock.setTextColor(mStatusBarClockColor);
+                                }
+                            } else if (id == getId(res, "big_time")) {
+                                if (mShowSecInDropdownStatusBar) {
                                     mClockViews.add(clock);
                                 }
+                                clock.setTextColor(mDropdownStatusBarClockColor);
+                            } else if (id == getId(res, "date_time")) {
+                                if (mShowSecInDropdownStatusBar) {
+                                    mClockViews.add(clock);
+                                }
+                                clock.setTextColor(mDropdownStatusBarDateColor);
                             }
                         } catch (Throwable e) {
                             XLog.e("", e);
                         }
                     }
                 });
+    }
+
+    private void hookOnDarkChanged() {
+        if (mStatusBarClockColorEnabled) {
+            XposedHelpers.findAndHookMethod(mClockCls,
+                    "onDarkChanged",
+                    Rect.class,
+                    float.class,
+                    int.class,
+                    new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                            return null;
+                        }
+                    });
+        }
     }
 
     private void hookStatusBar() {
