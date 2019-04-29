@@ -15,10 +15,10 @@ android {
         applicationId "com.tianma.tweaks.miui"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
 
-        buildConfigField("String", "LOG_TAG", "\"MiTweaks\"")
+        buildConfigField("String", "LOG_TAG", "\"XMiuiClock\"")
         buildConfigField("boolean", "LOG_TO_XPOSED", "true")
         buildConfigField("boolean", "LOG_TO_EDXPOSED", "true")
     }
@@ -71,7 +71,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            output.outputFileName = "MiTweaks_${variant.versionName.replaceAll('\\s+', '_')}_${releaseTime()}_${variant.buildType.name.charAt(0)}.apk"
+            output.outputFileName = "XMiuiClock_${variant.versionName.replaceAll('\\s+', '_')}_${releaseTime()}_${variant.buildType.name.charAt(0)}.apk"
         }
     }
 }

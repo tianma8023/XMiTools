@@ -20,8 +20,10 @@ You can download in the following sites：
   1. Show seconds in status bar clock
   2. Custom clock alignment (left, center, right)
   3. Custom clock time format
+  4. Custom clock time color
 - Dropdown Status Bar
   1. Show seconds in dropdown status bar clock
+  2. Custom clock time and date color
 - Lock Screen
   1. Show seconds in horizontal clock
   2. Show seconds in vertical clock
