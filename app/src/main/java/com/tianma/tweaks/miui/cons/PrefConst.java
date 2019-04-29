@@ -25,6 +25,8 @@ public interface PrefConst {
 
     String SHOW_SEC_IN_DROPDOWN_STATUS_BAR = "show_sec_in_dropdown_status_bar";
     boolean SHOW_SEC_IN_DROPDOWN_STATUS_BAR_DEFAULT = false;
+    String DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE = "dropdown_status_bar_clock_color_enable";
+    boolean DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT = false;
     String DROPDOWN_STATUS_BAR_CLOCK_COLOR = "dropdown_status_bar_clock_color";
     int DROPDOWN_STATUS_BAR_CLOCK_COLOR_DEFAULT = Color.WHITE;
     String DROPDOWN_STATUS_BAR_DATE_COLOR = "dropdown_status_bar_date_color";

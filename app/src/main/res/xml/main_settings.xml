@@ -70,14 +70,20 @@
             android:summary="@string/pref_show_sec_in_dropdown_status_bar_summary"
             android:title="@string/pref_show_sec_in_dropdown_status_bar_title"/>
 
-        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+        <SwitchPreference
+            android:defaultValue="false"
             android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_dropdown_status_bar_clock_color_enable"
+            android:title="@string/pref_status_bar_clock_color_enable_title"/>
+
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:dependency="@string/pref_dropdown_status_bar_clock_color_enable"
             android:defaultValue="@color/white"
             android:key="@string/pref_dropdown_status_bar_clock_color"
             android:title="@string/clock_color"/>
 
         <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-            android:dependency="@string/pref_main_switch"
+            android:dependency="@string/pref_dropdown_status_bar_clock_color_enable"
             android:defaultValue="@color/white"
             android:key="@string/pref_dropdown_status_bar_date_color"
             android:title="@string/date_color"/>

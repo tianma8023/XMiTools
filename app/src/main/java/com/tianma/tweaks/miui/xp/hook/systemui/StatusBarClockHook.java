@@ -11,10 +11,12 @@ import android.os.SystemClock;
 import android.util.ArrayMap;
 import android.widget.TextView;
 
+import com.tianma.tweaks.miui.utils.ReflectionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -64,6 +66,10 @@ public class StatusBarClockHook extends BaseSubHook {
      */
     private int mStatusBarClockColor;
     /**
+     * 是否自定义下拉状态栏时钟颜色
+     */
+    private boolean mDropdownStatusBarClockColorEnabled;
+    /**
      * 下拉状态栏时间颜色
      */
     private int mDropdownStatusBarClockColor;
@@ -91,8 +97,11 @@ public class StatusBarClockHook extends BaseSubHook {
             mStatusBarClockColor = XSPUtils.getStatusBarClockColor(xsp);
         }
 
-        mDropdownStatusBarClockColor = XSPUtils.getDropdownStatusBarClockColor(xsp);
-        mDropdownStatusBarDateColor = XSPUtils.getDropdownStatusBarDateColor(xsp);
+        mDropdownStatusBarClockColorEnabled = XSPUtils.isDropdownStatusBarClockColorEnabled(xsp);
+        if (mDropdownStatusBarClockColorEnabled) {
+            mDropdownStatusBarClockColor = XSPUtils.getDropdownStatusBarClockColor(xsp);
+            mDropdownStatusBarDateColor = XSPUtils.getDropdownStatusBarDateColor(xsp);
+        }
     }
 
     @Override
@@ -195,12 +204,16 @@ public class StatusBarClockHook extends BaseSubHook {
                                 if (mShowSecInDropdownStatusBar) {
                                     mClockViews.add(clock);
                                 }
-                                clock.setTextColor(mDropdownStatusBarClockColor);
+                                if (mDropdownStatusBarClockColorEnabled) {
+                                    clock.setTextColor(mDropdownStatusBarClockColor);
+                                }
                             } else if (id == getId(res, "date_time")) {
                                 if (mShowSecInDropdownStatusBar) {
                                     mClockViews.add(clock);
                                 }
-                                clock.setTextColor(mDropdownStatusBarDateColor);
+                                if (mDropdownStatusBarClockColorEnabled) {
+                                    clock.setTextColor(mDropdownStatusBarDateColor);
+                                }
                             }
                         } catch (Throwable e) {
                             XLog.e("", e);
@@ -245,6 +258,7 @@ public class StatusBarClockHook extends BaseSubHook {
                             filter.addAction(Intent.ACTION_SCREEN_ON);
                             context.registerReceiver(mScreenReceiver, filter);
 
+                            mUpdateClockMethod = XposedHelpers.findMethodExact(mClockCls, "updateClock");
                             mSecondsHandler = new Handler(context.getMainLooper());
                             mSecondsHandler.post(mSecondsTicker);
                         } catch (Throwable t) {
@@ -255,6 +269,7 @@ public class StatusBarClockHook extends BaseSubHook {
     }
 
     private Handler mSecondsHandler;
+    private Method mUpdateClockMethod;
 
     private final Runnable mSecondsTicker = new Runnable() {
 
@@ -264,9 +279,7 @@ public class StatusBarClockHook extends BaseSubHook {
             long next = now + (1000 - now % 1000);
             mSecondsHandler.postAtTime(this, next);
             for (TextView clockView : mClockViews) {
-                if (clockView != null) {
-                    XposedHelpers.callMethod(clockView, "updateClock");
-                }
+                ReflectionUtils.invoke(mUpdateClockMethod, clockView);
             }
         }
     };

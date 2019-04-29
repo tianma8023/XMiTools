@@ -3,6 +3,8 @@ package com.tianma.tweaks.miui.utils;
 import de.robv.android.xposed.XSharedPreferences;
 
 import static com.tianma.tweaks.miui.cons.PrefConst.ALIGNMENT_LEFT;
+import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE;
+import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_ENABLE;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR;
@@ -89,6 +91,13 @@ public class XSPUtils {
      */
     public static boolean showSecInDropdownStatusBar(XSharedPreferences xsp) {
         return xsp.getBoolean(SHOW_SEC_IN_DROPDOWN_STATUS_BAR, SHOW_SEC_IN_DROPDOWN_STATUS_BAR_DEFAULT);
+    }
+
+    /**
+     * 是否自定义下拉状态栏时钟颜色
+     */
+    public static boolean isDropdownStatusBarClockColorEnabled(XSharedPreferences xsp) {
+        return xsp.getBoolean(DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE, DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT);
     }
 
     /**

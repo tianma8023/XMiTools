@@ -15,6 +15,7 @@
     <string name="status_bar_clock_format_default">HH:mm:ss</string>
 
     <string name="pref_show_sec_in_dropdown_status_bar">show_sec_in_dropdown_status_bar</string>
+    <string name="pref_dropdown_status_bar_clock_color_enable">dropdown_status_bar_clock_color_enable</string>
     <string name="pref_dropdown_status_bar_clock_color">dropdown_status_bar_clock_color</string>
     <string name="pref_dropdown_status_bar_date_color">dropdown_status_bar_date_color</string>
 
