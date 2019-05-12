@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.os.UserHandle;
 import android.util.ArrayMap;
 import android.widget.TextView;
 
@@ -36,8 +37,10 @@ import de.robv.android.xposed.XposedHelpers;
 public class StatusBarClockHook extends BaseSubHook {
 
     private static final String PKG_STATUS_BAR = "com.android.systemui.statusbar";
-    private static final String CLS_CLOCK = PKG_STATUS_BAR + ".policy.Clock";
+    private static final String CLASS_CLOCK = PKG_STATUS_BAR + ".policy.Clock";
+    private static final String CLASS_RECEIVER_INFO = CLASS_CLOCK + "$ReceiverInfo";
     private static final String CLASS_STATUS_BAR = PKG_STATUS_BAR + ".phone.StatusBar";
+    private static final String CLASS_DEPENDENCY = "com.android.systemui.Dependency";
 
     private Class<?> mClockCls;
 
@@ -108,13 +111,14 @@ public class StatusBarClockHook extends BaseSubHook {
     public void startHook() {
         try {
             XLog.d("Hooking StatusBar Clock...");
-            mClockCls = XposedHelpers.findClass(CLS_CLOCK, mClassLoader);
+            mClockCls = XposedHelpers.findClass(CLASS_CLOCK, mClassLoader);
 
             hookClockConstructor();
 
             if (mShowSecInStatusBar || mStatusBarClockFormatEnabled || mShowSecInDropdownStatusBar) {
                 if (mShowSecInStatusBar || mShowSecInDropdownStatusBar) {
                     hookStatusBar();
+                    hookReceiverInfo();
                 }
                 hookClockUpdateClock();
             }
@@ -296,5 +300,51 @@ public class StatusBarClockHook extends BaseSubHook {
             }
         }
     };
+
+    // com.android.systemui.statusbar.policy.Clock$ReceiverInfo
+    private void hookReceiverInfo() {
+        hookRegister();
+    }
+
+    // com.android.systemui.statusbar.policy.Clock$ReceiverInfo#register()
+    private void hookRegister() {
+        XposedHelpers.findAndHookMethod(CLASS_RECEIVER_INFO,
+                mClassLoader,
+                "register",
+                Context.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        try {
+                            XLog.d("ReceiverInfo#regiser()");
+                            Object thisObject = param.thisObject;
+                            Context context = (Context) param.args[0];
+                            IntentFilter filter = new IntentFilter();
+                            // 不在接收 TIME_TICK 广播
+                            // filter.addAction("android.intent.action.TIME_TICK");
+                            filter.addAction("android.intent.action.TIME_SET");
+                            filter.addAction("android.intent.action.TIMEZONE_CHANGED");
+                            filter.addAction("android.intent.action.CONFIGURATION_CHANGED");
+                            filter.addAction("android.intent.action.USER_SWITCHED");
+                            Object receiver = XposedHelpers.getObjectField(thisObject, "mReceiver");
+                            Object USER_HANDLE_ALL = XposedHelpers.getStaticObjectField(UserHandle.class, "ALL");
+                            Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, mClassLoader);
+                            Object TIME_TICK_HANDLER = XposedHelpers.getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
+                            Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
+                            // context.registerReceiverAsUser(this.mReceiver, UserHandle.ALL, filter, null, (Handler) Dependency.get(Dependency.TIME_TICK_HANDLER));
+                            XposedHelpers.callMethod(context,
+                                    "registerReceiverAsUser",
+                                    receiver,
+                                    USER_HANDLE_ALL,
+                                    filter,
+                                    null,
+                                    handler);
+                            param.setResult(null);
+                        } catch (Throwable t) {
+                            XLog.e("", t);
+                        }
+                    }
+                });
+    }
 
 }
