@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui;
+package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -35,10 +35,12 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 /**
  * 锁屏界面
+ * 适用版本 < 9.5.7
+ * 锁屏时钟 Hook
  */
 public class MiuiKeyguardClockHook extends BaseSubHook {
 
-    private static final String MIUI_KEYGUARD_CLOCK_CLASS_NAME = "com.android.keyguard.MiuiKeyguardClock";
+    private static final String CLASS_MIUI_KEYGUARD_CLOCK = "com.android.keyguard.MiuiKeyguardClock";
 
     private Class<?> mMiuiKeyguardClockCls;
 
@@ -60,7 +62,7 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
         try {
             XLog.d("Hooking MiuiKeyguardClock...");
             mMiuiKeyguardClockCls = XposedHelpers
-                    .findClass(MIUI_KEYGUARD_CLOCK_CLASS_NAME, mClassLoader);
+                    .findClass(CLASS_MIUI_KEYGUARD_CLOCK, mClassLoader);
             hookOnFinishInflate();
             hookUpdateViewTextSize();
             hookUpdateTime();
@@ -367,7 +369,7 @@ public class MiuiKeyguardClockHook extends BaseSubHook {
                             mHorizontalToVerticalAnim2.play(translationYAnim).with(alphaAnim);
                             mHorizontalToVerticalAnim2.start();
                         } catch (Throwable t) {
-                            XLog.d("", t);
+                            XLog.e("", t);
                         }
                     }
                 });

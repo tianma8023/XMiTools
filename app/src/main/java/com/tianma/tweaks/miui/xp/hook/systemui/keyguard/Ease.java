@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui;
+package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
 import android.animation.TimeInterpolator;
 
