@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui;
+package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -12,6 +12,7 @@ import com.tianma.tweaks.miui.cons.PrefConst;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
@@ -34,17 +35,19 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
     private boolean mAlignmentCenter = false;
     private boolean mAlignmentRight = false;
 
-    PhoneStatusBarViewHook(ClassLoader classLoader, XSharedPreferences xsp) {
+    public PhoneStatusBarViewHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
-    }
-
-    public void startHook() {
         String alignment = XSPUtils.getStatusBarClockAlignment(xsp);
         if (PrefConst.ALIGNMENT_CENTER.equals(alignment)) {
             mAlignmentCenter = true;
+            mAlignmentRight = false;
         } else if (PrefConst.ALIGNMENT_RIGHT.equals(alignment)) {
+            mAlignmentCenter = false;
             mAlignmentRight = true;
         }
+    }
+
+    public void startHook() {
         if (mAlignmentCenter || mAlignmentRight) {
             try {
                 XLog.d("Hooking PhoneStatusBarView...");
@@ -53,7 +56,7 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
                     hookGetActualWidth();
                 }
             } catch (Throwable t) {
-                XLog.d("Error occurs when hook PhoneStatusBarView", t);
+                XLog.e("Error occurs when hook PhoneStatusBarView", t);
             }
         }
     }
@@ -66,9 +69,11 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        super.afterHookedMethod(param);
-
-                        prepareLayoutStatusBar(param);
+                        try {
+                            prepareLayoutStatusBar(param);
+                        } catch (Throwable t) {
+                            XLog.e("", t);
+                        }
                     }
                 });
     }
@@ -80,10 +85,10 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
         Context context = phoneStatusBarView.getContext();
         Resources res = context.getResources();
 
-        LinearLayout statusBarContents = phoneStatusBarView.findViewById(
-                res.getIdentifier("status_bar_contents", "id", PACKAGE_NAME));
+//        LinearLayout statusBarContents = phoneStatusBarView.findViewById(
+//                res.getIdentifier("status_bar_contents", "id", PACKAGE_NAME));
 
-        TextView clock = statusBarContents.findViewById(
+        TextView clock = phoneStatusBarView.findViewById(
                 res.getIdentifier("clock", "id", PACKAGE_NAME));
         ((ViewGroup) clock.getParent()).removeView(clock);
 
@@ -100,7 +105,7 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
             clock.setGravity(Gravity.CENTER);
             mCenterLayout.addView(clock);
         } else if (mAlignmentRight) { // 居右对齐
-            LinearLayout rightAreaLayout = statusBarContents.findViewById(
+            LinearLayout rightAreaLayout = phoneStatusBarView.findViewById(
                     res.getIdentifier("system_icons", "id", PACKAGE_NAME));
             clock.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
             rightAreaLayout.addView(clock);

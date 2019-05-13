@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui;
+package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +16,7 @@ import com.tianma.tweaks.miui.utils.ReflectionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -316,7 +317,6 @@ public class StatusBarClockHook extends BaseSubHook {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         try {
-                            XLog.d("ReceiverInfo#regiser()");
                             Object thisObject = param.thisObject;
                             Context context = (Context) param.args[0];
                             IntentFilter filter = new IntentFilter();
