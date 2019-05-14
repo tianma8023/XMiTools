@@ -34,7 +34,7 @@ public interface PrefConst {
 
     String SHOW_SEC_IN_KEYGUARD_HORIZONTAL = "show_sec_in_keyguard_horizontal";
     boolean SHOW_SEC_IN_KEYGUARD_HORIZONTAL_DEFAULT = false;
-    String SHOW_SEC_IN_KEYGUARD_VERTICAL = "show_sec_in_keyguard_horizontal";
+    String SHOW_SEC_IN_KEYGUARD_VERTICAL = "show_sec_in_keyguard_vertical";
     boolean SHOW_SEC_IN_KEYGUARD_VERTICAL_DEFAULT = false;
     String KEYGUARD_CLOCK_COLOR = "keyguard_clock_color";
     int KEYGUARD_CLOCK_COLOR_DEFAULT = Color.WHITE;
