@@ -1,4 +1,8 @@
 # Update Logs
+- 19.05.14 1.0.4
+  1. Adapt to MIUI 9.5.7+.
+  2. Fix the leap seconds issue.
+  3. Optimize the mechanism of showing seconds. Improve the performance.
 - 19.04.29 1.0.3
   1. New option: custom status bar clock color
   2. New option: custom dropdown status bar clock color
