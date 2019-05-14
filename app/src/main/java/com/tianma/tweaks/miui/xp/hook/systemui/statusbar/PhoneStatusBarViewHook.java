@@ -20,6 +20,7 @@ import de.robv.android.xposed.XposedHelpers;
 
 /**
  * 状态栏时钟居中显示
+ * 适用版本 9.4.x+
  */
 public class PhoneStatusBarViewHook extends BaseSubHook {
 

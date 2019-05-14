@@ -13,6 +13,7 @@ import de.robv.android.xposed.XposedHelpers;
 
 /**
  * MIUI设置页面 - 选择锁屏时钟界面 Hook
+ * 适用版本 9.5.7+
  */
 public class ChooseKeyguardClockActivityHook extends BaseSubHook {
 
@@ -52,7 +53,7 @@ public class ChooseKeyguardClockActivityHook extends BaseSubHook {
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         try {
                             Context context = (Context) param.thisObject;
-                            Intent intent = new Intent(IntentAction.STOP_TIME_TICK);
+                            Intent intent = new Intent(IntentAction.KEYGUARD_STOP_TIME_TICK);
                             context.sendBroadcast(intent);
                         } catch (Throwable t) {
                             XLog.e("", t);

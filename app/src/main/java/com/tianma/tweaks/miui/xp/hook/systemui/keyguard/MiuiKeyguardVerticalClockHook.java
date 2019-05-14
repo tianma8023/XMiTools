@@ -6,19 +6,22 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.SystemClock;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
+import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
@@ -26,16 +29,18 @@ import de.robv.android.xposed.XposedHelpers;
 
 import static de.robv.android.xposed.XposedBridge.hookAllConstructors;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.getBooleanField;
 import static de.robv.android.xposed.XposedHelpers.getFloatField;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 /**
  * 锁屏界面
  * 适用版本 9.5.7+
  * 锁屏居中时钟 Hook
  */
-public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
+public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickObserver {
 
     private static final String CLASS_MIUI_KEYGUARD_VERTICAL_CLOCK = "com.android.keyguard.MiuiKeyguardVerticalClock";
 
@@ -43,6 +48,21 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
 
     private boolean mShowVerticalSec;
     private boolean mShowHorizontalSec;
+
+    private Set<Object> mKeyguardClockSet = new HashSet<>();
+
+    private static final String M_HORIZONTAL_TIME_LAYOUT = "mHorizontalTimeLayout";
+    private static final String M_HORIZONTAL_DOT = "mHorizontalDot";
+    private static final String M_HORIZONTAL_DOT_2 = "mHorizontalDot2";
+    private static final String M_HORIZONTAL_MIN = "mHorizontalMin";
+    private static final String M_HORIZONTAL_SEC = "mHorizontalSec";
+
+    private static final String M_VERTICAL_TIME_LAYOUT = "mVerticalTimeLayout";
+    private static final String M_VERTICAL_MIN = "mVerticalMin";
+    private static final String M_VERTICAL_SEC = "mVerticalSec";
+
+    private static final String M_VERTICAL_TO_HORIZONTAL_ANIM_2 = "mVerticalToHorizontalAnim2";
+    private static final String M_HORIZONTAL_TO_VERTICAL_ANIM_2 = "mHorizontalToVerticalAnim2";
 
     public MiuiKeyguardVerticalClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
@@ -70,25 +90,10 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
             hookPlayHorizontalToVerticalAnim();
             hookClearAnim();
             hookSetDarkMode();
-            //            hookNotificationPanelView();
         } catch (Throwable t) {
             XLog.e("Error occurs when hook MiuiKeyguardVerticalClock", t);
         }
     }
-
-    // 水平时间 TextView
-    private TextView mHorizontalMin;
-    private TextView mHorizontalSec;
-    private TextView mHorizontalDot;
-    private TextView mHorizontalDot2;
-
-    // 垂直时间 TextView
-    private TextView mVerticalMin;
-    private TextView mVerticalSec;
-
-    // 动画 AnimatorSet
-    private AnimatorSet mVerticalToHorizontalAnim2;
-    private AnimatorSet mHorizontalToVerticalAnim2;
 
     // com.android.keyguard.MiuiKeyguardVerticalClock#onFinishInflate()
     private void hookOnFinishInflate() {
@@ -102,27 +107,27 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
 
                             if (mShowHorizontalSec) {
                                 // horizontal layout
-                                LinearLayout mHorizontalTimeLayout = (LinearLayout) getObjectField(miuiKeyguardClock, "mHorizontalTimeLayout");
+                                LinearLayout mHorizontalTimeLayout = (LinearLayout) getObjectField(miuiKeyguardClock, M_HORIZONTAL_TIME_LAYOUT);
 
-                                mHorizontalDot = (TextView) getObjectField(miuiKeyguardClock, "mHorizontalDot");
-                                mHorizontalDot2 = createTextViewByCopyAttributes(mHorizontalDot);
+                                TextView mHorizontalDot = (TextView) getObjectField(miuiKeyguardClock, M_HORIZONTAL_DOT);
+                                TextView mHorizontalDot2 = createTextViewByCopyAttributes(mHorizontalDot);
                                 mHorizontalTimeLayout.addView(mHorizontalDot2);
-                                // setAdditionalInstanceField(miuiKeyguardClock, "mHorizontalDot2", mHorizontalDot2);
+                                setAdditionalInstanceField(miuiKeyguardClock, M_HORIZONTAL_DOT_2, mHorizontalDot2);
 
-                                mHorizontalMin = (TextView) getObjectField(miuiKeyguardClock, "mHorizontalMin");
-                                mHorizontalSec = createTextViewByCopyAttributes(mHorizontalMin);
+                                TextView mHorizontalMin = (TextView) getObjectField(miuiKeyguardClock, M_HORIZONTAL_MIN);
+                                TextView mHorizontalSec = createTextViewByCopyAttributes(mHorizontalMin);
                                 mHorizontalTimeLayout.addView(mHorizontalSec);
-                                // setAdditionalInstanceField(miuiKeyguardClock, "mHorizontalSec", mHorizontalSec);
+                                setAdditionalInstanceField(miuiKeyguardClock, M_HORIZONTAL_SEC, mHorizontalSec);
                             }
 
                             if (mShowVerticalSec) {
                                 // vertical layout
-                                LinearLayout mVerticalTimeLayout = (LinearLayout) getObjectField(miuiKeyguardClock, "mVerticalTimeLayout");
+                                LinearLayout mVerticalTimeLayout = (LinearLayout) getObjectField(miuiKeyguardClock, M_VERTICAL_TIME_LAYOUT);
 
-                                mVerticalMin = (TextView) getObjectField(miuiKeyguardClock, "mVerticalMin");
-                                mVerticalSec = createTextViewByCopyAttributes(mVerticalMin);
+                                TextView mVerticalMin = (TextView) getObjectField(miuiKeyguardClock, M_VERTICAL_MIN);
+                                TextView mVerticalSec = createTextViewByCopyAttributes(mVerticalMin);
                                 mVerticalTimeLayout.addView(mVerticalSec);
-                                // setAdditionalInstanceField(miuiKeyguardClock, "mVerticalSec", mVerticalSec);
+                                setAdditionalInstanceField(miuiKeyguardClock, M_VERTICAL_SEC, mVerticalSec);
                             }
                         } catch (Throwable t) {
                             XLog.e("", t);
@@ -154,23 +159,23 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         try {
-                            // LinearLayout miuiKeyguardClock = (LinearLayout) param.thisObject;
+                            Object keyguardClock = param.thisObject;
 
-                            // TextView mHorizontalSec = (TextView) getAdditionalInstanceField(miuiKeyguardClock, "mHorizontalSec");
+                            TextView mHorizontalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_HORIZONTAL_SEC);
                             if (mHorizontalSec != null) {
-                                // TextView mHorizontalMin = (TextView) getObjectField(miuiKeyguardClock, "mHorizontalMin");
+                                TextView mHorizontalMin = (TextView) getObjectField(keyguardClock, M_HORIZONTAL_MIN);
                                 mHorizontalSec.setTextSize(TypedValue.COMPLEX_UNIT_PX, mHorizontalMin.getTextSize());
                             }
 
-                            // TextView mHorizontalDot2 = (TextView) getAdditionalInstanceField(miuiKeyguardClock, "mHorizontalDot");
+                            TextView mHorizontalDot2 = (TextView) getAdditionalInstanceField(keyguardClock, M_HORIZONTAL_DOT_2);
                             if (mHorizontalDot2 != null) {
-                                // TextView mHorizontalDot = (TextView) getObjectField(miuiKeyguardClock, "mHorizontalDot");
+                                TextView mHorizontalDot = (TextView) getObjectField(keyguardClock, M_HORIZONTAL_DOT);
                                 mHorizontalDot2.setTextSize(TypedValue.COMPLEX_UNIT_PX, mHorizontalDot.getTextSize());
                             }
 
-                            // TextView mVerticalSec = (TextView) getAdditionalInstanceField(miuiKeyguardClock, "mVerticalSec");
+                            TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
                             if (mVerticalSec != null) {
-                                // mVerticalMin = (TextView) getObjectField(miuiKeyguardClock, "mVerticalMin");
+                                TextView mVerticalMin = (TextView) getObjectField(keyguardClock, M_VERTICAL_MIN);
                                 mVerticalSec.setTextSize(TypedValue.COMPLEX_UNIT_PX, mVerticalMin.getTextSize());
                             }
                         } catch (Throwable t) {
@@ -188,15 +193,17 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         try {
+                            Object keyguardClock = param.thisObject;
+
                             int sec = Calendar.getInstance().get(Calendar.SECOND);
                             String secStr = String.format(Locale.getDefault(), "%02d", sec);
 
-                            // TextView mHorizontalSec = (TextView) getAdditionalInstanceField(miuiKeyguardClock, "mHorizontalSec");
+                            TextView mHorizontalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_HORIZONTAL_SEC);
                             if (mHorizontalSec != null) {
                                 mHorizontalSec.setText(secStr);
                             }
 
-                            // TextView mVerticalSec = (TextView) getAdditionalInstanceField(miuiKeyguardClock, "mVerticalSec");
+                            TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
                             if (mVerticalSec != null) {
                                 mVerticalSec.setText(secStr);
                             }
@@ -214,24 +221,34 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         try {
-                            if (mSecondsHandler == null) {
-                                mSecondsHandler = new SecondsHandler(Looper.getMainLooper(), param.thisObject);
-                            }
-                            mSecondsHandler.post(mSecondsTicker);
+                            final LinearLayout keyguardClock = (LinearLayout) param.thisObject;
 
                             if (mShowVerticalSec) {
-                                mVerticalToHorizontalAnim2 = new AnimatorSet();
-                                mHorizontalToVerticalAnim2 = new AnimatorSet();
+                                AnimatorSet mVerticalToHorizontalAnim2 = new AnimatorSet();
+                                setAdditionalInstanceField(keyguardClock, M_VERTICAL_TO_HORIZONTAL_ANIM_2, mVerticalToHorizontalAnim2);
+
+                                AnimatorSet mHorizontalToVerticalAnim2 = new AnimatorSet();
+                                setAdditionalInstanceField(keyguardClock, M_HORIZONTAL_TO_VERTICAL_ANIM_2, mHorizontalToVerticalAnim2);
                             }
 
-                            // register receiver
-                            LinearLayout keyguardClock = (LinearLayout) param.thisObject;
+                            keyguardClock.getViewTreeObserver().addOnWindowAttachListener(new ViewTreeObserver.OnWindowAttachListener() {
+                                @Override
+                                public void onWindowAttached() {
+                                    addClock(keyguardClock);
+                                }
 
+                                @Override
+                                public void onWindowDetached() {
+                                    removeClock(keyguardClock);
+                                }
+                            });
+
+                            // register receiver
                             IntentFilter filter = new IntentFilter();
                             filter.addAction(Intent.ACTION_SCREEN_ON);
                             filter.addAction(Intent.ACTION_USER_PRESENT);
                             filter.addAction(Intent.ACTION_SCREEN_OFF);
-                            filter.addAction(IntentAction.STOP_TIME_TICK);
+                            filter.addAction(IntentAction.KEYGUARD_STOP_TIME_TICK);
 
                             keyguardClock.getContext().registerReceiver(mScreenReceiver, filter);
                         } catch (Throwable e) {
@@ -241,27 +258,45 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                 });
     }
 
-    private SecondsHandler mSecondsHandler;
+    private synchronized void addClock(View clock) {
+        mKeyguardClockSet.add(clock);
 
-    private final Runnable mSecondsTicker = new Runnable() {
-
-        @Override
-        public void run() {
-            long now = SystemClock.uptimeMillis();
-            long next = now + (1000 - now % 1000);
-            mSecondsHandler.postAtTime(this, next);
-            XposedHelpers.callMethod(mSecondsHandler.mKeyguardClockObj, "updateTime");
-        }
-    };
-
-    private static class SecondsHandler extends Handler {
-        private Object mKeyguardClockObj;
-
-        private SecondsHandler(Looper looper, Object keyguardClockObj) {
-            super(looper);
-            this.mKeyguardClockObj = keyguardClockObj;
+        if (!mKeyguardClockSet.isEmpty()) {
+            TimeTicker.get().registerObserver(MiuiKeyguardVerticalClockHook.this);
         }
     }
+
+    private synchronized void removeClock(View clock) {
+        mKeyguardClockSet.remove(clock);
+
+        if (mKeyguardClockSet.isEmpty()) {
+            TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
+        }
+    }
+
+    @Override
+    public void onTimeTick() {
+        for (Object keyguardClock : mKeyguardClockSet) {
+            if (keyguardClock != null) {
+                XposedHelpers.callMethod(keyguardClock, "updateTime");
+            }
+        }
+    }
+
+    private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (Intent.ACTION_SCREEN_ON.equals(action)) {
+                TimeTicker.get().registerObserver(MiuiKeyguardVerticalClockHook.this);
+            } else if (Intent.ACTION_USER_PRESENT.equals(action)
+                    || Intent.ACTION_SCREEN_OFF.equals(action)) {
+                TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
+            } else if (IntentAction.KEYGUARD_STOP_TIME_TICK.equals(action)) {
+                TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
+            }
+        }
+    };
 
     // com.android.keyguard.MiuiKeyguardClock#showHorizontalTime()
     private void hookShowHorizontalTime() {
@@ -270,11 +305,18 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        if (mVerticalSec != null) {
-                            boolean mShowHorizontalTime = getBooleanField(param.thisObject, "mShowHorizontalTime");
-                            if (mShowHorizontalTime) {
-                                mVerticalSec.setAlpha(0.0f);
+                        try {
+                            Object keyguardClock = param.thisObject;
+
+                            TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
+                            if (mVerticalSec != null) {
+                                boolean mShowHorizontalTime = getBooleanField(param.thisObject, "mShowHorizontalTime");
+                                if (mShowHorizontalTime) {
+                                    mVerticalSec.setAlpha(0.0f);
+                                }
                             }
+                        } catch (Throwable t) {
+                            XLog.e("", t);
                         }
                     }
                 });
@@ -287,12 +329,19 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        if (mVerticalSec != null) {
-                            boolean mShowHorizontalTime = getBooleanField(param.thisObject, "mShowHorizontalTime");
-                            if (!mShowHorizontalTime) {
-                                mVerticalSec.setAlpha(1.0f);
-                                mVerticalSec.setTranslationY(0.0f);
+                        try {
+                            Object keyguardClock = param.thisObject;
+
+                            TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
+                            if (mVerticalSec != null) {
+                                boolean mShowHorizontalTime = getBooleanField(param.thisObject, "mShowHorizontalTime");
+                                if (!mShowHorizontalTime) {
+                                    mVerticalSec.setAlpha(1.0f);
+                                    mVerticalSec.setTranslationY(0.0f);
+                                }
                             }
+                        } catch (Throwable t) {
+                            XLog.e("", t);
                         }
                     }
                 });
@@ -305,12 +354,13 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        if (mVerticalToHorizontalAnim2 == null) {
+                        Object keyguardClock = param.thisObject;
+                        AnimatorSet mVerticalToHorizontalAnim2 = (AnimatorSet) getAdditionalInstanceField(keyguardClock, M_VERTICAL_TO_HORIZONTAL_ANIM_2);
+                        TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
+                        if (mVerticalToHorizontalAnim2 == null || mVerticalSec == null) {
                             return;
                         }
                         try {
-                            Object keyguardClock = param.thisObject;
-
                             float mVerticalTimeLayoutHeight = getFloatField(keyguardClock, "mVerticalTimeLayoutHeight");
                             float mVerticalTimePaddingTop = getFloatField(keyguardClock, "mVerticalTimePaddingTop");
                             float mHorizontalTimeLayoutHeight = getFloatField(keyguardClock, "mHorizontalTimeLayoutHeight");
@@ -342,12 +392,13 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        if (mHorizontalToVerticalAnim2 == null) {
+                        Object keyguardClock = param.thisObject;
+                        AnimatorSet mHorizontalToVerticalAnim2 = (AnimatorSet) getAdditionalInstanceField(keyguardClock, M_HORIZONTAL_TO_VERTICAL_ANIM_2);
+                        TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
+                        if (mHorizontalToVerticalAnim2 == null || mVerticalSec == null) {
                             return;
                         }
                         try {
-                            Object keyguardClock = param.thisObject;
-
                             float mVerticalTimeLayoutHeight = getFloatField(keyguardClock, "mVerticalTimeLayoutHeight");
                             float mVerticalTimePaddingTop = getFloatField(keyguardClock, "mVerticalTimePaddingTop");
                             float mHorizontalTimeLayoutHeight = getFloatField(keyguardClock, "mHorizontalTimeLayoutHeight");
@@ -381,39 +432,24 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        Object keyguardClock = param.thisObject;
+                        AnimatorSet mHorizontalToVerticalAnim2 = (AnimatorSet) getAdditionalInstanceField(keyguardClock, M_HORIZONTAL_TO_VERTICAL_ANIM_2);
                         if (mHorizontalToVerticalAnim2 != null) {
                             mHorizontalToVerticalAnim2.cancel();
                         }
+
+                        AnimatorSet mVerticalToHorizontalAnim2 = (AnimatorSet) getAdditionalInstanceField(keyguardClock, M_VERTICAL_TO_HORIZONTAL_ANIM_2);
                         if (mVerticalToHorizontalAnim2 != null) {
                             mVerticalToHorizontalAnim2.cancel();
                         }
+
+                        TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
                         if (mVerticalSec != null) {
                             mVerticalSec.clearAnimation();
                         }
                     }
                 });
     }
-
-    private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                if (mSecondsHandler != null) {
-                    mSecondsHandler.post(mSecondsTicker);
-                }
-            } else if (Intent.ACTION_USER_PRESENT.equals(action)
-                    || Intent.ACTION_SCREEN_OFF.equals(action)) {
-                if (mSecondsHandler != null) {
-                    mSecondsHandler.removeCallbacks(mSecondsTicker);
-                }
-            } else if (IntentAction.STOP_TIME_TICK.equals(action)) {
-                if (mSecondsHandler != null) {
-                    mSecondsHandler.removeCallbacks(mSecondsTicker);
-                }
-            }
-        }
-    };
 
     // com.android.keyguard.MiuiKeyguardVerticalClock#clearAnim()
     private void hookSetDarkMode() {
@@ -423,16 +459,23 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        super.afterHookedMethod(param);
+                        Object keyguardClock = param.thisObject;
+
+                        TextView mHorizontalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_HORIZONTAL_SEC);
                         if (mHorizontalSec != null) {
+                            TextView mHorizontalMin = (TextView) getObjectField(keyguardClock, M_HORIZONTAL_MIN);
                             mHorizontalSec.setTextColor(mHorizontalMin.getTextColors());
                         }
 
+                        TextView mHorizontalDot2 = (TextView) getAdditionalInstanceField(keyguardClock, M_HORIZONTAL_DOT_2);
                         if (mHorizontalDot2 != null) {
+                            TextView mHorizontalDot = (TextView) getObjectField(keyguardClock, M_HORIZONTAL_DOT);
                             mHorizontalDot2.setTextColor(mHorizontalDot.getTextColors());
                         }
 
+                        TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
                         if (mVerticalSec != null) {
+                            TextView mVerticalMin = (TextView) getObjectField(keyguardClock, M_VERTICAL_MIN);
                             mVerticalSec.setTextColor(mVerticalMin.getTextColors());
                         }
                     }

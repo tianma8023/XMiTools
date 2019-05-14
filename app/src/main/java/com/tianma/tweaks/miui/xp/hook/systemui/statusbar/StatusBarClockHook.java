@@ -6,19 +6,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 import android.widget.TextView;
 
-import com.tianma.tweaks.miui.utils.ReflectionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
+import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
 
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,9 +31,10 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 /**
- * StatusBar Clock hook. 状态栏Hook
+ * 状态栏时钟 Hook
+ * 适用版本 9.4.x+
  */
-public class StatusBarClockHook extends BaseSubHook {
+public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
     private static final String PKG_STATUS_BAR = "com.android.systemui.statusbar";
     private static final String CLASS_CLOCK = PKG_STATUS_BAR + ".policy.Clock";
@@ -45,7 +44,7 @@ public class StatusBarClockHook extends BaseSubHook {
 
     private Class<?> mClockCls;
 
-    private Set<TextView> mClockViews = new HashSet<>();
+    private Set<Object> mClockViewSet = new HashSet<>();
 
     /**
      * 状态栏是否显示秒数
@@ -200,21 +199,21 @@ public class StatusBarClockHook extends BaseSubHook {
                             int id = clock.getId();
                             if (id == getId(res, "clock")) {
                                 if (mShowSecInStatusBar) {
-                                    mClockViews.add(clock);
+                                    addClock(clock);
                                 }
                                 if (mStatusBarClockColorEnabled) {
                                     clock.setTextColor(mStatusBarClockColor);
                                 }
                             } else if (id == getId(res, "big_time")) {
                                 if (mShowSecInDropdownStatusBar) {
-                                    mClockViews.add(clock);
+                                    addClock(clock);
                                 }
                                 if (mDropdownStatusBarClockColorEnabled) {
                                     clock.setTextColor(mDropdownStatusBarClockColor);
                                 }
                             } else if (id == getId(res, "date_time")) {
                                 if (mShowSecInDropdownStatusBar) {
-                                    mClockViews.add(clock);
+                                    addClock(clock);
                                 }
                                 if (mDropdownStatusBarClockColorEnabled) {
                                     clock.setTextColor(mDropdownStatusBarDateColor);
@@ -259,13 +258,11 @@ public class StatusBarClockHook extends BaseSubHook {
                             Object statusBar = param.thisObject;
                             Context context = (Context) XposedHelpers.getObjectField(statusBar, "mContext");
 
-                            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-                            filter.addAction(Intent.ACTION_SCREEN_ON);
+                            // register receiver
+                            IntentFilter filter = new IntentFilter();
+                            filter.addAction(Intent.ACTION_SCREEN_OFF);
+                            filter.addAction(Intent.ACTION_USER_PRESENT);
                             context.registerReceiver(mScreenReceiver, filter);
-
-                            mUpdateClockMethod = XposedHelpers.findMethodExact(mClockCls, "updateClock");
-                            mSecondsHandler = new Handler(context.getMainLooper());
-                            mSecondsHandler.post(mSecondsTicker);
                         } catch (Throwable t) {
                             XLog.e("", t);
                         }
@@ -273,31 +270,31 @@ public class StatusBarClockHook extends BaseSubHook {
                 });
     }
 
-    private Handler mSecondsHandler;
-    private Method mUpdateClockMethod;
+    private synchronized void addClock(Object clock) {
+        if (mClockViewSet.isEmpty()) {
+            TimeTicker.get().registerObserver(StatusBarClockHook.this);
+        }
 
-    private final Runnable mSecondsTicker = new Runnable() {
+        mClockViewSet.add(clock);
+    }
 
-        @Override
-        public void run() {
-            long now = SystemClock.uptimeMillis();
-            long next = now + (1000 - now % 1000);
-            mSecondsHandler.postAtTime(this, next);
-            for (TextView clockView : mClockViews) {
-                ReflectionUtils.invoke(mUpdateClockMethod, clockView);
+    @Override
+    public void onTimeTick() {
+        for (Object clockView : mClockViewSet) {
+            if (clockView != null) {
+                XposedHelpers.callMethod(clockView, "updateClock");
             }
         }
-    };
+    }
 
     private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (Intent.ACTION_SCREEN_OFF.equals(action)) {
-                mSecondsHandler.removeCallbacks(mSecondsTicker);
-            } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                mSecondsHandler.postAtTime(mSecondsTicker,
-                        SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
+            if (Intent.ACTION_USER_PRESENT.equals(action)) {
+                TimeTicker.get().registerObserver(StatusBarClockHook.this);
+            } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                TimeTicker.get().unregisterObserver(StatusBarClockHook.this);
             }
         }
     };
@@ -320,7 +317,7 @@ public class StatusBarClockHook extends BaseSubHook {
                             Object thisObject = param.thisObject;
                             Context context = (Context) param.args[0];
                             IntentFilter filter = new IntentFilter();
-                            // 不在接收 TIME_TICK 广播
+                            // 不再接收 TIME_TICK 广播
                             // filter.addAction("android.intent.action.TIME_TICK");
                             filter.addAction("android.intent.action.TIME_SET");
                             filter.addAction("android.intent.action.TIMEZONE_CHANGED");
@@ -346,5 +343,4 @@ public class StatusBarClockHook extends BaseSubHook {
                     }
                 });
     }
-
 }
