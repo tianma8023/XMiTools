@@ -46,8 +46,8 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
 
     private Class<?> mMiuiKeyguardVerticalClockCls;
 
-    private boolean mShowVerticalSec;
-    private boolean mShowHorizontalSec;
+    private final boolean mShowVerticalSec;
+    private final boolean mShowHorizontalSec;
 
     private Set<Object> mKeyguardClockSet = new HashSet<>();
 

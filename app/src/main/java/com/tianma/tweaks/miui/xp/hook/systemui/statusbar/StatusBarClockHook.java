@@ -260,8 +260,8 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
                             // register receiver
                             IntentFilter filter = new IntentFilter();
+                            filter.addAction(Intent.ACTION_SCREEN_ON);
                             filter.addAction(Intent.ACTION_SCREEN_OFF);
-                            filter.addAction(Intent.ACTION_USER_PRESENT);
                             context.registerReceiver(mScreenReceiver, filter);
                         } catch (Throwable t) {
                             XLog.e("", t);
@@ -291,7 +291,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (Intent.ACTION_USER_PRESENT.equals(action)) {
+            if (Intent.ACTION_SCREEN_ON.equals(action)) {
                 TimeTicker.get().registerObserver(StatusBarClockHook.this);
             } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
                 TimeTicker.get().unregisterObserver(StatusBarClockHook.this);
