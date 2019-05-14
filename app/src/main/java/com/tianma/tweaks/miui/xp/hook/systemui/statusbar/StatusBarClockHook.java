@@ -81,6 +81,8 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
      */
     private int mDropdownStatusBarDateColor;
 
+    private boolean mBlockSystemTimeTick;
+
     private ArrayMap<String, Integer> mNameIdMap = new ArrayMap<>();
 
     public StatusBarClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
@@ -105,6 +107,8 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
             mDropdownStatusBarClockColor = XSPUtils.getDropdownStatusBarClockColor(xsp);
             mDropdownStatusBarDateColor = XSPUtils.getDropdownStatusBarDateColor(xsp);
         }
+
+        mBlockSystemTimeTick = mShowSecInStatusBar || mShowSecInDropdownStatusBar;
     }
 
     @Override
@@ -198,21 +202,21 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
                             Resources res = clock.getResources();
                             int id = clock.getId();
                             if (id == getId(res, "clock")) {
-                                if (mShowSecInStatusBar) {
+                                if (mBlockSystemTimeTick) {
                                     addClock(clock);
                                 }
                                 if (mStatusBarClockColorEnabled) {
                                     clock.setTextColor(mStatusBarClockColor);
                                 }
                             } else if (id == getId(res, "big_time")) {
-                                if (mShowSecInDropdownStatusBar) {
+                                if (mBlockSystemTimeTick) {
                                     addClock(clock);
                                 }
                                 if (mDropdownStatusBarClockColorEnabled) {
                                     clock.setTextColor(mDropdownStatusBarClockColor);
                                 }
                             } else if (id == getId(res, "date_time")) {
-                                if (mShowSecInDropdownStatusBar) {
+                                if (mBlockSystemTimeTick) {
                                     addClock(clock);
                                 }
                                 if (mDropdownStatusBarClockColorEnabled) {
