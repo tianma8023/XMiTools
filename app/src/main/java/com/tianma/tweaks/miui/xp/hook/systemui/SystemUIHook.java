@@ -39,6 +39,9 @@ public class SystemUIHook extends BaseHook {
 
             ClassLoader classLoader = lpparam.classLoader;
             if (XSPUtils.isMainSwitchEnabled(xsp)) {
+                if(!MiuiUtils.isMiui()) {
+                    return;
+                }
                 MiuiVersion miuiVersion = MiuiUtils.getMiuiVersion();
                 if (miuiVersion.getTime() >= MiuiVersion.VERSION_19_5_7.getTime()) {
                     new MiuiKeyguardVerticalClockHook(classLoader, xsp).startHook();
