@@ -1,6 +1,7 @@
 package com.tianma.tweaks.miui.utils;
 
 import com.jaredrummler.android.shell.Shell;
+import com.tianma.tweaks.miui.xp.hook.launcher.MiuiLauncherHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
 
 /**
@@ -17,6 +18,13 @@ public class RootUtils {
      */
     public static void restartSystemUI() {
         killAll(SystemUIHook.PACKAGE_NAME);
+    }
+
+    /**
+     * Kill Miui Launcher
+     */
+    public static void killAllMiuiLauncher() {
+        killAll(MiuiLauncherHook.PACKAGE_NAME);
     }
 
     /**

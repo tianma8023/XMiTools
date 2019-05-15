@@ -7,7 +7,7 @@
     <string name="confirm">Confirm</string>
 
     <string name="pref_module_instruction_title">Activation Statement</string>
-    <string name="pref_module_instruction_summary">Reboot or restart SystemUI to activate it</string>
+    <string name="pref_module_instruction_summary">Reboot or restart host apps to activate it</string>
     <string name="pref_main_switch_title">Main switch</string>
 
     <string name="pref_status_bar_title">Status Bar</string>
@@ -34,6 +34,10 @@
     <string name="pref_show_sec_in_keyguard_vertical_title">Show seconds in vertical clock</string>
     <string name="pref_show_sec_in_keyguard_vertical_summary">Only applicable to system default theme</string>
 
+    <string name="miui_launcher">MIUI Launcher</string>
+    <string name="pref_always_show_status_bar_clock_title">Don\'t hide clock</string>
+    <string name="pref_always_show_status_bar_clock_summary">Don\'t hide status bar clock in pages contains clock widget</string>
+
     <string name="pref_other_title">Others</string>
     <string name="pref_hide_launcher_icon_title">Hide launcher icon</string>
     <string name="pref_hide_launcher_icon_summary">It can be reopen in Xposed modules list</string>
@@ -54,10 +58,10 @@
     <string name="prompt_reboot_system_message">Are you sure to reboot System?</string>
     <string name="action_soft_reboot_system">Soft Reboot</string>
     <string name="prompt_soft_reboot_message">Are you sure to soft reboot System？</string>
-    <string name="action_restart_system_ui">Restart SystemUI</string>
-    <string name="prompt_restart_system_ui_message">Are you sure to restart SystemUI？</string>
+    <string name="action_restart_host_apps">Restart Host Apps</string>
+    <string name="prompt_restart_host_apps_message">Are you sure to restart SystemUI and MIUI Launcher？</string>
     <string name="action_taichi_users_notice">Taichi Users Notice</string>
-    <string name="prompt_taichi_users_notice_message">1.This module should run under the Taichi Magisk.\n\n2. These apps should be added to Taichi before use it：\n\t· SystemUI(com.android.systemui)\n\n3. If this module inactive after upgrading, please recheck this module in Taichi module manage list and reboot system or restart SystemUI.</string>
+    <string name="prompt_taichi_users_notice_message">1.This module should run under the Taichi Magisk.\n\n2. These apps should be added to Taichi before use it：\n\t· SystemUI(com.android.systemui)\n\t· MIUI Launcher(com.miui.home)\n\n3. If this module inactive after upgrading, please recheck this module in Taichi module manage list and reboot system or restart SystemUI.</string>
     <string name="add_applications">Add Apps</string>
     <string name="check_module">Enable Module</string>
     <string name="taichi_install_prompt">Please install Taichi</string>

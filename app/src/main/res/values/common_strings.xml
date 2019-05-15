@@ -23,6 +23,8 @@
     <string name="pref_show_sec_in_keyguard_vertical">show_sec_in_keyguard_vertical</string>
     <string name="pref_keyguard_clock_color">keyguard_clock_color</string>
 
+    <string name="pref_always_show_status_bar_clock">always_show_status_bar_clock</string>
+
     <string name="pref_hide_launcher_icon">hide_launcher_icon</string>
 
     <string name="pref_app_version">app_version</string>

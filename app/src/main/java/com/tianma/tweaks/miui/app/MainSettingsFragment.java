@@ -150,8 +150,8 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
             case R.id.action_soft_reboot_system:
                 preformSoftRebootSystem();
                 break;
-            case R.id.action_restart_system_ui:
-                performRestartSystemUI();
+            case R.id.action_restart_host_apps:
+                performRestartHostApps();
                 break;
             case R.id.action_taichi_users_notice:
                 showTaiChiUsersNotice();
@@ -182,12 +182,15 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
                 .show();
     }
 
-    private void performRestartSystemUI() {
+    private void performRestartHostApps() {
         new MaterialDialog.Builder(mActivity)
-                .title(R.string.action_restart_system_ui)
-                .content(R.string.prompt_restart_system_ui_message)
+                .title(R.string.action_restart_host_apps)
+                .content(R.string.prompt_restart_host_apps_message)
                 .positiveText(R.string.confirm)
-                .onPositive((dialog, which) -> RootUtils.restartSystemUI())
+                .onPositive((dialog, which) -> {
+                    RootUtils.restartSystemUI();
+                    RootUtils.killAllMiuiLauncher();
+                })
                 .negativeText(R.string.cancel)
                 .show();
     }

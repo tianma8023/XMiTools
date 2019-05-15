@@ -8,7 +8,7 @@
     <string name="confirm">确认</string>
 
     <string name="pref_module_instruction_title">生效说明</string>
-    <string name="pref_module_instruction_summary">重启系统或重启SystemUI后重新生效(右上角)</string>
+    <string name="pref_module_instruction_summary">重启系统或重启宿主App后重新生效(右上角)</string>
     <string name="pref_main_switch_title">总开关</string>
 
     <string name="pref_status_bar_title">状态栏</string>
@@ -35,6 +35,10 @@
     <string name="pref_show_sec_in_keyguard_vertical_title">垂直时钟显秒</string>
     <string name="pref_show_sec_in_keyguard_vertical_summary">垂直时钟显示秒数(适用于系统默认锁屏)</string>
 
+    <string name="miui_launcher">MIUI 桌面</string>
+    <string name="pref_always_show_status_bar_clock_summary">在有时钟小部件的桌面中显示状态栏时间</string>
+    <string name="pref_always_show_status_bar_clock_title">始终显示状态栏时间</string>
+
     <string name="pref_other_title">其他</string>
     <string name="pref_hide_launcher_icon_summary">隐藏后可从模块列表中进入</string>
     <string name="pref_hide_launcher_icon_title">隐藏应用图标</string>
@@ -55,10 +59,10 @@
     <string name="prompt_reboot_system_message">确认重启系统?</string>
     <string name="action_soft_reboot_system">软重启</string>
     <string name="prompt_soft_reboot_message">确认软重启系统？</string>
-    <string name="action_restart_system_ui">重启SystemUI</string>
-    <string name="prompt_restart_system_ui_message">确认重启SystemUI？</string>
+    <string name="action_restart_host_apps">重启宿主App</string>
+    <string name="prompt_restart_host_apps_message">确认重启 SystemUI 和 MIUI桌面？</string>
     <string name="action_taichi_users_notice">太极用户须知</string>
-    <string name="prompt_taichi_users_notice_message">1.本模块需要在太极·Magisk(太极阳)环境下工作。\n\n2. 需要将以下应用添加至太极中：\n\t· 系统界面(com.android.systemui)\n\n3. 如果模块失效，请在太极模块管理列表中重新勾选本模块，并重启手机或重启SystemUI。</string>
+    <string name="prompt_taichi_users_notice_message">1.本模块需要在太极·Magisk(太极阳)环境下工作。\n\n2. 需要将以下应用添加至太极中：\n\t· 系统界面(com.android.systemui)\n\t· 系统桌面(com.miui.home)\n\n3. 如果模块失效，请在太极模块管理列表中重新勾选本模块，并重启手机或重启SystemUI。</string>
     <string name="add_applications">添加应用</string>
     <string name="check_module">勾选模块</string>
     <string name="taichi_install_prompt">请先安装太极</string>

@@ -108,6 +108,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/miui_launcher">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_always_show_status_bar_clock"
+            android:summary="@string/pref_always_show_status_bar_clock_summary"
+            android:title="@string/pref_always_show_status_bar_clock_title"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/pref_other_title">
 
         <SwitchPreference

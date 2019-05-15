@@ -14,8 +14,8 @@
 
     <item
 
-        android:id="@+id/action_restart_system_ui"
-        android:title="@string/action_restart_system_ui"
+        android:id="@+id/action_restart_host_apps"
+        android:title="@string/action_restart_host_apps"
         app:showAsAction="never"/>
 
     <item

@@ -3,6 +3,8 @@ package com.tianma.tweaks.miui.utils;
 import de.robv.android.xposed.XSharedPreferences;
 
 import static com.tianma.tweaks.miui.cons.PrefConst.ALIGNMENT_LEFT;
+import static com.tianma.tweaks.miui.cons.PrefConst.ALWAYS_SHOW_STATUS_BAR_CLOCK;
+import static com.tianma.tweaks.miui.cons.PrefConst.ALWAYS_SHOW_STATUS_BAR_CLOCK_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_ENABLE;
@@ -133,5 +135,12 @@ public class XSPUtils {
      */
     public static int getKeyguardClockColor(XSharedPreferences xsp) {
         return xsp.getInt(KEYGUARD_CLOCK_COLOR, KEYGUARD_CLOCK_COLOR_DEFAULT);
+    }
+
+    /**
+     * 是否在有系统时钟widget的桌面中显示状态栏时间
+     */
+    public static boolean alwaysShowStatusBarClock(XSharedPreferences xsp) {
+        return xsp.getBoolean(ALWAYS_SHOW_STATUS_BAR_CLOCK, ALWAYS_SHOW_STATUS_BAR_CLOCK_DEFAULT);
     }
 }

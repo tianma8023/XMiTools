@@ -39,6 +39,9 @@ public interface PrefConst {
     String KEYGUARD_CLOCK_COLOR = "keyguard_clock_color";
     int KEYGUARD_CLOCK_COLOR_DEFAULT = Color.WHITE;
 
+    String ALWAYS_SHOW_STATUS_BAR_CLOCK = "always_show_status_bar_clock";
+    boolean ALWAYS_SHOW_STATUS_BAR_CLOCK_DEFAULT = false;
+
     String HIDE_LAUNCHER_ICON = "hide_launcher_icon";
 
     String APP_VERSION = "app_version";

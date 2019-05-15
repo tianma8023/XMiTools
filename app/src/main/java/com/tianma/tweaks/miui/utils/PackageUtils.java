@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.R;
 import com.tianma.tweaks.miui.cons.AppConst;
+import com.tianma.tweaks.miui.xp.hook.launcher.MiuiLauncherHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
 
 import androidx.annotation.IntDef;
@@ -199,7 +200,7 @@ public class PackageUtils {
     public static void startAddAppsInTaiChi(Context context) {
         if (checkTaiChiExists(context)) {
             Intent intent = new Intent("me.weishu.exp.ACTION_ADD_APP");
-            String uriStr = "package:" + SystemUIHook.PACKAGE_NAME;
+            String uriStr = "package:" + SystemUIHook.PACKAGE_NAME + "|" + MiuiLauncherHook.PACKAGE_NAME;
             intent.setData(Uri.parse(uriStr));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
