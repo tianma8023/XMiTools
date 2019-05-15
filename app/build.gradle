@@ -15,8 +15,8 @@ android {
         applicationId "com.tianma.tweaks.miui"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.0.5"
 
         buildConfigField("String", "LOG_TAG", "\"XMiuiClock\"")
         buildConfigField("boolean", "LOG_TO_XPOSED", "true")

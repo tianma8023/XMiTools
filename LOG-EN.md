@@ -1,4 +1,7 @@
 # Update Logs
+- 19.05.15 1.0.5
+  1. Bug fix: wrong minute display issue
+  2. New option: always show status bar clock in MIUI System Launcher
 - 19.05.14 1.0.4
   1. Adapt to MIUI 9.5.7+.
   2. Fix the leap seconds issue.
