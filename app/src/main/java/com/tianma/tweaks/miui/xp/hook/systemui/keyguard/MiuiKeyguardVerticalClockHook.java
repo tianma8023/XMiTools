@@ -18,10 +18,10 @@ import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
@@ -49,7 +49,7 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
     private final boolean mShowVerticalSec;
     private final boolean mShowHorizontalSec;
 
-    private Set<Object> mKeyguardClockSet = new HashSet<>();
+    private List<View> mKeyguardClockList = new ArrayList<>();
 
     private static final String M_HORIZONTAL_TIME_LAYOUT = "mHorizontalTimeLayout";
     private static final String M_HORIZONTAL_DOT = "mHorizontalDot";
@@ -242,6 +242,7 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
                                     removeClock(keyguardClock);
                                 }
                             });
+                            addClock(keyguardClock);
 
                             // register receiver
                             IntentFilter filter = new IntentFilter();
@@ -259,24 +260,35 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
     }
 
     private synchronized void addClock(View clock) {
-        mKeyguardClockSet.add(clock);
+        if (!mKeyguardClockList.contains(clock)) {
+            mKeyguardClockList.add(clock);
 
-        if (!mKeyguardClockSet.isEmpty()) {
+            int size = mKeyguardClockList.size();
+            int limitedSize = 2;
+            if (size > limitedSize) {
+                for (int i = 0; i < size - limitedSize; i ++) {
+                    View item = mKeyguardClockList.get(i);
+                    mKeyguardClockList.remove(item);
+                }
+            }
+        }
+
+        if (!mKeyguardClockList.isEmpty()) {
             TimeTicker.get().registerObserver(MiuiKeyguardVerticalClockHook.this);
         }
     }
 
     private synchronized void removeClock(View clock) {
-        mKeyguardClockSet.remove(clock);
+        mKeyguardClockList.remove(clock);
 
-        if (mKeyguardClockSet.isEmpty()) {
+        if (mKeyguardClockList.isEmpty()) {
             TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
         }
     }
 
     @Override
     public void onTimeTick() {
-        for (Object keyguardClock : mKeyguardClockSet) {
+        for (View keyguardClock : mKeyguardClockList) {
             if (keyguardClock != null) {
                 XposedHelpers.callMethod(keyguardClock, "updateTime");
             }
