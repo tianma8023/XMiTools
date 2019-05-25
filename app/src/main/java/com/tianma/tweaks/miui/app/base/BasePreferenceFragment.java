@@ -1,33 +1,19 @@
 package com.tianma.tweaks.miui.app.base;
 
-import androidx.preference.Preference;
+import android.os.Bundle;
+
+import com.tianma.tweaks.miui.cons.AppConst;
+
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceGroup;
-import androidx.preference.PreferenceScreen;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.preference.PreferenceManager;
 
 public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
-    protected RecyclerView.Adapter onCreateAdapter(PreferenceScreen preferenceScreen) {
-
-        return super.onCreateAdapter(preferenceScreen);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        PreferenceManager pm = getPreferenceManager();
+        pm.setSharedPreferencesName(AppConst.X_MIUI_CLOCK_PREFS_NAME);
+        // pm.setStorageDeviceProtected();
     }
 
-    private void setAllPreferencesToAvoidHavingExtraSpace(Preference preference) {
-        preference.setIconSpaceReserved(false);
-        if (preference instanceof PreferenceGroup) {
-            for (int i = 0; i < ((PreferenceGroup) preference).getPreferenceCount(); i++) {
-                setAllPreferencesToAvoidHavingExtraSpace(((PreferenceGroup) preference).getPreference(i));
-            }
-        }
-    }
-
-    @Override
-    public void setPreferenceScreen(PreferenceScreen preferenceScreen) {
-        if (preferenceScreen != null) {
-            setAllPreferencesToAvoidHavingExtraSpace(preferenceScreen);
-        }
-        super.setPreferenceScreen(preferenceScreen);
-    }
 }

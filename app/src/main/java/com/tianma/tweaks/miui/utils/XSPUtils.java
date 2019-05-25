@@ -1,16 +1,19 @@
 package com.tianma.tweaks.miui.utils;
 
+import com.tianma.tweaks.miui.BuildConfig;
+import com.tianma.tweaks.miui.cons.AppConst;
+
+import java.io.File;
+
 import de.robv.android.xposed.XSharedPreferences;
 
 import static com.tianma.tweaks.miui.cons.PrefConst.ALIGNMENT_LEFT;
 import static com.tianma.tweaks.miui.cons.PrefConst.ALWAYS_SHOW_STATUS_BAR_CLOCK;
 import static com.tianma.tweaks.miui.cons.PrefConst.ALWAYS_SHOW_STATUS_BAR_CLOCK_DEFAULT;
-import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE;
-import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT;
-import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_ENABLE;
-import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE;
+import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_DATE_COLOR;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_DATE_COLOR_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.KEYGUARD_CLOCK_COLOR;
@@ -28,6 +31,8 @@ import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_STATUS_BAR_DEFAU
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_ALIGNMENT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_ENABLE;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_FORMAT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_FORMAT_ENABLE;
@@ -36,6 +41,25 @@ import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_FORMAT_ENAB
 public class XSPUtils {
 
     private XSPUtils() {
+    }
+
+    /**
+     * 获取XSharedPreferences
+     */
+    public static XSharedPreferences getXSharedPreferences() {
+        File prefsFile = new File("/data/user_de/0/" + BuildConfig.APPLICATION_ID + "/shared_prefs/" + AppConst.X_MIUI_CLOCK_PREFS_NAME + ".xml");
+        XSharedPreferences xsp;
+        if (prefsFile.exists()) { // Android 7.0+
+            xsp = new XSharedPreferences(prefsFile);
+        } else { // below Android 7.0
+            xsp = new XSharedPreferences(BuildConfig.APPLICATION_ID);
+        }
+        try {
+            xsp.makeWorldReadable();
+        } catch (Throwable t) {
+            XLog.e("", t);
+        }
+        return xsp;
     }
 
     /**

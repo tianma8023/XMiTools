@@ -1,7 +1,6 @@
 package com.tianma.tweaks.miui.xp.hook.systemui;
 
 
-import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiUtils;
@@ -30,12 +29,7 @@ public class SystemUIHook extends BaseHook {
         if (PACKAGE_NAME.equals(lpparam.packageName)) {
             XLog.i("Hooking SystemUI...");
 
-            XSharedPreferences xsp = new XSharedPreferences(BuildConfig.APPLICATION_ID);
-            try {
-                xsp.makeWorldReadable();
-            } catch (Throwable t) {
-                XLog.e("", t);
-            }
+            XSharedPreferences xsp = XSPUtils.getXSharedPreferences();
 
             ClassLoader classLoader = lpparam.classLoader;
             if (XSPUtils.isMainSwitchEnabled(xsp)) {

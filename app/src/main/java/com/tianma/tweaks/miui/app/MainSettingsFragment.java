@@ -3,8 +3,10 @@ package com.tianma.tweaks.miui.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,8 +15,10 @@ import android.view.MenuItem;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.R;
+import com.tianma.tweaks.miui.app.base.BasePreferenceFragment;
 import com.tianma.tweaks.miui.cons.AppConst;
 import com.tianma.tweaks.miui.cons.PrefConst;
+import com.tianma.tweaks.miui.utils.ContextUtils;
 import com.tianma.tweaks.miui.utils.ModuleUtils;
 import com.tianma.tweaks.miui.utils.PackageUtils;
 import com.tianma.tweaks.miui.utils.RootUtils;
@@ -25,9 +29,8 @@ import java.io.File;
 
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
-public class MainSettingsFragment extends PreferenceFragmentCompat
+public class MainSettingsFragment extends BasePreferenceFragment
         implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
 
     private Activity mActivity;
@@ -40,6 +43,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.main_settings);
 
         findPreference(PrefConst.HIDE_LAUNCHER_ICON).setOnPreferenceChangeListener(this);
@@ -208,11 +212,19 @@ public class MainSettingsFragment extends PreferenceFragmentCompat
 
     @SuppressLint({"SetWorldReadable", "SetWorldWritable"})
     private void setPreferenceWorldWritable() {
-        // dataDir: /data/data/<package_name>/
-        // spDir: /data/data/<package_name>/shared_prefs/
-        // spFile: /data/data/<package_name>/shared_prefs/<preferences_name>.xml
-        String preferencesName = getPreferenceManager().getSharedPreferencesName();
-        File prefsFile = StorageUtils.getSharedPreferencesFile(mActivity, preferencesName);
+        Context context;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // API >= 24 (Android 7.0+)
+            // dataDir: /data/user_de/0/<package_name>/
+            // spDir: /data/user_de/0/<package_name>/shared_prefs/
+            // spFile: /data/user_de/0/<package_name>/shared_prefs/<preferences_name>.xml
+            context = ContextUtils.getProtectedContext(mActivity.getApplicationContext());
+        } else {
+            // API < 24, there is no data encrypt.
+            // dataDir: /data/data/<package_name>/
+            context = mActivity.getApplicationContext();
+        }
+        File prefsFile = StorageUtils.getSharedPreferencesFile(context, AppConst.X_MIUI_CLOCK_PREFS_NAME);
         StorageUtils.setFileWorldWritable(prefsFile, 2);
     }
 }
