@@ -48,6 +48,7 @@ public class MainSettingsFragment extends BasePreferenceFragment
 
         findPreference(PrefConst.HIDE_LAUNCHER_ICON).setOnPreferenceChangeListener(this);
         findPreference(PrefConst.STATUS_BAR_CLOCK_FORMAT).setOnPreferenceChangeListener(this);
+        findPreference(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE).setOnPreferenceChangeListener(this);
 
         findPreference(PrefConst.SOURCE_CODE).setOnPreferenceClickListener(this);
         findPreference(PrefConst.DONATE_BY_ALIPAY).setOnPreferenceClickListener(this);
@@ -67,11 +68,14 @@ public class MainSettingsFragment extends BasePreferenceFragment
         showVersionInfo();
         showModuleStatus();
 
-        Preference preference = findPreference(PrefConst.STATUS_BAR_CLOCK_FORMAT);
+        Preference timeFormatPref = findPreference(PrefConst.STATUS_BAR_CLOCK_FORMAT);
         SharedPreferences sp = getPreferenceManager().getSharedPreferences();
-        String timeFormat = sp
-                .getString(PrefConst.STATUS_BAR_CLOCK_FORMAT, PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT);
-        showStatusBarClockFormat(preference, timeFormat);
+        String timeFormat = sp.getString(PrefConst.STATUS_BAR_CLOCK_FORMAT, PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT);
+        showStatusBarClockFormat(timeFormatPref, timeFormat);
+
+        Preference networkTypePref = findPreference(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE);
+        String networkType = sp.getString(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE, PrefConst.CUSTOM_MOBILE_NETWORK_TYPE_DEFAULT);
+        showCustomMobileNetworkType(networkTypePref, networkType);
     }
 
     @Override
@@ -100,6 +104,8 @@ public class MainSettingsFragment extends BasePreferenceFragment
             hideOrShowLauncherIcon((Boolean) newValue);
         } else if (PrefConst.STATUS_BAR_CLOCK_FORMAT.equals(key)) {
             showStatusBarClockFormat(preference, (String) newValue);
+        } else if (PrefConst.CUSTOM_MOBILE_NETWORK_TYPE.equals(key)) {
+            showCustomMobileNetworkType(preference, (String) newValue);
         } else {
             return false;
         }
@@ -124,6 +130,10 @@ public class MainSettingsFragment extends BasePreferenceFragment
     }
 
     private void showStatusBarClockFormat(Preference preference, String newValue) {
+        preference.setSummary(newValue);
+    }
+
+    private void showCustomMobileNetworkType(Preference preference, String newValue) {
         preference.setSummary(newValue);
     }
 

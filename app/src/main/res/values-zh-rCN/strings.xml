@@ -24,6 +24,12 @@
     <string name="pref_status_bar_clock_format_enable_title">自定义时间格式</string>
     <string name="pref_status_bar_clock_format_title">时间格式</string>
     <string name="pref_status_bar_clock_format_message">示例：\n\n1. yy.MM.dd E a HH:mm:ss > 年.月.日 星期 上/下午 时:分:秒 > 19.04.21 周日 下午 23:25:45\n\n2. 我HH很mm可ss爱 > 我时很分可秒爱 > 我07很25可09爱\n\n3. HH:mm:ss > 时:分:秒 > 16:07:08\n\n4. H:m:s > 时:分:秒 > 16:7:8</string>
+    <string name="pref_status_bar_signal_align_left_title">信号居左</string>
+    <string name="pref_status_bar_dual_mobile_signal_title">信号双层显示</string>
+    <string name="pref_status_bar_hide_vpn_icon_title">隐藏VPN图标</string>
+    <string name="pref_custom_mobile_network_type_enable_title">自定义移动网络类型</string>
+    <string name="pref_custom_mobile_network_type_enable_summary">自定义显示的移动网络类型</string>
+    <string name="pref_custom_mobile_network_type_title">移动网络类型</string>
 
     <string name="pref_show_sec_in_dropdown_status_bar_title">时间显秒</string>
     <string name="pref_show_sec_in_dropdown_status_bar_summary">下拉状态栏时间显示秒数</string>

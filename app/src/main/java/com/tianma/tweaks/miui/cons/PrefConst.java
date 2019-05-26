@@ -8,7 +8,7 @@ public interface PrefConst {
     String MAIN_SWITCH = "main_switch";
     boolean MAIN_SWITCH_DEFAULT = true;
 
-    String SHOW_SEC_IN_STATUS_BAR= "show_sec_in_status_bar";
+    String SHOW_SEC_IN_STATUS_BAR = "show_sec_in_status_bar";
     boolean SHOW_SEC_IN_STATUS_BAR_DEFAULT = false;
     String STATUS_BAR_CLOCK_ALIGNMENT = "status_bar_clock_alignment";
     String ALIGNMENT_LEFT = "left";
@@ -22,6 +22,16 @@ public interface PrefConst {
     boolean STATUS_BAR_CLOCK_FORMAT_ENABLE_DEFAULT = false;
     String STATUS_BAR_CLOCK_FORMAT = "status_bar_clock_format";
     String STATUS_BAR_CLOCK_FORMAT_DEFAULT = "HH:mm:ss";
+    String STATUS_BAR_SIGNAL_ALIGN_LEFT = "status_bar_signal_align_left";
+    boolean STATUS_BAR_SIGNAL_ALIGN_LEFT_DEFAULT = false;
+    String STATUS_BAR_DUAL_MOBILE_SIGNAL = "status_bar_dual_mobile_signal";
+    boolean STATUS_BAR_DUAL_MOBILE_SIGNAL_DEFAULT = false;
+    String STATUS_BAR_HIDE_VPN_ICON = "status_bar_hide_vpn_icon";
+    boolean STATUS_BAR_HIDE_VPN_ICON_DEFAULT = false;
+    String CUSTOM_MOBILE_NETWORK_TYPE_ENABLE = "custom_mobile_network_type_enable";
+    boolean CUSTOM_MOBILE_NETWORK_TYPE_ENABLE_DEFAULT = false;
+    String CUSTOM_MOBILE_NETWORK_TYPE = "custom_mobile_network_type";
+    String CUSTOM_MOBILE_NETWORK_TYPE_DEFAULT = "5G";
 
     String SHOW_SEC_IN_DROPDOWN_STATUS_BAR = "show_sec_in_dropdown_status_bar";
     boolean SHOW_SEC_IN_DROPDOWN_STATUS_BAR_DEFAULT = false;

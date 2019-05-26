@@ -7,13 +7,12 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.UserHandle;
-import android.util.ArrayMap;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
 
@@ -83,8 +82,6 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
     private boolean mBlockSystemTimeTick;
 
-    private ArrayMap<String, Integer> mNameIdMap = new ArrayMap<>();
-
     public StatusBarClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
 
@@ -147,7 +144,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
                             Resources res = clockView.getResources();
                             int id = clockView.getId();
                             String timeStr = clockView.getText().toString();
-                            if (id == getId(res, "clock")) {
+                            if (id == ResHelpers.getId(res, "clock")) {
                                 if (mStatusBarClockFormatEnabled) {
                                     timeStr = getCustomFormatTime();
                                 } else if (mShowSecInStatusBar) {
@@ -155,8 +152,8 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
                                 } else {
                                     return;
                                 }
-                            } else if (id == getId(res, "big_time")
-                                    || id == getId(res, "date_time")) {
+                            } else if (id == ResHelpers.getId(res, "big_time")
+                                    || id == ResHelpers.getId(res, "date_time")) {
                                 if (mShowSecInDropdownStatusBar) {
                                     timeStr = addInSecond(timeStr);
                                 } else {
@@ -183,14 +180,6 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
         return mStatusBarClockFormat.format(new Date());
     }
 
-    private Integer getId(Resources res, String name) {
-        if (!mNameIdMap.containsKey(name)) {
-            int id = res.getIdentifier(name, "id", SystemUIHook.PACKAGE_NAME);
-            mNameIdMap.put(name, id);
-        }
-        return mNameIdMap.get(name);
-    }
-
     // com.android.systemui.statusbar.policy.Clock#access()
     private void hookClockConstructor() {
         XposedBridge.hookAllConstructors(mClockCls,
@@ -201,21 +190,21 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
                             TextView clock = (TextView) param.thisObject;
                             Resources res = clock.getResources();
                             int id = clock.getId();
-                            if (id == getId(res, "clock")) {
+                            if (id == ResHelpers.getId(res, "clock")) {
                                 if (mBlockSystemTimeTick) {
                                     addClock(clock);
                                 }
                                 if (mStatusBarClockColorEnabled) {
                                     clock.setTextColor(mStatusBarClockColor);
                                 }
-                            } else if (id == getId(res, "big_time")) {
+                            } else if (id == ResHelpers.getId(res, "big_time")) {
                                 if (mBlockSystemTimeTick) {
                                     addClock(clock);
                                 }
                                 if (mDropdownStatusBarClockColorEnabled) {
                                     clock.setTextColor(mDropdownStatusBarClockColor);
                                 }
-                            } else if (id == getId(res, "date_time")) {
+                            } else if (id == ResHelpers.getId(res, "date_time")) {
                                 if (mBlockSystemTimeTick) {
                                     addClock(clock);
                                 }

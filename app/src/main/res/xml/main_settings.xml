@@ -58,6 +58,37 @@
             android:dialogMessage="@string/pref_status_bar_clock_format_message"
             android:key="@string/pref_status_bar_clock_format"
             android:title="@string/pref_status_bar_clock_format_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_status_bar_signal_align_left"
+            android:title="@string/pref_status_bar_signal_align_left_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_status_bar_dual_mobile_signal"
+            android:title="@string/pref_status_bar_dual_mobile_signal_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_status_bar_hide_vpn_icon"
+            android:title="@string/pref_status_bar_hide_vpn_icon_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_custom_mobile_network_type_enable"
+            android:summary="@string/pref_custom_mobile_network_type_enable_summary"
+            android:title="@string/pref_custom_mobile_network_type_enable_title"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/pref_custom_mobile_network_type_default"
+            android:dependency="@string/pref_custom_mobile_network_type_enable"
+            android:key="@string/pref_custom_mobile_network_type"
+            android:title="@string/pref_custom_mobile_network_type_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory

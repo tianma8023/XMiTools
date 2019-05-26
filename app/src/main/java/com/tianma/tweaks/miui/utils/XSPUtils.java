@@ -10,6 +10,10 @@ import de.robv.android.xposed.XSharedPreferences;
 import static com.tianma.tweaks.miui.cons.PrefConst.ALIGNMENT_LEFT;
 import static com.tianma.tweaks.miui.cons.PrefConst.ALWAYS_SHOW_STATUS_BAR_CLOCK;
 import static com.tianma.tweaks.miui.cons.PrefConst.ALWAYS_SHOW_STATUS_BAR_CLOCK_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.CUSTOM_MOBILE_NETWORK_TYPE;
+import static com.tianma.tweaks.miui.cons.PrefConst.CUSTOM_MOBILE_NETWORK_TYPE_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.CUSTOM_MOBILE_NETWORK_TYPE_ENABLE;
+import static com.tianma.tweaks.miui.cons.PrefConst.CUSTOM_MOBILE_NETWORK_TYPE_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE;
@@ -28,6 +32,11 @@ import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_KEYGUARD_VERTICA
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_KEYGUARD_VERTICAL_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_STATUS_BAR;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_STATUS_BAR_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_DUAL_MOBILE_SIGNAL;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_DUAL_MOBILE_SIGNAL_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_HIDE_VPN_ICON;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_HIDE_VPN_ICON_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_SIGNAL_ALIGN_LEFT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_ALIGNMENT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_COLOR_DEFAULT;
@@ -37,6 +46,7 @@ import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_FORMAT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_FORMAT_ENABLE;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_CLOCK_FORMAT_ENABLE_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_SIGNAL_ALIGN_LEFT_DEFAULT;
 
 public class XSPUtils {
 
@@ -166,5 +176,40 @@ public class XSPUtils {
      */
     public static boolean alwaysShowStatusBarClock(XSharedPreferences xsp) {
         return xsp.getBoolean(ALWAYS_SHOW_STATUS_BAR_CLOCK, ALWAYS_SHOW_STATUS_BAR_CLOCK_DEFAULT);
+    }
+
+    /**
+     * 信号是否左对齐
+     */
+    public static boolean isSignalAlignLeft(XSharedPreferences xsp) {
+        return xsp.getBoolean(STATUS_BAR_SIGNAL_ALIGN_LEFT, STATUS_BAR_SIGNAL_ALIGN_LEFT_DEFAULT);
+    }
+
+    /**
+     * 是否显示双层信号
+     */
+    public static boolean isDualMobileSignal(XSharedPreferences xsp) {
+        return xsp.getBoolean(STATUS_BAR_DUAL_MOBILE_SIGNAL, STATUS_BAR_DUAL_MOBILE_SIGNAL_DEFAULT);
+    }
+
+    /**
+     * 是否隐藏VPN图标
+     */
+    public static boolean isHideVpnIcon(XSharedPreferences xsp) {
+        return xsp.getBoolean(STATUS_BAR_HIDE_VPN_ICON, STATUS_BAR_HIDE_VPN_ICON_DEFAULT);
+    }
+
+    /**
+     * 状态栏是否自定义显示的移动网络类型
+     */
+    public static boolean customMobileNetworkEnabled(XSharedPreferences xsp) {
+        return xsp.getBoolean(CUSTOM_MOBILE_NETWORK_TYPE_ENABLE, CUSTOM_MOBILE_NETWORK_TYPE_ENABLE_DEFAULT);
+    }
+
+    /**
+     * 状态栏自定义显示的移动网络类型
+     */
+    public static String customMobileNetwork(XSharedPreferences xsp) {
+        return xsp.getString(CUSTOM_MOBILE_NETWORK_TYPE, CUSTOM_MOBILE_NETWORK_TYPE_DEFAULT);
     }
 }

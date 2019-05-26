@@ -13,6 +13,12 @@
     <string name="pref_status_bar_clock_format_enable">status_bar_clock_format_enable</string>
     <string name="pref_status_bar_clock_format">status_bar_clock_format</string>
     <string name="status_bar_clock_format_default">HH:mm:ss</string>
+    <string name="pref_status_bar_signal_align_left">status_bar_signal_align_left</string>
+    <string name="pref_status_bar_dual_mobile_signal">status_bar_dual_mobile_signal</string>
+    <string name="pref_status_bar_hide_vpn_icon">status_bar_hide_vpn_icon</string>
+    <string name="pref_custom_mobile_network_type_enable">custom_mobile_network_type_enable</string>
+    <string name="pref_custom_mobile_network_type">custom_mobile_network_type</string>
+    <string name="pref_custom_mobile_network_type_default">5G</string>
 
     <string name="pref_show_sec_in_dropdown_status_bar">show_sec_in_dropdown_status_bar</string>
     <string name="pref_dropdown_status_bar_clock_color_enable">dropdown_status_bar_clock_color_enable</string>
