@@ -1,6 +1,14 @@
 # Update Logs
+- 19.05.26 1.0.6
+  1. Bug fixes: invalid issue after rebooting.
+  2. Bug fixes: showing seconds invalid issue after choosing an new clock style in lock screen.
+  3. New option: align signal cluster to the left of status bar.
+  4. New option: show dual mobile signal in status bar.
+  5. New option: hide VPN icon in status bar.
+  6. New option: custom displayed mobile network type.
+  7. Optimization: no longer hook MIUI Launcher.
 - 19.05.15 1.0.5
-  1. Bug fix: wrong minute display issue
+  1. Bug fixes: wrong minute display issue
   2. New option: always show status bar clock in MIUI System Launcher
 - 19.05.14 1.0.4
   1. Adapt to MIUI 9.5.7+.
