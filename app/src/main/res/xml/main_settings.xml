@@ -62,6 +62,13 @@
         <SwitchPreference
             android:defaultValue="false"
             android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_always_show_status_bar_clock"
+            android:summary="@string/pref_always_show_status_bar_clock_summary"
+            android:title="@string/pref_always_show_status_bar_clock_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
             android:key="@string/pref_status_bar_signal_align_left"
             android:title="@string/pref_status_bar_signal_align_left_title"/>
 
@@ -136,18 +143,6 @@
             android:key="@string/pref_show_sec_in_keyguard_vertical"
             android:summary="@string/pref_show_sec_in_keyguard_vertical_summary"
             android:title="@string/pref_show_sec_in_keyguard_vertical_title"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/miui_launcher">
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:dependency="@string/pref_main_switch"
-            android:key="@string/pref_always_show_status_bar_clock"
-            android:summary="@string/pref_always_show_status_bar_clock_summary"
-            android:title="@string/pref_always_show_status_bar_clock_title"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -62,13 +62,13 @@
     <string name="browser_install_or_enable_prompt">请安装或启用浏览器</string>
 
     <string name="action_reboot_system">重启</string>
-    <string name="prompt_reboot_system_message">确认重启系统?</string>
+    <string name="prompt_reboot_system_message">确认重启系统？</string>
     <string name="action_soft_reboot_system">软重启</string>
     <string name="prompt_soft_reboot_message">确认软重启系统？</string>
     <string name="action_restart_host_apps">重启宿主App</string>
-    <string name="prompt_restart_host_apps_message">确认重启 SystemUI 和 MIUI桌面？</string>
+    <string name="prompt_restart_host_apps_message">确认重启 SystemUI？</string>
     <string name="action_taichi_users_notice">太极用户须知</string>
-    <string name="prompt_taichi_users_notice_message">1.本模块需要在太极·Magisk(太极阳)环境下工作。\n\n2. 需要将以下应用添加至太极中：\n\t· 系统界面(com.android.systemui)\n\t· 系统桌面(com.miui.home)\n\n3. 如果模块失效，请在太极模块管理列表中重新勾选本模块，并重启手机或重启SystemUI。</string>
+    <string name="prompt_taichi_users_notice_message">1.本模块需要在太极·Magisk(太极阳)环境下工作。\n\n2. 需要将以下应用添加至太极中：\n\t· 系统界面(com.android.systemui)\n\n3. 如果模块失效，请在太极模块管理列表中重新勾选本模块，并重启手机或重启宿主App。</string>
     <string name="add_applications">添加应用</string>
     <string name="check_module">勾选模块</string>
     <string name="taichi_install_prompt">请先安装太极</string>

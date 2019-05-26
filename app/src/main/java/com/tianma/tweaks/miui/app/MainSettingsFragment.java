@@ -203,7 +203,6 @@ public class MainSettingsFragment extends BasePreferenceFragment
                 .positiveText(R.string.confirm)
                 .onPositive((dialog, which) -> {
                     RootUtils.restartSystemUI();
-                    RootUtils.killAllMiuiLauncher();
                 })
                 .negativeText(R.string.cancel)
                 .show();
