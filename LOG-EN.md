@@ -1,4 +1,7 @@
 # Update Logs
+- 19.05.27 1.0.8
+  1. Bug fixes: signal align left invalid issue before MIUI 10 9.5.7
+  2. Bug fixes: dual mobile signal invalid issue before MIUI 10 9.5.7
 - 19.05.27 1.0.7
   1. New entry: join QQ group for communication and bug report.
 - 19.05.26 1.0.6
