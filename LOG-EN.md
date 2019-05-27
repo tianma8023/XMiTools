@@ -1,4 +1,6 @@
 # Update Logs
+- 19.05.27 1.0.7
+  1. New entry: join QQ group for communication and bug report.
 - 19.05.26 1.0.6
   1. Bug fixes: invalid issue after rebooting.
   2. Bug fixes: showing seconds invalid issue after choosing an new clock style in lock screen.
