@@ -48,9 +48,6 @@
     <string name="pref_other_title">其他</string>
     <string name="pref_hide_launcher_icon_summary">隐藏后可从模块列表中进入</string>
     <string name="pref_hide_launcher_icon_title">隐藏应用图标</string>
-    <string name="pref_donate_by_alipay_title">支付宝捐赠</string>
-    <string name="alipay_install_prompt">请先安装支付宝</string>
-    <string name="alipay_enable_prompt">请先启用支付宝</string>
 
     <string name="pref_about_title">关于</string>
     <string name="pref_module_status_title">激活状态</string>
@@ -60,6 +57,13 @@
     <string name="pref_source_code_title">源码</string>
     <string name="pref_source_code_summary">欢迎Star</string>
     <string name="browser_install_or_enable_prompt">请安装或启用浏览器</string>
+    <string name="pref_join_qq_group_title">加群反馈交流</string>
+    <string name="pref_join_qq_group_summary">QQ群：1018488571</string>
+    <string name="prompt_join_qq_group_failed">请先安装或启用QQ</string>
+    <string name="pref_donate_by_alipay_title">支付宝捐赠</string>
+    <string name="alipay_install_prompt">请先安装支付宝</string>
+    <string name="alipay_enable_prompt">请先启用支付宝</string>
+    <string name="pref_donate_by_alipay_summary">我很可爱，请给我钱 (.❛ ᴗ ❛.)</string>
 
     <string name="action_reboot_system">重启</string>
     <string name="prompt_reboot_system_message">确认重启系统？</string>
@@ -73,5 +77,4 @@
     <string name="check_module">勾选模块</string>
     <string name="taichi_install_prompt">请先安装太极</string>
     <string name="taichi_enable_prompt">请先启用太极</string>
-    <string name="pref_donate_by_alipay_summary">我很可爱，请给我钱 (.❛ ᴗ ❛.)</string>
 </resources>

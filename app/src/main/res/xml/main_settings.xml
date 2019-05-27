@@ -169,6 +169,11 @@
             android:title="@string/pref_source_code_title"/>
 
         <Preference
+            android:key="@string/pref_join_qq_group"
+            android:summary="@string/pref_join_qq_group_summary"
+            android:title="@string/pref_join_qq_group_title"/>
+
+        <Preference
             android:key="@string/pref_donate_by_alipay"
             android:summary="@string/pref_donate_by_alipay_summary"
             android:title="@string/pref_donate_by_alipay_title"/>

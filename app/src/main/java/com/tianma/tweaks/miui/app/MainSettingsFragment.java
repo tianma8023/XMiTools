@@ -51,6 +51,7 @@ public class MainSettingsFragment extends BasePreferenceFragment
         findPreference(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE).setOnPreferenceChangeListener(this);
 
         findPreference(PrefConst.SOURCE_CODE).setOnPreferenceClickListener(this);
+        findPreference(PrefConst.KEY_JOIN_QQ_GROUP).setOnPreferenceClickListener(this);
         findPreference(PrefConst.DONATE_BY_ALIPAY).setOnPreferenceClickListener(this);
     }
 
@@ -89,6 +90,8 @@ public class MainSettingsFragment extends BasePreferenceFragment
         String key = preference.getKey();
         if (PrefConst.SOURCE_CODE.equals(key)) {
             showSourceCode();
+        } else if(PrefConst.KEY_JOIN_QQ_GROUP.equals(key)) {
+            joinQQGroup();
         } else if (PrefConst.DONATE_BY_ALIPAY.equals(key)) {
             donateByAlipay();
         } else {
@@ -144,6 +147,10 @@ public class MainSettingsFragment extends BasePreferenceFragment
         if (pm.getComponentEnabledSetting(launcherCN) != state) {
             pm.setComponentEnabledSetting(launcherCN, state, PackageManager.DONT_KILL_APP);
         }
+    }
+
+    private void joinQQGroup() {
+        PackageUtils.joinQQGroup(mActivity);
     }
 
     private void donateByAlipay() {

@@ -18,6 +18,10 @@ public interface AppConst {
     String ALIPAY_QRCODE_URL = "HTTPS://QR.ALIPAY.COM/FKX074142EKXD0OIMV8B60";
     /* Alipay end */
 
+    /* QQ begin */
+    String QQ_GROUP_KEY = "bJYxW0EzBLB-3NeX1DBuOBxq9sSXnxN4";
+    /* QQ end */
+
     /* Taichi begin */
     String TAICHI_PACKAGE_NAME = "me.weishu.exp";
     String TAICHI_MAIN_PAGE = "me.weishu.exp.ui.MainActivity";

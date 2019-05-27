@@ -47,9 +47,6 @@
     <string name="pref_other_title">Others</string>
     <string name="pref_hide_launcher_icon_title">Hide launcher icon</string>
     <string name="pref_hide_launcher_icon_summary">It can be reopen in Xposed modules list</string>
-    <string name="pref_donate_by_alipay_title">Donate by Alipay</string>
-    <string name="alipay_install_prompt">Please install Alipay</string>
-    <string name="alipay_enable_prompt">Please enable Alipay</string>
 
     <string name="pref_about_title">About</string>
     <string name="pref_module_status_title">Activation state</string>
@@ -59,6 +56,13 @@
     <string name="pref_source_code_title">Source code</string>
     <string name="pref_source_code_summary">Welcome to star</string>
     <string name="browser_install_or_enable_prompt">Please install or enable browser</string>
+    <string name="prompt_join_qq_group_failed">Please install or enable QQ first</string>
+    <string name="pref_join_qq_group_title">Communication and Bug report</string>
+    <string name="pref_join_qq_group_summary">QQ group: 1018488571</string>
+    <string name="pref_donate_by_alipay_title">Donate by Alipay</string>
+    <string name="alipay_install_prompt">Please install Alipay</string>
+    <string name="alipay_enable_prompt">Please enable Alipay</string>
+    <string name="pref_donate_by_alipay_summary">I am kawaii, plz donate to me (.❛ ᴗ ❛.)</string>
 
     <string name="action_reboot_system">Reboot</string>
     <string name="prompt_reboot_system_message">Are you sure to reboot System?</string>
@@ -72,5 +76,4 @@
     <string name="check_module">Enable Module</string>
     <string name="taichi_install_prompt">Please install Taichi</string>
     <string name="taichi_enable_prompt">Please enable Taichi</string>
-    <string name="pref_donate_by_alipay_summary">I am kawaii, donate me (.❛ ᴗ ❛.)</string>
 </resources>

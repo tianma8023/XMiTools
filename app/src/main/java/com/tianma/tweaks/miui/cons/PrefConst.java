@@ -56,5 +56,6 @@ public interface PrefConst {
 
     String APP_VERSION = "app_version";
     String SOURCE_CODE = "source_code";
+    String KEY_JOIN_QQ_GROUP = "join_qq_group";
     String DONATE_BY_ALIPAY = "donate_by_alipay";
 }
