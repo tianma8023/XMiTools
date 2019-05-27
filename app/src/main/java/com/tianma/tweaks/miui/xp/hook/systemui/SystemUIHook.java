@@ -39,7 +39,7 @@ public class SystemUIHook extends BaseHook {
                     return;
                 }
                 MiuiVersion miuiVersion = MiuiUtils.getMiuiVersion();
-                if (miuiVersion.getTime() >= MiuiVersion.VERSION_19_5_7.getTime()) {
+                if (miuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
                     new MiuiKeyguardVerticalClockHook(classLoader, xsp).startHook();
                     new MiuiKeyguardLeftTopClockHook(classLoader, xsp).startHook();
                     new ChooseKeyguardClockActivityHook(classLoader, xsp).startHook();
@@ -50,7 +50,7 @@ public class SystemUIHook extends BaseHook {
                 new StatusBarClockHook(classLoader, xsp).startHook();
                 new KeyguardClockContainerHook(classLoader, xsp).startHook();
 
-                new CollapsedStatusBarFragmentHook(classLoader, xsp).startHook();
+                new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
                 new SignalClusterViewHook(classLoader, xsp).startHook();
             }
         }

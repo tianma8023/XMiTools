@@ -8,7 +8,7 @@ import java.util.Locale;
 
 public class MiuiVersion {
 
-    public final static MiuiVersion VERSION_19_5_7 = new MiuiVersion("19.5.7");
+    public final static MiuiVersion V_19_5_7 = new MiuiVersion("19.5.7");
 
     private static final String DATE_FORMAT = "yy.M.d";
 

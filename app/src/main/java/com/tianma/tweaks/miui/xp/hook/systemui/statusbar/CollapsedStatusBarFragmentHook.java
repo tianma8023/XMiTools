@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
+import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 
@@ -21,8 +22,8 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
     private boolean mSignalAlignLeft;
     private boolean mAlwaysShowStatusBarClock;
 
-    public CollapsedStatusBarFragmentHook(ClassLoader classLoader, XSharedPreferences xsp) {
-        super(classLoader, xsp);
+    public CollapsedStatusBarFragmentHook(ClassLoader classLoader, XSharedPreferences xsp, MiuiVersion miuiVersion) {
+        super(classLoader, xsp, miuiVersion);
 
         mSignalAlignLeft = XSPUtils.isSignalAlignLeft(xsp);
         mAlwaysShowStatusBarClock = XSPUtils.alwaysShowStatusBarClock(xsp);
@@ -58,13 +59,19 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
                             ViewGroup phoneStatusBarView = (ViewGroup) XposedHelpers.getObjectField(param.thisObject, "mStatusBar");
                             Resources res = phoneStatusBarView.getResources();
 
-                            View signalClusterView = phoneStatusBarView
-                                    .findViewById(ResHelpers.getId(res, "signal_cluster"));
-                            ((ViewGroup) signalClusterView.getParent()).removeView(signalClusterView);
+                            View signalClusterViewContainer = phoneStatusBarView
+                                    .findViewById(ResHelpers.getId(res, "signal_cluster_view"));
+                            ((ViewGroup) signalClusterViewContainer.getParent()).removeView(signalClusterViewContainer);
 
-                            ViewGroup contentsContainer = phoneStatusBarView
-                                    .findViewById(ResHelpers.getId(res, "phone_status_bar_contents_container"));
-                            contentsContainer.addView(signalClusterView, 0);
+                            if (mMiuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
+                                ViewGroup contentsContainer = phoneStatusBarView
+                                        .findViewById(ResHelpers.getId(res, "phone_status_bar_contents_container"));
+                                contentsContainer.addView(signalClusterViewContainer, 0);
+                            } else {
+                                ViewGroup statusBarContents = phoneStatusBarView
+                                        .findViewById(ResHelpers.getId(res, "status_bar_contents"));
+                                statusBarContents.addView(signalClusterViewContainer, 0);
+                            }
                         } catch (Throwable t) {
                             XLog.e("", t);
                         }
