@@ -15,6 +15,7 @@ import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
+import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,11 +24,12 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
 
 /**
  * 状态栏时钟 Hook
@@ -134,38 +136,34 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
     // com.android.systemui.statusbar.policy.Clock#updateClock
     private void hookClockUpdateClock() {
-        XposedHelpers.findAndHookMethod(mClockCls,
+        findAndHookMethod(mClockCls,
                 "updateClock",
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            TextView clockView = (TextView) param.thisObject;
-                            Resources res = clockView.getResources();
-                            int id = clockView.getId();
-                            String timeStr = clockView.getText().toString();
-                            if (id == ResHelpers.getId(res, "clock")) {
-                                if (mStatusBarClockFormatEnabled) {
-                                    timeStr = getCustomFormatTime();
-                                } else if (mShowSecInStatusBar) {
-                                    timeStr = addInSecond(timeStr);
-                                } else {
-                                    return;
-                                }
-                            } else if (id == ResHelpers.getId(res, "big_time")
-                                    || id == ResHelpers.getId(res, "date_time")) {
-                                if (mShowSecInDropdownStatusBar) {
-                                    timeStr = addInSecond(timeStr);
-                                } else {
-                                    return;
-                                }
+                    protected void after(MethodHookParam param) {
+                        TextView clockView = (TextView) param.thisObject;
+                        Resources res = clockView.getResources();
+                        int id = clockView.getId();
+                        String timeStr = clockView.getText().toString();
+                        if (id == ResHelpers.getId(res, "clock")) {
+                            if (mStatusBarClockFormatEnabled) {
+                                timeStr = getCustomFormatTime();
+                            } else if (mShowSecInStatusBar) {
+                                timeStr = addInSecond(timeStr);
                             } else {
                                 return;
                             }
-                            clockView.setText(timeStr);
-                        } catch (Throwable t) {
-                            XLog.e("", t);
+                        } else if (id == ResHelpers.getId(res, "big_time")
+                                || id == ResHelpers.getId(res, "date_time")) {
+                            if (mShowSecInDropdownStatusBar) {
+                                timeStr = addInSecond(timeStr);
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
                         }
+                        clockView.setText(timeStr);
                     }
                 });
     }
@@ -182,38 +180,34 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
     // com.android.systemui.statusbar.policy.Clock#access()
     private void hookClockConstructor() {
-        XposedBridge.hookAllConstructors(mClockCls,
-                new XC_MethodHook() {
+        hookAllConstructors(mClockCls,
+                new MethodHookWrapper() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            TextView clock = (TextView) param.thisObject;
-                            Resources res = clock.getResources();
-                            int id = clock.getId();
-                            if (id == ResHelpers.getId(res, "clock")) {
-                                if (mBlockSystemTimeTick) {
-                                    addClock(clock);
-                                }
-                                if (mStatusBarClockColorEnabled) {
-                                    clock.setTextColor(mStatusBarClockColor);
-                                }
-                            } else if (id == ResHelpers.getId(res, "big_time")) {
-                                if (mBlockSystemTimeTick) {
-                                    addClock(clock);
-                                }
-                                if (mDropdownStatusBarClockColorEnabled) {
-                                    clock.setTextColor(mDropdownStatusBarClockColor);
-                                }
-                            } else if (id == ResHelpers.getId(res, "date_time")) {
-                                if (mBlockSystemTimeTick) {
-                                    addClock(clock);
-                                }
-                                if (mDropdownStatusBarClockColorEnabled) {
-                                    clock.setTextColor(mDropdownStatusBarDateColor);
-                                }
+                    protected void after(MethodHookParam param) {
+                        TextView clock = (TextView) param.thisObject;
+                        Resources res = clock.getResources();
+                        int id = clock.getId();
+                        if (id == ResHelpers.getId(res, "clock")) {
+                            if (mBlockSystemTimeTick) {
+                                addClock(clock);
                             }
-                        } catch (Throwable e) {
-                            XLog.e("", e);
+                            if (mStatusBarClockColorEnabled) {
+                                clock.setTextColor(mStatusBarClockColor);
+                            }
+                        } else if (id == ResHelpers.getId(res, "big_time")) {
+                            if (mBlockSystemTimeTick) {
+                                addClock(clock);
+                            }
+                            if (mDropdownStatusBarClockColorEnabled) {
+                                clock.setTextColor(mDropdownStatusBarClockColor);
+                            }
+                        } else if (id == ResHelpers.getId(res, "date_time")) {
+                            if (mBlockSystemTimeTick) {
+                                addClock(clock);
+                            }
+                            if (mDropdownStatusBarClockColorEnabled) {
+                                clock.setTextColor(mDropdownStatusBarDateColor);
+                            }
                         }
                     }
                 });
@@ -221,7 +215,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
     private void hookOnDarkChanged() {
         if (mStatusBarClockColorEnabled) {
-            XposedHelpers.findAndHookMethod(mClockCls,
+            findAndHookMethod(mClockCls,
                     "onDarkChanged",
                     Rect.class,
                     float.class,
@@ -241,24 +235,20 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
     // com.android.systemui.statusbar.phone.StatusBar#makeStatusBarView()
     private void hookMakeStatusBarView() {
-        XposedHelpers.findAndHookMethod(CLASS_STATUS_BAR,
+        findAndHookMethod(CLASS_STATUS_BAR,
                 mClassLoader,
                 "makeStatusBarView",
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            Object statusBar = param.thisObject;
-                            Context context = (Context) XposedHelpers.getObjectField(statusBar, "mContext");
+                    protected void after(MethodHookParam param) {
+                        Object statusBar = param.thisObject;
+                        Context context = (Context) XposedHelpers.getObjectField(statusBar, "mContext");
 
-                            // register receiver
-                            IntentFilter filter = new IntentFilter();
-                            filter.addAction(Intent.ACTION_SCREEN_ON);
-                            filter.addAction(Intent.ACTION_SCREEN_OFF);
-                            context.registerReceiver(mScreenReceiver, filter);
-                        } catch (Throwable t) {
-                            XLog.e("", t);
-                        }
+                        // register receiver
+                        IntentFilter filter = new IntentFilter();
+                        filter.addAction(Intent.ACTION_SCREEN_ON);
+                        filter.addAction(Intent.ACTION_SCREEN_OFF);
+                        context.registerReceiver(mScreenReceiver, filter);
                     }
                 });
     }
@@ -299,40 +289,36 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
     // com.android.systemui.statusbar.policy.Clock$ReceiverInfo#register()
     private void hookRegister() {
-        XposedHelpers.findAndHookMethod(CLASS_RECEIVER_INFO,
+        findAndHookMethod(CLASS_RECEIVER_INFO,
                 mClassLoader,
                 "register",
                 Context.class,
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            Object thisObject = param.thisObject;
-                            Context context = (Context) param.args[0];
-                            IntentFilter filter = new IntentFilter();
-                            // 不再接收 TIME_TICK 广播
-                            // filter.addAction("android.intent.action.TIME_TICK");
-                            filter.addAction("android.intent.action.TIME_SET");
-                            filter.addAction("android.intent.action.TIMEZONE_CHANGED");
-                            filter.addAction("android.intent.action.CONFIGURATION_CHANGED");
-                            filter.addAction("android.intent.action.USER_SWITCHED");
-                            Object receiver = XposedHelpers.getObjectField(thisObject, "mReceiver");
-                            Object USER_HANDLE_ALL = XposedHelpers.getStaticObjectField(UserHandle.class, "ALL");
-                            Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, mClassLoader);
-                            Object TIME_TICK_HANDLER = XposedHelpers.getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
-                            Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
-                            // context.registerReceiverAsUser(this.mReceiver, UserHandle.ALL, filter, null, (Handler) Dependency.get(Dependency.TIME_TICK_HANDLER));
-                            XposedHelpers.callMethod(context,
-                                    "registerReceiverAsUser",
-                                    receiver,
-                                    USER_HANDLE_ALL,
-                                    filter,
-                                    null,
-                                    handler);
-                            param.setResult(null);
-                        } catch (Throwable t) {
-                            XLog.e("", t);
-                        }
+                    protected void before(MethodHookParam param) {
+                        Object thisObject = param.thisObject;
+                        Context context = (Context) param.args[0];
+                        IntentFilter filter = new IntentFilter();
+                        // 不再接收 TIME_TICK 广播
+                        // filter.addAction("android.intent.action.TIME_TICK");
+                        filter.addAction("android.intent.action.TIME_SET");
+                        filter.addAction("android.intent.action.TIMEZONE_CHANGED");
+                        filter.addAction("android.intent.action.CONFIGURATION_CHANGED");
+                        filter.addAction("android.intent.action.USER_SWITCHED");
+                        Object receiver = XposedHelpers.getObjectField(thisObject, "mReceiver");
+                        Object USER_HANDLE_ALL = XposedHelpers.getStaticObjectField(UserHandle.class, "ALL");
+                        Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, mClassLoader);
+                        Object TIME_TICK_HANDLER = XposedHelpers.getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
+                        Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
+                        // context.registerReceiverAsUser(this.mReceiver, UserHandle.ALL, filter, null, (Handler) Dependency.get(Dependency.TIME_TICK_HANDLER));
+                        XposedHelpers.callMethod(context,
+                                "registerReceiverAsUser",
+                                receiver,
+                                USER_HANDLE_ALL,
+                                filter,
+                                null,
+                                handler);
+                        param.setResult(null);
                     }
                 });
     }

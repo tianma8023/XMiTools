@@ -6,10 +6,11 @@ import android.content.Intent;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedHelpers;
+
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 /**
  * MIUI设置页面 - 选择锁屏时钟界面 Hook
@@ -45,19 +46,15 @@ public class ChooseKeyguardClockActivityHook extends BaseSubHook {
 
     // com.android.keyguard.setting.ChooseKeyguardClockActivity#onStop()
     private void hookOnStop() {
-        XposedHelpers.findAndHookMethod(CLASS_CHOOSE_KEYGUARD_CLOCK_ACTIVITY,
+        findAndHookMethod(CLASS_CHOOSE_KEYGUARD_CLOCK_ACTIVITY,
                 mClassLoader,
                 "onStop",
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            Context context = (Context) param.thisObject;
-                            Intent intent = new Intent(IntentAction.KEYGUARD_STOP_TIME_TICK);
-                            context.sendBroadcast(intent);
-                        } catch (Throwable t) {
-                            XLog.e("", t);
-                        }
+                    protected void before(MethodHookParam param) {
+                        Context context = (Context) param.thisObject;
+                        Intent intent = new Intent(IntentAction.KEYGUARD_STOP_TIME_TICK);
+                        context.sendBroadcast(intent);
                     }
                 });
     }

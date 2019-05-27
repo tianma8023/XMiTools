@@ -9,13 +9,13 @@ import android.widget.FrameLayout;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
-import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
@@ -60,40 +60,36 @@ public class KeyguardClockContainerHook extends BaseSubHook {
     private void hookOnAttachedToWindow() {
         findAndHookMethod(mKeyguardClockContainerClass,
                 "onAttachedToWindow",
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            FrameLayout clockContainer = (FrameLayout) param.thisObject;
-                            ViewParent parent = clockContainer.getParent();
-                            XposedHelpers.callMethod(parent, "onAttachedToWindow");
+                    protected void before(MethodHookParam param) {
+                        FrameLayout clockContainer = (FrameLayout) param.thisObject;
+                        ViewParent parent = clockContainer.getParent();
+                        XposedHelpers.callMethod(parent, "onAttachedToWindow");
 
-                            IntentFilter filter = new IntentFilter();
-//                            filter.addAction("android.intent.action.TIME_TICK");
-                            filter.addAction("android.intent.action.TIME_SET");
-                            filter.addAction("android.intent.action.TIMEZONE_CHANGED");
+                        IntentFilter filter = new IntentFilter();
+                        //                            filter.addAction("android.intent.action.TIME_TICK");
+                        filter.addAction("android.intent.action.TIME_SET");
+                        filter.addAction("android.intent.action.TIMEZONE_CHANGED");
 
-                            BroadcastReceiver mIntentReceiver = (BroadcastReceiver) getObjectField(clockContainer, "mIntentReceiver");
-                            Object USER_HANDLE_ALL = getStaticObjectField(UserHandle.class, "ALL");
-                            Class<?> dependencyClass = findClass(CLASS_DEPENDENCY, mClassLoader);
-                            Object TIME_TICK_HANDLER = getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
-                            Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
+                        BroadcastReceiver mIntentReceiver = (BroadcastReceiver) getObjectField(clockContainer, "mIntentReceiver");
+                        Object USER_HANDLE_ALL = getStaticObjectField(UserHandle.class, "ALL");
+                        Class<?> dependencyClass = findClass(CLASS_DEPENDENCY, mClassLoader);
+                        Object TIME_TICK_HANDLER = getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
+                        Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
 
-                            callMethod(clockContainer.getContext(),
-                                    "registerReceiverAsUser",
-                                    mIntentReceiver,
-                                    USER_HANDLE_ALL,
-                                    filter,
-                                    null,
-                                    handler);
+                        callMethod(clockContainer.getContext(),
+                                "registerReceiverAsUser",
+                                mIntentReceiver,
+                                USER_HANDLE_ALL,
+                                filter,
+                                null,
+                                handler);
 
-                            callMethod(clockContainer, "registerDualClockObserver");
-                            callMethod(clockContainer, "registerClockPositionObserver");
+                        callMethod(clockContainer, "registerDualClockObserver");
+                        callMethod(clockContainer, "registerClockPositionObserver");
 
-                            param.setResult(null);
-                        } catch (Throwable t) {
-                            XLog.e("", t);
-                        }
+                        param.setResult(null);
                     }
                 });
     }

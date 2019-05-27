@@ -16,7 +16,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 8
-        versionName "1.0.7"
+        versionName "1.0.8 beta"
 
         buildConfigField("String", "LOG_TAG", "\"XMiuiClock\"")
         buildConfigField("boolean", "LOG_TO_XPOSED", "true")

@@ -13,18 +13,18 @@ import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
+import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
-import static de.robv.android.xposed.XposedBridge.hookAllConstructors;
-import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
 
 /**
  * 锁屏界面
@@ -66,17 +66,13 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
     private void hookUpdateTime() {
         findAndHookMethod(mMiuiKeyguardLeftTopClockCls,
                 "updateTime",
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            TextView mTimeText = (TextView) XposedHelpers.getObjectField(param.thisObject, "mTimeText");
-                            if (mTimeText != null) {
-                                String originalTimeStr = mTimeText.getText().toString();
-                                mTimeText.setText(addInSecond(originalTimeStr));
-                            }
-                        } catch (Throwable t) {
-                            XLog.e("", t);
+                    protected void after(MethodHookParam param) {
+                        TextView mTimeText = (TextView) XposedHelpers.getObjectField(param.thisObject, "mTimeText");
+                        if (mTimeText != null) {
+                            String originalTimeStr = mTimeText.getText().toString();
+                            mTimeText.setText(addInSecond(originalTimeStr));
                         }
                     }
                 });
@@ -91,35 +87,31 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
     // com.android.keyguard.MiuiKeyguardLeftTopClock#access()
     private void hookConstructor() {
         hookAllConstructors(mMiuiKeyguardLeftTopClockCls,
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            final View keyguardClock = (View) param.thisObject;
-                            keyguardClock.getViewTreeObserver().addOnWindowAttachListener(new ViewTreeObserver.OnWindowAttachListener() {
-                                @Override
-                                public void onWindowAttached() {
-                                    addClock(keyguardClock);
-                                }
+                    protected void after(MethodHookParam param) {
+                        final View keyguardClock = (View) param.thisObject;
+                        keyguardClock.getViewTreeObserver().addOnWindowAttachListener(new ViewTreeObserver.OnWindowAttachListener() {
+                            @Override
+                            public void onWindowAttached() {
+                                addClock(keyguardClock);
+                            }
 
-                                @Override
-                                public void onWindowDetached() {
-                                    removeClock(keyguardClock);
-                                }
-                            });
-                            addClock(keyguardClock);
+                            @Override
+                            public void onWindowDetached() {
+                                removeClock(keyguardClock);
+                            }
+                        });
+                        addClock(keyguardClock);
 
-                            // register receiver
-                            IntentFilter filter = new IntentFilter();
-                            filter.addAction(Intent.ACTION_SCREEN_ON);
-                            filter.addAction(Intent.ACTION_USER_PRESENT);
-                            filter.addAction(Intent.ACTION_SCREEN_OFF);
-                            filter.addAction(IntentAction.KEYGUARD_STOP_TIME_TICK);
+                        // register receiver
+                        IntentFilter filter = new IntentFilter();
+                        filter.addAction(Intent.ACTION_SCREEN_ON);
+                        filter.addAction(Intent.ACTION_USER_PRESENT);
+                        filter.addAction(Intent.ACTION_SCREEN_OFF);
+                        filter.addAction(IntentAction.KEYGUARD_STOP_TIME_TICK);
 
-                            keyguardClock.getContext().registerReceiver(mScreenReceiver, filter);
-                        } catch (Throwable e) {
-                            XLog.e("", e);
-                        }
+                        keyguardClock.getContext().registerReceiver(mScreenReceiver, filter);
                     }
                 });
     }
@@ -131,7 +123,7 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
             int size = mKeyguardClockList.size();
             int limitedSize = 2;
             if (size > limitedSize) {
-                for (int i = 0; i < size - limitedSize; i ++) {
+                for (int i = 0; i < size - limitedSize; i++) {
                     View item = mKeyguardClockList.get(i);
                     mKeyguardClockList.remove(item);
                 }
@@ -160,7 +152,7 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
             } else if (Intent.ACTION_USER_PRESENT.equals(action)
                     || Intent.ACTION_SCREEN_OFF.equals(action)) {
                 TimeTicker.get().unregisterObserver(MiuiKeyguardLeftTopClockHook.this);
-            } else if (IntentAction.KEYGUARD_STOP_TIME_TICK.equals(action)){
+            } else if (IntentAction.KEYGUARD_STOP_TIME_TICK.equals(action)) {
                 TimeTicker.get().unregisterObserver(MiuiKeyguardLeftTopClockHook.this);
             }
         }

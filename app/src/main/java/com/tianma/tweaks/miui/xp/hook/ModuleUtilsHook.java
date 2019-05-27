@@ -4,10 +4,11 @@ package com.tianma.tweaks.miui.xp.hook;
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.utils.ModuleUtils;
 import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 /**
  * Hook class com.github.tianma8023.xposed.smscode.utils.ModuleUtils
@@ -32,11 +33,11 @@ public class ModuleUtilsHook extends BaseHook {
     private void hookModuleUtils(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         String className = ModuleUtils.class.getName();
 
-        XposedHelpers.findAndHookMethod(className, lpparam.classLoader,
+        findAndHookMethod(className, lpparam.classLoader,
                 "isModuleActive",
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    protected void before(MethodHookParam param) {
                         param.setResult(true);
                     }
                 });

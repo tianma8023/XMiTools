@@ -51,7 +51,7 @@ public class SystemUIHook extends BaseHook {
                 new KeyguardClockContainerHook(classLoader, xsp).startHook();
 
                 new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
-                new SignalClusterViewHook(classLoader, xsp).startHook();
+                new SignalClusterViewHook(classLoader, xsp, miuiVersion).startHook();
             }
         }
     }

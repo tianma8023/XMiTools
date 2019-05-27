@@ -13,10 +13,12 @@ import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
+import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedHelpers;
+
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 /**
  * 状态栏时钟居中显示
@@ -63,18 +65,14 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
     }
 
     private void hookSetBar() {
-        XposedHelpers.findAndHookMethod(CLASS_PHONE_STATUS_BAR_VIEW,
+        findAndHookMethod(CLASS_PHONE_STATUS_BAR_VIEW,
                 mClassLoader,
                 "setBar",
                 CLASS_STATUS_BAR,
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        try {
-                            prepareLayoutStatusBar(param);
-                        } catch (Throwable t) {
-                            XLog.e("", t);
-                        }
+                    protected void after(MethodHookParam param) {
+                        prepareLayoutStatusBar(param);
                     }
                 });
     }
@@ -86,8 +84,8 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
         Context context = phoneStatusBarView.getContext();
         Resources res = context.getResources();
 
-//        LinearLayout statusBarContents = phoneStatusBarView.findViewById(
-//                res.getIdentifier("status_bar_contents", "id", PACKAGE_NAME));
+        //        LinearLayout statusBarContents = phoneStatusBarView.findViewById(
+        //                res.getIdentifier("status_bar_contents", "id", PACKAGE_NAME));
 
         TextView clock = phoneStatusBarView.findViewById(
                 res.getIdentifier("clock", "id", PACKAGE_NAME));
@@ -114,12 +112,12 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
     }
 
     private void hookGetActualWidth() {
-        XposedHelpers.findAndHookMethod(CLASS_NOTIFICATION_ICON_CONTAINER,
+        findAndHookMethod(CLASS_NOTIFICATION_ICON_CONTAINER,
                 mClassLoader,
                 "getActualWidth",
-                new XC_MethodHook() {
+                new MethodHookWrapper() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    protected void after(MethodHookParam param) {
                         if (mCenterLayout == null)
                             return;
                         if (mCenterLayout.getChildCount() == 0)
