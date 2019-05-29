@@ -2,8 +2,10 @@ package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
@@ -36,7 +38,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
         try {
             XLog.d("Hooking CollapsedStatusBarFragment... ");
             if (mSignalAlignLeft) {
-                hookCollapsedStatusBarFragment();
+                hookOnViewCreated();
             }
 
             if (mAlwaysShowStatusBarClock) {
@@ -48,7 +50,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
     }
 
     // CollapsedStatusBarFragment#onViewCreated()
-    private void hookCollapsedStatusBarFragment() {
+    private void hookOnViewCreated() {
         findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
                 mClassLoader,
                 "onViewCreated",
@@ -65,12 +67,14 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
                         ((ViewGroup) signalClusterViewContainer.getParent()).removeView(signalClusterViewContainer);
 
                         if (mMiuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
-                            ViewGroup contentsContainer = phoneStatusBarView
+                            LinearLayout contentsContainer = phoneStatusBarView
                                     .findViewById(ResHelpers.getId(res, "phone_status_bar_contents_container"));
+                            contentsContainer.setGravity(Gravity.CENTER_VERTICAL);
                             contentsContainer.addView(signalClusterViewContainer, 0);
                         } else {
-                            ViewGroup statusBarContents = phoneStatusBarView
+                            LinearLayout statusBarContents = phoneStatusBarView
                                     .findViewById(ResHelpers.getId(res, "status_bar_contents"));
+                            statusBarContents.setGravity(Gravity.CENTER_VERTICAL);
                             statusBarContents.addView(signalClusterViewContainer, 0);
                         }
                     }
