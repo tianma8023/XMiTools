@@ -37,4 +37,8 @@ public interface AppConst {
     String XPOSED_EXTRA_FRAGMENT = "fragment";
     /* Xposed Installer end */
 
+    /* MIUI Weather begin */
+    String MIUI_WEATHER_PACKAGE = "com.miui.weather2";
+    /* MIUI Weather end */
+
 }

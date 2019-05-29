@@ -12,6 +12,7 @@ import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardLeftTopClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardVerticalClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.CollapsedStatusBarFragmentHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.HeaderViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.PhoneStatusBarViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.SignalClusterViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.StatusBarClockHook;
@@ -52,6 +53,8 @@ public class SystemUIHook extends BaseHook {
 
                 new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
                 new SignalClusterViewHook(classLoader, xsp, miuiVersion).startHook();
+
+                new HeaderViewHook(classLoader, xsp, miuiVersion).startHook();
             }
         }
     }

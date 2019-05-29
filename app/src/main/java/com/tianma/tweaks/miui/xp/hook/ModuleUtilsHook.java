@@ -15,11 +15,11 @@ import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
  */
 public class ModuleUtilsHook extends BaseHook {
 
-    private static final String SMSCODE_PACKAGE = BuildConfig.APPLICATION_ID;
+    private static final String MI_TWEAKS_PACKAGE = BuildConfig.APPLICATION_ID;
 
     @Override
     public void onLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        if (SMSCODE_PACKAGE.equals(lpparam.packageName)) {
+        if (MI_TWEAKS_PACKAGE.equals(lpparam.packageName)) {
             try {
                 XLog.i("Hooking current Xposed module status...");
                 hookModuleUtils(lpparam);

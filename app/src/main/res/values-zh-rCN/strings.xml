@@ -34,6 +34,10 @@
     <string name="pref_show_sec_in_dropdown_status_bar_title">时间显秒</string>
     <string name="pref_show_sec_in_dropdown_status_bar_summary">下拉状态栏时间显示秒数</string>
     <string name="pref_dropdown_status_bar_title">下拉状态栏</string>
+    <string name="pref_dropdown_status_bar_weather_enable_title">显示天气信息</string>
+    <string name="miui_weather_enable_prompt">小米天气未启用</string>
+    <string name="miui_weather_install_prompt">小米天气未安装</string>
+    <string name="no_weather_info">暂无天气信息</string>
 
     <string name="pref_keyguard_title">锁屏界面</string>
     <string name="pref_show_sec_in_keyguard_horizontal_title">水平时钟显秒</string>

@@ -16,6 +16,15 @@ public class XposedWrapper {
     private XposedWrapper() {
     }
 
+    public static Class<?> findClass(String className, ClassLoader classLoader) {
+        try {
+            return XposedHelpers.findClass(className, classLoader);
+        } catch (Throwable t) {
+            XLog.e("Class not found: %s", className);
+            return null;
+        }
+    }
+
     public static XC_MethodHook.Unhook findAndHookMethod(String className, ClassLoader classLoader, String methodName, Object... parameterTypesAndCallback) {
         try {
             return XposedHelpers.findAndHookMethod(className, classLoader, methodName, parameterTypesAndCallback);

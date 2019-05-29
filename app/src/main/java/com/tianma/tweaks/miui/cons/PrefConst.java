@@ -41,6 +41,8 @@ public interface PrefConst {
     int DROPDOWN_STATUS_BAR_CLOCK_COLOR_DEFAULT = Color.WHITE;
     String DROPDOWN_STATUS_BAR_DATE_COLOR = "dropdown_status_bar_date_color";
     int DROPDOWN_STATUS_BAR_DATE_COLOR_DEFAULT = Color.WHITE;
+    String DROPDOWN_STATUS_BAR_WEATHER_ENABLE = "dropdown_status_bar_weather_enable";
+    boolean DROPDOWN_STATUS_BAR_WEATHER_ENABLE_DEFAULT = false;
 
     String SHOW_SEC_IN_KEYGUARD_HORIZONTAL = "show_sec_in_keyguard_horizontal";
     boolean SHOW_SEC_IN_KEYGUARD_HORIZONTAL_DEFAULT = false;

@@ -23,24 +23,24 @@ public class PackageUtils {
     /**
      * not installed
      */
-    private final static int PACKAGE_NOT_INSTALLED = 0;
+    public final static int PACKAGE_NOT_INSTALLED = 0;
     /**
      * installed & disabled
      */
-    private final static int PACKAGE_DISABLED = 1;
+    public final static int PACKAGE_DISABLED = 1;
     /**
      * installed & enabled
      */
-    private final static int PACKAGE_ENABLED = 2;
+    public final static int PACKAGE_ENABLED = 2;
 
     @IntDef({PACKAGE_NOT_INSTALLED, PACKAGE_DISABLED, PACKAGE_ENABLED})
-    @interface PackageState {
+    public @interface PackageState {
     }
 
     private PackageUtils() {
     }
 
-    private static @PackageState int checkPackageState(Context context, String packageName) {
+    public static @PackageState int checkPackageState(Context context, String packageName) {
         if (isPackageEnabled(context, packageName)) {
             // installed & enabled
             return PACKAGE_ENABLED;

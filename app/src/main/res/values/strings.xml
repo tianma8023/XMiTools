@@ -33,6 +33,10 @@
     <string name="pref_dropdown_status_bar_title">Dropdown Status Bar</string>
     <string name="pref_show_sec_in_dropdown_status_bar_title">Show seconds</string>
     <string name="pref_show_sec_in_dropdown_status_bar_summary">Show seconds in dropdown status bar</string>
+    <string name="pref_dropdown_status_bar_weather_enable_title">Show weather info</string>
+    <string name="no_weather_info">No weather info</string>
+    <string name="miui_weather_enable_prompt">Miui weather disabled</string>
+    <string name="miui_weather_install_prompt">Miui weather not exists</string>
 
     <string name="pref_keyguard_title">Lock Screen</string>
     <string name="pref_show_sec_in_keyguard_horizontal_title">Show seconds in horizontal clock</string>

@@ -36,7 +36,7 @@ public class SignalClusterViewHook extends BaseSubHook {
         mDualMobileSignal = XSPUtils.isDualMobileSignal(xsp);
         mHideVpnIcon = XSPUtils.isHideVpnIcon(xsp);
 
-        mCustomMobileNetworkTypeEnabled = XSPUtils.customMobileNetworkEnabled(xsp);
+        mCustomMobileNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp);
         if (mCustomMobileNetworkTypeEnabled) {
             mCustomMobileNetworkType = XSPUtils.customMobileNetwork(xsp);
         }

@@ -20,6 +20,8 @@ import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_CO
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_CLOCK_COLOR_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_DATE_COLOR;
 import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_DATE_COLOR_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_WEATHER_ENABLE;
+import static com.tianma.tweaks.miui.cons.PrefConst.DROPDOWN_STATUS_BAR_WEATHER_ENABLE_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.KEYGUARD_CLOCK_COLOR;
 import static com.tianma.tweaks.miui.cons.PrefConst.KEYGUARD_CLOCK_COLOR_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.MAIN_SWITCH;
@@ -202,7 +204,7 @@ public class XSPUtils {
     /**
      * 状态栏是否自定义显示的移动网络类型
      */
-    public static boolean customMobileNetworkEnabled(XSharedPreferences xsp) {
+    public static boolean isCustomMobileNetworkEnabled(XSharedPreferences xsp) {
         return xsp.getBoolean(CUSTOM_MOBILE_NETWORK_TYPE_ENABLE, CUSTOM_MOBILE_NETWORK_TYPE_ENABLE_DEFAULT);
     }
 
@@ -212,4 +214,12 @@ public class XSPUtils {
     public static String customMobileNetwork(XSharedPreferences xsp) {
         return xsp.getString(CUSTOM_MOBILE_NETWORK_TYPE, CUSTOM_MOBILE_NETWORK_TYPE_DEFAULT);
     }
+
+    /**
+     * 下拉状态栏是否显示天气信息
+     */
+    public static boolean isDropdownStatusBarWeatherEnabled(XSharedPreferences xsp) {
+        return xsp.getBoolean(DROPDOWN_STATUS_BAR_WEATHER_ENABLE, DROPDOWN_STATUS_BAR_WEATHER_ENABLE_DEFAULT);
+    }
+
 }
