@@ -1,4 +1,7 @@
 # Update Logs
+- 19.05.31 1.0.9
+  1. New option: show weather info in dropdown status bar.
+  2. Bug fixes: align top & left issue about mobile signal icons.
 - 19.05.27 1.0.8
   1. Bug fixes: signal align left invalid issue before MIUI 10 9.5.7
   2. Bug fixes: dual mobile signal invalid issue before MIUI 10 9.5.7

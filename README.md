@@ -1,5 +1,5 @@
 # XMiuiClock
-An xposed module for MIUI 10 SystemUI clock.
+An xposed module for MIUI 10 SystemUI.
 
 [中文说明](/README-CN.md)
 # Screenshots
@@ -21,9 +21,13 @@ You can download in the following sites：
   2. Custom clock alignment (left, center, right)
   3. Custom clock time format
   4. Custom clock time color
+  5. Signal icons align left
+  6. Display dual mobile signals
+  7. Custom displayed mobile network type
 - Dropdown Status Bar
   1. Show seconds in dropdown status bar clock
   2. Custom clock time and date color
+  3. Show weather info
 - Lock Screen
   1. Show seconds in horizontal clock
   2. Show seconds in vertical clock

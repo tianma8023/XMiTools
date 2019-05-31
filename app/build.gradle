@@ -15,15 +15,15 @@ android {
         applicationId "com.tianma.tweaks.miui"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 9
-        versionName "1.0.8"
+        versionCode 10
+        versionName "1.0.9"
 
-        buildConfigField("String", "LOG_TAG", "\"XMiuiClock\"")
+        buildConfigField("String", "LOG_TAG", "\"XMiTools\"")
         buildConfigField("boolean", "LOG_TO_XPOSED", "true")
         buildConfigField("boolean", "LOG_TO_EDXPOSED", "true")
     }
 
-    lintOptions{
+    lintOptions {
         disable 'MissingTranslation'
     }
 

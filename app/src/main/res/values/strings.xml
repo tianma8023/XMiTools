@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">XMiuiClock</string>
+    <string name="app_name">XMiTools</string>
 
-    <string name="xposed_description">MIUI 10 Clock Module</string>
+    <string name="xposed_description">MIUI 10 Module</string>
 
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>

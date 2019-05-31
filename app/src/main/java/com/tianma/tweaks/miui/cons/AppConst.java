@@ -6,11 +6,10 @@ public interface AppConst {
 
     /* MiTweaks begin */
     String MAIN_ACTIVITY_ALIAS = BuildConfig.APPLICATION_ID + ".app.MainActivityAlias";
-    String PROJECT_SOURCE_CODE_URL = "https://github.com/tianma8023/XMiuiClock";
+    String PROJECT_SOURCE_CODE_URL = "https://github.com/tianma8023/XMiTools";
 
     String X_MIUI_CLOCK_PREFS_NAME = BuildConfig.APPLICATION_ID + "_preferences";
     /* MiTweaks end */
-
 
     /* Alipay begin */
     String ALIPAY_PACKAGE_NAME = "com.eg.android.AlipayGphone";
