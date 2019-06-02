@@ -2,7 +2,6 @@ package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +35,17 @@ public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
     private TextView mWeatherInfoTv;
 
     private boolean mWeatherEnabled;
+    private int mWeatherTextColor;
+    private float mWeatherTextSize;
 
     public HeaderViewHook(ClassLoader classLoader, XSharedPreferences xsp, MiuiVersion miuiVersion) {
         super(classLoader, xsp, miuiVersion);
 
         mWeatherEnabled = XSPUtils.isDropdownStatusBarWeatherEnabled(xsp);
+        if (mWeatherEnabled) {
+            mWeatherTextColor = XSPUtils.getDropdownStatusBarWeatherTextColor(xsp);
+            mWeatherTextSize = XSPUtils.getDropdownStatusBarWeatherTextSize(xsp);
+        }
     }
 
     @Override
@@ -90,8 +95,8 @@ public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
                         mWeatherInfoTv = new TextView(headerView.getContext());
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         mWeatherInfoTv.setLayoutParams(lp);
-                        mWeatherInfoTv.setTextColor(Color.parseColor("#ccffffff"));
-                        mWeatherInfoTv.setTextSize(13.5f);
+                        mWeatherInfoTv.setTextColor(mWeatherTextColor);
+                        mWeatherInfoTv.setTextSize(mWeatherTextSize);
 
                         weatherContainer.addView(mWeatherInfoTv, 0);
                     }

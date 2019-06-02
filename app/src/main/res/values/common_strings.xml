@@ -17,6 +17,7 @@
     <string name="pref_status_bar_dual_mobile_signal">status_bar_dual_mobile_signal</string>
     <string name="pref_status_bar_hide_vpn_icon">status_bar_hide_vpn_icon</string>
     <string name="pref_status_bar_hide_hd_icon">status_bar_hide_hd_icon</string>
+    <string name="pref_status_bar_show_small_battery_percent_sign">status_bar_show_small_battery_percent_sign</string>
     <string name="pref_custom_mobile_network_type_enable">custom_mobile_network_type_enable</string>
     <string name="pref_custom_mobile_network_type">custom_mobile_network_type</string>
     <string name="pref_custom_mobile_network_type_default">5G</string>
@@ -26,6 +27,9 @@
     <string name="pref_dropdown_status_bar_clock_color">dropdown_status_bar_clock_color</string>
     <string name="pref_dropdown_status_bar_date_color">dropdown_status_bar_date_color</string>
     <string name="pref_dropdown_status_bar_weather_enable">dropdown_status_bar_weather_enable</string>
+    <string name="pref_dropdown_status_bar_weather_text_color">dropdown_status_bar_weather_text_color</string>
+    <string name="pref_dropdown_status_bar_weather_text_size">dropdown_status_bar_weather_text_size</string>
+
 
     <string name="pref_show_sec_in_keyguard_horizontal">show_sec_in_keyguard_horizontal</string>
     <string name="pref_show_sec_in_keyguard_vertical">show_sec_in_keyguard_vertical</string>

@@ -93,6 +93,12 @@
         <SwitchPreference
             android:defaultValue="false"
             android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_status_bar_show_small_battery_percent_sign"
+            android:title="@string/pref_status_bar_show_small_battery_percent_sign_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
             android:key="@string/pref_custom_mobile_network_type_enable"
             android:summary="@string/pref_custom_mobile_network_type_enable_summary"
             android:title="@string/pref_custom_mobile_network_type_enable_title"/>
@@ -137,6 +143,18 @@
             android:dependency="@string/pref_main_switch"
             android:key="@string/pref_dropdown_status_bar_weather_enable"
             android:title="@string/pref_dropdown_status_bar_weather_enable_title"/>
+
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="@color/white"
+            android:dependency="@string/pref_dropdown_status_bar_weather_enable"
+            android:key="@string/pref_dropdown_status_bar_weather_text_color"
+            android:title="@string/pref_dropdown_status_bar_weather_text_color_title"/>
+
+        <EditTextPreference
+            android:defaultValue="14"
+            android:dependency="@string/pref_dropdown_status_bar_weather_enable"
+            android:key="@string/pref_dropdown_status_bar_weather_text_size"
+            android:title="@string/pref_dropdown_status_bar_weather_text_size_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -27,6 +27,7 @@
     <string name="pref_status_bar_dual_mobile_signal_title">Dual Mobile Signal</string>
     <string name="pref_status_bar_hide_vpn_icon_title">Hide VPN Icon</string>
     <string name="pref_status_bar_hide_hd_icon_title">Hide HD Icon</string>
+    <string name="pref_status_bar_show_small_battery_percent_sign_title">Show small battery percent sign</string>
     <string name="pref_custom_mobile_network_type_enable_title">Custom Mobile Network Type</string>
     <string name="pref_custom_mobile_network_type_enable_summary">Custom displayed mobile network type</string>
     <string name="pref_custom_mobile_network_type_title">Displayed Mobile Network Type</string>
@@ -38,6 +39,8 @@
     <string name="no_weather_info">No weather info</string>
     <string name="miui_weather_enable_prompt">Miui weather disabled</string>
     <string name="miui_weather_install_prompt">Miui weather not exists</string>
+    <string name="pref_dropdown_status_bar_weather_text_color_title">Weather text color</string>
+    <string name="pref_dropdown_status_bar_weather_text_size_title">Weather text size</string>
 
     <string name="pref_keyguard_title">Lock Screen</string>
     <string name="pref_show_sec_in_keyguard_horizontal_title">Show seconds in horizontal clock</string>

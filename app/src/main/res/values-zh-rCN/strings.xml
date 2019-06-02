@@ -28,6 +28,7 @@
     <string name="pref_status_bar_dual_mobile_signal_title">信号双层显示</string>
     <string name="pref_status_bar_hide_vpn_icon_title">隐藏VPN图标</string>
     <string name="pref_status_bar_hide_hd_icon_title">隐藏HD图标</string>
+    <string name="pref_status_bar_show_small_battery_percent_sign_title">电量百分比符号变小</string>
     <string name="pref_custom_mobile_network_type_enable_title">自定义移动网络类型</string>
     <string name="pref_custom_mobile_network_type_enable_summary">自定义显示的移动网络类型</string>
     <string name="pref_custom_mobile_network_type_title">移动网络类型</string>
@@ -39,6 +40,8 @@
     <string name="miui_weather_enable_prompt">小米天气未启用</string>
     <string name="miui_weather_install_prompt">小米天气未安装</string>
     <string name="no_weather_info">暂无天气信息</string>
+    <string name="pref_dropdown_status_bar_weather_text_color_title">天气字体颜色</string>
+    <string name="pref_dropdown_status_bar_weather_text_size_title">天气字体大小</string>
 
     <string name="pref_keyguard_title">锁屏界面</string>
     <string name="pref_show_sec_in_keyguard_horizontal_title">水平时钟显秒</string>

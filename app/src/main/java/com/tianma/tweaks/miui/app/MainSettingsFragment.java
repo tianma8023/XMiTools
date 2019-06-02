@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +30,7 @@ import com.tianma.tweaks.miui.utils.Utils;
 import java.io.File;
 
 import androidx.annotation.Nullable;
+import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 
 public class MainSettingsFragment extends BasePreferenceFragment
@@ -53,6 +56,13 @@ public class MainSettingsFragment extends BasePreferenceFragment
         findPreference(PrefConst.SOURCE_CODE).setOnPreferenceClickListener(this);
         findPreference(PrefConst.KEY_JOIN_QQ_GROUP).setOnPreferenceClickListener(this);
         findPreference(PrefConst.DONATE_BY_ALIPAY).setOnPreferenceClickListener(this);
+
+        EditTextPreference weatherTextSizePref = findPreference(PrefConst.DROPDOWN_STATUS_BAR_WEATHER_TEXT_SIZE);
+        weatherTextSizePref.setOnBindEditTextListener(editText -> {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            editText.setSelection(editText.getText().length());
+        });
+        weatherTextSizePref.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -77,6 +87,9 @@ public class MainSettingsFragment extends BasePreferenceFragment
         Preference networkTypePref = findPreference(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE);
         String networkType = sp.getString(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE, PrefConst.CUSTOM_MOBILE_NETWORK_TYPE_DEFAULT);
         showCustomMobileNetworkType(networkTypePref, networkType);
+
+        EditTextPreference weatherTextSizePref = findPreference(PrefConst.DROPDOWN_STATUS_BAR_WEATHER_TEXT_SIZE);
+        showWeatherTextSize(weatherTextSizePref, weatherTextSizePref.getText());
     }
 
     @Override
@@ -90,7 +103,7 @@ public class MainSettingsFragment extends BasePreferenceFragment
         String key = preference.getKey();
         if (PrefConst.SOURCE_CODE.equals(key)) {
             showSourceCode();
-        } else if(PrefConst.KEY_JOIN_QQ_GROUP.equals(key)) {
+        } else if (PrefConst.KEY_JOIN_QQ_GROUP.equals(key)) {
             joinQQGroup();
         } else if (PrefConst.DONATE_BY_ALIPAY.equals(key)) {
             donateByAlipay();
@@ -109,6 +122,12 @@ public class MainSettingsFragment extends BasePreferenceFragment
             showStatusBarClockFormat(preference, (String) newValue);
         } else if (PrefConst.CUSTOM_MOBILE_NETWORK_TYPE.equals(key)) {
             showCustomMobileNetworkType(preference, (String) newValue);
+        } else if (PrefConst.DROPDOWN_STATUS_BAR_WEATHER_TEXT_SIZE.equals(key)) {
+            String value = (String) newValue;
+            if (TextUtils.isEmpty(value)) {
+                return false;
+            }
+            showWeatherTextSize((EditTextPreference) preference, (String) newValue);
         } else {
             return false;
         }
@@ -130,6 +149,10 @@ public class MainSettingsFragment extends BasePreferenceFragment
         } else {
             preference.setSummary(R.string.module_status_inactive);
         }
+    }
+
+    private void showWeatherTextSize(EditTextPreference preference, String newValue) {
+        preference.setSummary(newValue);
     }
 
     private void showStatusBarClockFormat(Preference preference, String newValue) {
@@ -229,7 +252,7 @@ public class MainSettingsFragment extends BasePreferenceFragment
     @SuppressLint({"SetWorldReadable", "SetWorldWritable"})
     private void setPreferenceWorldWritable() {
         Context context;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // API >= 24 (Android 7.0+)
             // dataDir: /data/user_de/0/<package_name>/
             // spDir: /data/user_de/0/<package_name>/shared_prefs/
