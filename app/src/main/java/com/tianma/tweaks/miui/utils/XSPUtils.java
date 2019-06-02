@@ -36,6 +36,8 @@ import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_STATUS_BAR;
 import static com.tianma.tweaks.miui.cons.PrefConst.SHOW_SEC_IN_STATUS_BAR_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_DUAL_MOBILE_SIGNAL;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_DUAL_MOBILE_SIGNAL_DEFAULT;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_HIDE_HD_ICON;
+import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_HIDE_HD_ICON_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_HIDE_VPN_ICON;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_HIDE_VPN_ICON_DEFAULT;
 import static com.tianma.tweaks.miui.cons.PrefConst.STATUS_BAR_SIGNAL_ALIGN_LEFT;
@@ -199,6 +201,13 @@ public class XSPUtils {
      */
     public static boolean isHideVpnIcon(XSharedPreferences xsp) {
         return xsp.getBoolean(STATUS_BAR_HIDE_VPN_ICON, STATUS_BAR_HIDE_VPN_ICON_DEFAULT);
+    }
+
+    /**
+     * 是否隐藏 HD 图标
+     */
+    public static boolean isHideHDIcon(XSharedPreferences xsp) {
+        return xsp.getBoolean(STATUS_BAR_HIDE_HD_ICON, STATUS_BAR_HIDE_HD_ICON_DEFAULT);
     }
 
     /**

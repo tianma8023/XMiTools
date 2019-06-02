@@ -87,6 +87,12 @@
         <SwitchPreference
             android:defaultValue="false"
             android:dependency="@string/pref_main_switch"
+            android:key="@string/pref_status_bar_hide_hd_icon"
+            android:title="@string/pref_status_bar_hide_hd_icon_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_main_switch"
             android:key="@string/pref_custom_mobile_network_type_enable"
             android:summary="@string/pref_custom_mobile_network_type_enable_summary"
             android:title="@string/pref_custom_mobile_network_type_enable_title"/>

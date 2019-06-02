@@ -28,6 +28,8 @@ public interface PrefConst {
     boolean STATUS_BAR_DUAL_MOBILE_SIGNAL_DEFAULT = false;
     String STATUS_BAR_HIDE_VPN_ICON = "status_bar_hide_vpn_icon";
     boolean STATUS_BAR_HIDE_VPN_ICON_DEFAULT = false;
+    String STATUS_BAR_HIDE_HD_ICON = "status_bar_hide_hd_icon";
+    boolean STATUS_BAR_HIDE_HD_ICON_DEFAULT = false;
     String CUSTOM_MOBILE_NETWORK_TYPE_ENABLE = "custom_mobile_network_type_enable";
     boolean CUSTOM_MOBILE_NETWORK_TYPE_ENABLE_DEFAULT = false;
     String CUSTOM_MOBILE_NETWORK_TYPE = "custom_mobile_network_type";

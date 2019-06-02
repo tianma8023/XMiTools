@@ -1,6 +1,7 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.utils.XLog;
@@ -26,6 +27,7 @@ public class SignalClusterViewHook extends BaseSubHook {
 
     private boolean mDualMobileSignal;
     private boolean mHideVpnIcon;
+    private boolean mHideHDIcon;
 
     private boolean mCustomMobileNetworkTypeEnabled;
     private String mCustomMobileNetworkType = "";
@@ -35,6 +37,7 @@ public class SignalClusterViewHook extends BaseSubHook {
 
         mDualMobileSignal = XSPUtils.isDualMobileSignal(xsp);
         mHideVpnIcon = XSPUtils.isHideVpnIcon(xsp);
+        mHideHDIcon = XSPUtils.isHideHDIcon(xsp);
 
         mCustomMobileNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp);
         if (mCustomMobileNetworkTypeEnabled) {
@@ -56,6 +59,10 @@ public class SignalClusterViewHook extends BaseSubHook {
 
             if (mCustomMobileNetworkTypeEnabled) {
                 hookPhoneStateApply();
+            }
+
+            if (mHideHDIcon) {
+                hookIsImsRegisted();
             }
         } catch (Throwable t) {
             XLog.e("Error occurs when hook SignalClusterView", t);
@@ -114,6 +121,26 @@ public class SignalClusterViewHook extends BaseSubHook {
 
                         mMobileType.setText(mCustomMobileNetworkType);
                         mSignalDualNotchMobileType.setText(mCustomMobileNetworkType);
+                    }
+                });
+    }
+
+    // SignalClusterView$PhoneState#isImdRegisted()
+    private void hookIsImsRegisted() {
+        findAndHookMethod(CLASS_PHONE_STATE,
+                mClassLoader,
+                "setIsImsRegisted",
+                boolean.class,
+                new MethodHookWrapper() {
+                    @Override
+                    protected void after(MethodHookParam param) {
+                        Object phoneState = param.thisObject;
+
+                        ImageView mVolte = (ImageView) getObjectField(phoneState, "mVolte");
+
+                        if (mVolte.getVisibility() != View.GONE) {
+                            mVolte.setVisibility(View.GONE);
+                        }
                     }
                 });
     }

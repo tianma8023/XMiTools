@@ -26,6 +26,7 @@
     <string name="pref_status_bar_signal_align_left_title">Signals Align Left</string>
     <string name="pref_status_bar_dual_mobile_signal_title">Dual Mobile Signal</string>
     <string name="pref_status_bar_hide_vpn_icon_title">Hide VPN Icon</string>
+    <string name="pref_status_bar_hide_hd_icon_title">Hide HD Icon</string>
     <string name="pref_custom_mobile_network_type_enable_title">Custom Mobile Network Type</string>
     <string name="pref_custom_mobile_network_type_enable_summary">Custom displayed mobile network type</string>
     <string name="pref_custom_mobile_network_type_title">Displayed Mobile Network Type</string>
