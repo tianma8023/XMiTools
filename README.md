@@ -1,4 +1,4 @@
-# XMiuiClock
+# XMiTools
 An xposed module for MIUI 10 SystemUI.
 
 [中文说明](/README-CN.md)

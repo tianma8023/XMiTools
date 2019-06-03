@@ -23,10 +23,10 @@ public class MainActivity extends BaseActivity {
 
         setupToolbar();
 
-        getSupportFragmentManager()
+        mToolbar.post(() -> getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.home_content, new MainSettingsFragment())
-                .commit();
+                .commit());
     }
 
     private void setupToolbar() {

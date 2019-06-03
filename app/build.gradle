@@ -15,8 +15,8 @@ android {
         applicationId "com.tianma.tweaks.miui"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 10
-        versionName "1.0.9"
+        versionCode 11
+        versionName "1.1.0"
 
         buildConfigField("String", "LOG_TAG", "\"XMiTools\"")
         buildConfigField("boolean", "LOG_TO_XPOSED", "true")
@@ -71,7 +71,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            output.outputFileName = "XMiuiClock_${variant.versionName.replaceAll('\\s+', '_')}_${releaseTime()}_${variant.buildType.name.charAt(0)}.apk"
+            output.outputFileName = "XMiTools_${variant.versionName.replaceAll('\\s+', '_')}_${releaseTime()}_${variant.buildType.name.charAt(0)}.apk"
         }
     }
 }
@@ -80,7 +80,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0' // material design support
-    implementation 'androidx.preference:preference:1.0.0' // preference-v7
+    implementation 'androidx.preference:preference:1.1.0-alpha05' // preference-v7
     implementation 'androidx.browser:browser:1.0.0' // custom tabs
 
     // Xposed

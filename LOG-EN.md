@@ -1,4 +1,8 @@
 # Update Logs
+- 19.06.03 1.1.0
+  1. New option: hide HD icon.
+  2. New option: custom weather info text color and size.
+  3. New option: show small battery percent sign.
 - 19.05.31 1.0.9
   1. New option: show weather info in dropdown status bar.
   2. Bug fixes: align top & left issue about mobile signal icons.
