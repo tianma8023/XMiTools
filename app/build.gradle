@@ -1,9 +1,12 @@
 apply plugin: 'com.android.application'
 
 def key = file('F:\\Keystore\\tianma.jks')
+def propFile = file('F:\\Keystore\\signature.properties')
 
 def keyProps = new Properties()
-keyProps.load(new FileInputStream("app\\signature.properties"))
+if (propFile.exists()) {
+    keyProps.load(new FileInputStream(propFile))
+}
 
 def static releaseTime() {
     return new Date().format("yyMMdd", TimeZone.default)
@@ -43,8 +46,6 @@ android {
             if (key.exists()) {
                 println "using keystore"
                 signingConfig signingConfigs.release
-            } else {
-                println "using no keystore"
             }
         }
 
@@ -58,8 +59,6 @@ android {
             if (key.exists()) {
                 println "using keystore"
                 signingConfig signingConfigs.release
-            } else {
-                println "using no keystore"
             }
         }
     }
