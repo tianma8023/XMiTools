@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
-def key = file('F:\\Keystore\\tianma.jks')
-def propFile = file('F:\\Keystore\\signature.properties')
+def key = file(findProperty("tianma.keystore.path") as String)
+def propFile = file(findProperty("tianma.signature.path") as String)
 
 def keyProps = new Properties()
 if (propFile.exists()) {
