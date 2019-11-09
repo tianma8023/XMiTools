@@ -21,6 +21,9 @@ import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.StatusBarClockHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+/**
+ * MIUI 系统界面 App Hook
+ */
 public class SystemUIHook extends BaseHook {
 
     public static final String PACKAGE_NAME = "com.android.systemui";

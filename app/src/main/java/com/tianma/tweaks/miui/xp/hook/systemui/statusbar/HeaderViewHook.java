@@ -13,6 +13,7 @@ import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.hook.systemui.weather.WeatherMonitor;
 import com.tianma.tweaks.miui.xp.hook.systemui.weather.WeatherObserver;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
@@ -23,6 +24,9 @@ import de.robv.android.xposed.XSharedPreferences;
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findClass;
 
+/**
+ * 下拉状态栏头部View Hook（下拉状态栏显示天气等）
+ */
 public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
 
     private static final String CLASS_HEADER_VIEW = "com.android.systemui.statusbar.HeaderView";
@@ -60,6 +64,7 @@ public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
         }
     }
 
+    // HeaderView#constructor()
     private void hookConstructor() {
         XposedWrapper.hookAllConstructors(mHeaderViewClass,
                 new MethodHookWrapper() {
@@ -86,10 +91,8 @@ public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
                 new MethodHookWrapper() {
                     @Override
                     protected void after(MethodHookParam param) {
-
                         ViewGroup headerView = (ViewGroup) param.thisObject;
-                        int childCount = headerView.getChildCount();
-                        LinearLayout weatherContainer = (LinearLayout) headerView.getChildAt(childCount - 1);
+                        LinearLayout weatherContainer = (LinearLayout) headerView.getChildAt(headerView.getChildCount() - 1);
                         weatherContainer.setGravity(Gravity.CENTER_VERTICAL);
 
                         mWeatherInfoTv = new TextView(headerView.getContext());
@@ -99,6 +102,16 @@ public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
                         mWeatherInfoTv.setTextSize(mWeatherTextSize);
 
                         weatherContainer.addView(mWeatherInfoTv, 0);
+
+                        // 右上角齿轮快捷按钮
+                        View shortcutView = weatherContainer.findViewById(ResHelpers.getId(headerView.getResources(), "notification_shade_shortcut"));
+                        if (shortcutView == null) {
+                            shortcutView = weatherContainer.getChildAt(weatherContainer.getChildCount() - 1);
+                        }
+                        LinearLayout.LayoutParams shortcutLP = (LinearLayout.LayoutParams) shortcutView.getLayoutParams();
+                        if (shortcutLP.bottomMargin > 0) {
+                            shortcutLP.bottomMargin = 0;
+                        }
                     }
                 });
     }
