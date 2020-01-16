@@ -75,12 +75,22 @@ android {
     }
 }
 
+ext {
+    gsonVersion = "2.8.6" // gson
+
+    rxJavaVersion = "2.2.10" // RxJava 2
+    rxAndroidVersion = "2.1.1" // RxAndroid 2
+
+    okHttpVersion = "3.14.4" // OkHttp
+    retrofitVersion = "2.5.0" // retrofit
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0' // material design support
     implementation 'androidx.preference:preference:1.1.0' // preference-v7
-    implementation 'androidx.browser:browser:1.0.0' // custom tabs
+    implementation 'androidx.browser:browser:1.2.0' // custom tabs
 
     // Xposed
     compileOnly 'de.robv.android.xposed:api:82'
@@ -98,4 +108,26 @@ dependencies {
 
     // color picker preference
     implementation 'com.jaredrummler:colorpicker:1.1.0'
+
+    // Gson
+    implementation "com.google.code.gson:gson:$gsonVersion"
+
+    // RxJava 2
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    // RxAndroid 2
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+    // OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    // OkHttp logging interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    // Retrofit Gson converter
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    // Retrofit scalars converter
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+    // Retrofit RxJava Adapter
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 }
