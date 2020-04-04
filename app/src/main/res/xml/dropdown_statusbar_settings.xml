@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_show_sec_in_dropdown_status_bar"
+        android:summary="@string/pref_show_sec_in_dropdown_status_bar_summary"
+        android:title="@string/pref_show_sec_in_dropdown_status_bar_title" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_dropdown_status_bar_clock_color_enable"
+        android:title="@string/pref_status_bar_clock_color_enable_title" />
+
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+        android:defaultValue="@color/white"
+        android:dependency="@string/pref_dropdown_status_bar_clock_color_enable"
+        android:key="@string/pref_dropdown_status_bar_clock_color"
+        android:title="@string/clock_color" />
+
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+        android:defaultValue="@color/white"
+        android:dependency="@string/pref_dropdown_status_bar_clock_color_enable"
+        android:key="@string/pref_dropdown_status_bar_date_color"
+        android:title="@string/date_color" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_dropdown_status_bar_weather_enable"
+        android:title="@string/pref_dropdown_status_bar_weather_enable_title" />
+
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+        android:defaultValue="@color/white"
+        android:dependency="@string/pref_dropdown_status_bar_weather_enable"
+        android:key="@string/pref_dropdown_status_bar_weather_text_color"
+        android:title="@string/pref_dropdown_status_bar_weather_text_color_title" />
+
+    <EditTextPreference
+        android:defaultValue="14"
+        android:dependency="@string/pref_dropdown_status_bar_weather_enable"
+        android:key="@string/pref_dropdown_status_bar_weather_text_size"
+        android:title="@string/pref_dropdown_status_bar_weather_text_size_title" />
+
+
+</PreferenceScreen>

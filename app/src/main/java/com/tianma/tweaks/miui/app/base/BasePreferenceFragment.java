@@ -11,6 +11,16 @@ import androidx.preference.PreferenceManager;
 
 public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
 
+    private CharSequence title;
+
+    public BasePreferenceFragment() {
+        this("");
+    }
+
+    public BasePreferenceFragment(CharSequence title) {
+        setTitle(title);
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         PreferenceManager pm = getPreferenceManager();
@@ -22,5 +32,13 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
     public <T extends Preference> T findPreference(@NonNull CharSequence key) {
         PreferenceManager pm = getPreferenceManager();
         return pm.findPreference(key);
+    }
+
+    public void setTitle(CharSequence title) {
+        this.title = title;
+    }
+
+    final public CharSequence getTitle() {
+        return title;
     }
 }

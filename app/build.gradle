@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 def key = file(findProperty("tianma.keystore.path") as String)
 def propFile = file(findProperty("tianma.signature.path") as String)
@@ -130,4 +132,11 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
     // Retrofit RxJava Adapter
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+    // Kotlin
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

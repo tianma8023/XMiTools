@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.tianma.tweaks.miui">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tianma.tweaks.miui">
 
     <application
         android:allowBackup="false"
@@ -14,22 +14,22 @@
         <!-- xposed module configuration -->
         <meta-data
             android:name="xposedmodule"
-            android:value="true"/>
+            android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="@string/xposed_description"/>
+            android:value="@string/xposed_description" />
         <meta-data
             android:name="xposedminversion"
-            android:value="30"/>
+            android:value="30" />
 
         <activity
             android:name=".app.MainActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:screenOrientation="unspecified">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS"/>
+                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
             </intent-filter>
         </activity>
 
@@ -37,9 +37,9 @@
             android:name=".app.MainActivityAlias"
             android:targetActivity=".app.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
     </application>
