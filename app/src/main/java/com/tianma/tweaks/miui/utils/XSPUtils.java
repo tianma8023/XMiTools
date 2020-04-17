@@ -4,8 +4,11 @@ import android.graphics.Color;
 
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.cons.AppConst;
+import com.tianma.tweaks.miui.cons.PrefConst;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import de.robv.android.xposed.XSharedPreferences;
 
@@ -243,6 +246,27 @@ public class XSPUtils {
             size = Float.parseFloat(DROPDOWN_STATUS_BAR_WEATHER_TEXT_SIZE_DEFAULT);
         }
         return size;
+    }
+
+    /**
+     * 获取一言API源
+     */
+    public static Set<String> getOneSentenceApiSources(XSharedPreferences xsp) {
+        return xsp.getStringSet(PrefConst.ONE_SENTENCE_API_SOURCES, new HashSet<>());
+    }
+
+    /**
+     * 获取Hitokoto种类
+     */
+    public static Set<String> getHitokotoCategories(XSharedPreferences xsp) {
+        return xsp.getStringSet(PrefConst.HITOKOTO_CATEGORIES, new HashSet<>());
+    }
+
+    /**
+     * 获取今日诗词种类
+     */
+    public static Set<String> getOnePoemCategories(XSharedPreferences xsp) {
+        return xsp.getStringSet(PrefConst.ONE_POEM_CATEGORIES, new HashSet<>());
     }
 
 }

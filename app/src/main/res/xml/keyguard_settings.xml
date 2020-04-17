@@ -13,4 +13,27 @@
         android:summary="@string/pref_show_sec_in_keyguard_vertical_summary"
         android:title="@string/pref_show_sec_in_keyguard_vertical_title" />
 
+    <PreferenceCategory android:title="@string/pref_category_title_hitokoto">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/pref_one_sentence_enable"
+            android:title="@string/pref_one_poem_enable_title" />
+
+        <Preference
+            android:dependency="@string/pref_one_sentence_enable"
+            android:key="@string/pref_one_sentence_settings"
+            android:title="@string/pref_one_sentence_settings_title" />
+
+        <ListPreference
+            android:defaultValue="@string/refresh_rate_30_min_value"
+            android:dependency="@string/pref_one_sentence_enable"
+            android:entries="@array/one_sentence_refresh_rate_entry_list"
+            android:entryValues="@array/one_sentence_refresh_rate_value_list"
+            android:key="@string/pref_one_sentence_refresh_rate"
+            android:summary="%s"
+            android:title="@string/pref_one_sentence_refresh_rate_title" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

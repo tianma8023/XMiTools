@@ -1,11 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Common string resources( don't need translate) -->
+<?xml version="1.0" encoding="utf-8"?><!-- Common string resources( don't need translate) -->
 <resources>
 
     <!-- shared preference key -->
+    <!-- GENERAL SETTINGS START -->
     <string name="pref_module_status">module_status</string>
     <string name="pref_main_switch">main_switch</string>
+    <string name="pref_hide_launcher_icon">hide_launcher_icon</string>
+    <!-- GENERAL SETTINGS END -->
 
+    <!-- STATUS_BAR SETTINGS START -->
     <string name="pref_show_sec_in_status_bar">show_sec_in_status_bar</string>
     <string name="pref_status_bar_clock_alignment">status_bar_clock_alignment</string>
     <string name="pref_status_bar_clock_color_enable">status_bar_clock_color_enable</string>
@@ -21,7 +24,10 @@
     <string name="pref_custom_mobile_network_type_enable">custom_mobile_network_type_enable</string>
     <string name="pref_custom_mobile_network_type">custom_mobile_network_type</string>
     <string name="pref_custom_mobile_network_type_default">5G</string>
+    <string name="pref_always_show_status_bar_clock">always_show_status_bar_clock</string>
+    <!-- STATUS_BAR SETTINGS END -->
 
+    <!-- DROPDOWN STATUS_BAR SETTINGS START -->
     <string name="pref_show_sec_in_dropdown_status_bar">show_sec_in_dropdown_status_bar</string>
     <string name="pref_dropdown_status_bar_clock_color_enable">dropdown_status_bar_clock_color_enable</string>
     <string name="pref_dropdown_status_bar_clock_color">dropdown_status_bar_clock_color</string>
@@ -29,20 +35,26 @@
     <string name="pref_dropdown_status_bar_weather_enable">dropdown_status_bar_weather_enable</string>
     <string name="pref_dropdown_status_bar_weather_text_color">dropdown_status_bar_weather_text_color</string>
     <string name="pref_dropdown_status_bar_weather_text_size">dropdown_status_bar_weather_text_size</string>
+    <!-- DROPDOWN STATUS_BAR SETTINGS END -->
 
-
+    <!-- KEYGUARD START -->
     <string name="pref_show_sec_in_keyguard_horizontal">show_sec_in_keyguard_horizontal</string>
     <string name="pref_show_sec_in_keyguard_vertical">show_sec_in_keyguard_vertical</string>
     <string name="pref_keyguard_clock_color">keyguard_clock_color</string>
 
-    <string name="pref_always_show_status_bar_clock">always_show_status_bar_clock</string>
+    <string name="pref_one_sentence_enable">one_sentence_enable</string>
+    <string name="pref_one_sentence_settings">one_sentence_settings</string>
+    <string name="pref_one_sentence_refresh_rate">one_sentence_refresh_rate</string>
+    <!-- KEYGUARD SETTINGS END -->
 
-    <string name="pref_hide_launcher_icon">hide_launcher_icon</string>
 
+    <!-- ABOUT START -->
     <string name="pref_app_version">app_version</string>
     <string name="pref_source_code">source_code</string>
     <string name="pref_join_qq_group">join_qq_group</string>
     <string name="pref_donate_by_alipay">donate_by_alipay</string>
+    <!-- ABOUT END -->
+
     <!-- shared preference key end -->
 
     <!-- alignment -->
@@ -62,4 +74,40 @@
     <string name="alignment_center_value">center</string>
     <string name="alignment_right_value">right</string>
     <!-- alignment end -->
+
+    <!-- OneSentence refresh rate -->
+    <string-array name="one_sentence_refresh_rate_entry_list">
+        <item>@string/refresh_rate_0_min_entry</item>
+        <item>@string/refresh_rate_1_min_entry</item>
+        <item>@string/refresh_rate_5_min_entry</item>
+        <item>@string/refresh_rate_20_min_entry</item>
+        <item>@string/refresh_rate_30_min_entry</item>
+        <item>@string/refresh_rate_1_hour_entry</item>
+        <item>@string/refresh_rate_3_hour_entry</item>
+        <item>@string/refresh_rate_6_hour_entry</item>
+        <item>@string/refresh_rate_24_hour_entry</item>
+    </string-array>
+
+    <string-array name="one_sentence_refresh_rate_value_list">
+        <item>@string/refresh_rate_0_min_value</item>
+        <item>@string/refresh_rate_1_min_value</item>
+        <item>@string/refresh_rate_5_min_value</item>
+        <item>@string/refresh_rate_20_min_value</item>
+        <item>@string/refresh_rate_30_min_value</item>
+        <item>@string/refresh_rate_1_hour_value</item>
+        <item>@string/refresh_rate_3_hour_value</item>
+        <item>@string/refresh_rate_6_hour_value</item>
+        <item>@string/refresh_rate_24_hour_value</item>
+    </string-array>
+
+    <string name="refresh_rate_0_min_value">0</string>
+    <string name="refresh_rate_1_min_value">1</string>
+    <string name="refresh_rate_5_min_value">5</string>
+    <string name="refresh_rate_20_min_value">20</string>
+    <string name="refresh_rate_30_min_value">30</string>
+    <string name="refresh_rate_1_hour_value">60</string>
+    <string name="refresh_rate_3_hour_value">180</string>
+    <string name="refresh_rate_6_hour_value">360</string>
+    <string name="refresh_rate_24_hour_value">1440</string>
+    <!-- OneSentence refresh rate end -->
 </resources>
