@@ -18,13 +18,16 @@ import com.google.gson.annotations.SerializedName;
 // }
 public class Hitokoto implements Parcelable {
 
+    @SerializedName("id")
     private int id;
 
     @SerializedName("hitokoto")
     private String content;
 
+    @SerializedName("type")
     private String type;
 
+    @SerializedName("from")
     private String from;
 
     public Hitokoto() {

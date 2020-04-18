@@ -3,17 +3,23 @@ package com.tianma.tweaks.miui.data.http.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * 诗
  */
 public class Poem implements Parcelable {
 
+    @SerializedName("content")
     private String content;
 
+    @SerializedName("origin")
     private String origin;
 
+    @SerializedName("author")
     private String author;
 
+    @SerializedName("category")
     private String category;
 
     public Poem() {
