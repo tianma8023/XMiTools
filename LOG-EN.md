@@ -1,4 +1,6 @@
 # Update Logs
+- 20.04.18 1.2.0
+  1. New option: Hitokoto on lock screen.
 - 19.06.03 1.1.0
   1. New option: hide HD icon.
   2. New option: custom weather info text color and size.
