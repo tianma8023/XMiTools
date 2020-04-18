@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply from: 'and-res-guard.gradle'
 
-def key = file(findProperty("tianma.keystore.path") as String)
+def keyFile = file(findProperty("tianma.keystore.path") as String)
 def propFile = file(findProperty("tianma.signature.path") as String)
 
 def keyProps = new Properties()
@@ -34,7 +35,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile key
+            storeFile keyFile
             storePassword keyProps['STORE_PASSWORD']
             keyAlias keyProps['KEY_ALIAS']
             keyPassword keyProps['KEY_PASSWORD']
@@ -45,23 +46,25 @@ android {
         debug {
             buildConfigField("int", "LOG_LEVEL", "2")
 
-            if (key.exists()) {
+            if (keyFile.exists()) {
                 println "using keystore"
                 signingConfig signingConfigs.release
             }
         }
 
         release {
-            buildConfigField("int", "LOG_LEVEL", "2")
+            buildConfigField("int", "LOG_LEVEL", "4")
 
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
 
-            if (key.exists()) {
+            if (keyFile.exists()) {
                 println "using keystore"
                 signingConfig signingConfigs.release
             }
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
