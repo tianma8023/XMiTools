@@ -27,7 +27,6 @@ import java.util.Locale;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-import io.reactivex.disposables.CompositeDisposable;
 
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
@@ -292,26 +291,21 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
     private final SimpleScreenListener screenListener = new SimpleScreenListener() {
         @Override
         public void onScreenOn() {
-            XLog.d("MiuiKeyguardVerticalClockHook -> onScreenOn()");
             TimeTicker.get().registerObserver(MiuiKeyguardVerticalClockHook.this);
         }
 
         @Override
         public void onScreenOff() {
-            XLog.d("MiuiKeyguardVerticalClockHook -> onScreenOff()");
-
             TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
         }
 
         @Override
         public void onUserPresent() {
-            XLog.d("MiuiKeyguardVerticalClockHook -> onUserPresent()");
             TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
         }
 
         @Override
         public void onStopTimeTick() {
-            XLog.d("MiuiKeyguardVerticalClockHook -> onStopTimeTick()");
             TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
         }
     };

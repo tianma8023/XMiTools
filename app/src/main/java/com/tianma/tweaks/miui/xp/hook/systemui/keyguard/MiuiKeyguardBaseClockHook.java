@@ -251,6 +251,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(hitokoto -> {
+                        XLog.d(hitokoto.toString());
                         String content = hitokoto.getContent() == null ? "" : hitokoto.getContent();
                         String oneSentence;
                         if (showHitokotoSource) {
@@ -287,6 +288,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(poem -> {
+                        XLog.d(poem.toString());
                         String content = poem.getContent() == null ? "" : poem.getContent();
                         String oneSentence;
                         if (showPoemAuthor) {
