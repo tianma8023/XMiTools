@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 def key = file(findProperty("tianma.keystore.path") as String)
 def propFile = file(findProperty("tianma.signature.path") as String)
@@ -52,7 +52,7 @@ android {
         }
 
         release {
-            buildConfigField("int", "LOG_LEVEL", "4")
+            buildConfigField("int", "LOG_LEVEL", "2")
 
             minifyEnabled true
             shrinkResources true
