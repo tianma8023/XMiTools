@@ -11,7 +11,7 @@ public class TimeTicker {
 
     private List<TickObserver> mObserverList;
 
-    private static TimeTicker sTimeTicker;
+    private volatile static TimeTicker sTimeTicker;
 
     private Handler mSecondsHandler = new Handler(Looper.getMainLooper());
 

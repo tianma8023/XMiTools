@@ -249,6 +249,13 @@ public class XSPUtils {
     }
 
     /**
+     * 是否启用一言
+     */
+    public static boolean oneSentenceEnabled(XSharedPreferences xsp) {
+        return xsp.getBoolean(PrefConst.ONE_SENTENCE_ENABLE, false);
+    }
+
+    /**
      * 获取一言API源
      */
     public static Set<String> getOneSentenceApiSources(XSharedPreferences xsp) {
@@ -267,6 +274,34 @@ public class XSPUtils {
      */
     public static Set<String> getOnePoemCategories(XSharedPreferences xsp) {
         return xsp.getStringSet(PrefConst.ONE_POEM_CATEGORIES, new HashSet<>());
+    }
+
+    /**
+     * 是否显示一言 Hitokoto 来源
+     */
+    public static boolean getShowHitokotoSource(XSharedPreferences xsp) {
+        return xsp.getBoolean(PrefConst.SHOW_HITOKOTO_SOURCE, false);
+    }
+
+    /**
+     * 是否显示今日诗词作者
+     */
+    public static boolean getShowPoemAuthor(XSharedPreferences xsp) {
+        return xsp.getBoolean(PrefConst.SHOW_POEM_AUTHOR, false);
+    }
+
+    /**
+     * 获取一言刷新时间间隔，单位为min
+     */
+    public static long getOneSentenceRefreshRate(XSharedPreferences xsp) {
+        String text = xsp.getString(PrefConst.ONE_SENTENCE_REFRESH_RATE, PrefConst.ONE_SENTENCE_REFRESH_RATE_DEFAULT);
+        long refreshRate;
+        try {
+            refreshRate = Long.parseLong(text);
+        } catch (Throwable t) {
+            refreshRate = Long.parseLong(PrefConst.ONE_SENTENCE_REFRESH_RATE_DEFAULT);
+        }
+        return refreshRate;
     }
 
 }

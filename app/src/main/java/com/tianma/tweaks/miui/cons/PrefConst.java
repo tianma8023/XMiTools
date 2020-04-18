@@ -63,4 +63,7 @@ public interface PrefConst {
     String ONE_POEM_CATEGORY_ALL = "all";
     String SHOW_POEM_AUTHOR = "show_poem_author";
 
+    String ONE_SENTENCE_REFRESH_RATE = "one_sentence_refresh_rate";
+    String ONE_SENTENCE_REFRESH_RATE_DEFAULT = "30";
+
 }

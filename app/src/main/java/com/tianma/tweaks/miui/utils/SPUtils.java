@@ -65,5 +65,16 @@ public class SPUtils {
         return PreferencesUtils.getBoolean(context, PrefConst.SHOW_POEM_AUTHOR, false);
     }
 
+    private static final String ONE_SENTENCE_LAST_REFRESH_TIME = "one_sentence_last_refresh_time";
+
+    // 存储上次刷新时间
+    public static void setOneSentenceLastRefreshTime(Context context, long timestamp) {
+        PreferencesUtils.putLong(context, ONE_SENTENCE_LAST_REFRESH_TIME, timestamp);
+    }
+
+    // 获取上次刷新时间
+    public static long getOneSentenceLastRefreshTime(Context context) {
+        return PreferencesUtils.getLong(context, ONE_SENTENCE_LAST_REFRESH_TIME, 0L);
+    }
 
 }

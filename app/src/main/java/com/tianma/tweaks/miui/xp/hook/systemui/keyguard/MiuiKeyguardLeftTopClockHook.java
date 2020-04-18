@@ -1,16 +1,18 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tianma.tweaks.miui.R;
+import com.tianma.tweaks.miui.utils.ResolutionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
+import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
@@ -38,25 +40,30 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
     private Class<?> mMiuiKeyguardLeftTopClockCls;
 
     private boolean mShowHorizontalSec;
+    private boolean mOneSentenceEnabled;
 
     private List<View> mKeyguardClockList = new ArrayList<>();
 
     public MiuiKeyguardLeftTopClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
         mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
+        mOneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
     }
 
     @Override
     public void startHook() {
-        if (!mShowHorizontalSec) {
-            return;
-        }
         try {
             XLog.d("Hooking MiuiKeyguardLeftTopClock...");
-            mMiuiKeyguardLeftTopClockCls = XposedHelpers
-                    .findClass(CLASS_MIUI_KEYGUARD_LEFT_TOP_CLOCK, mClassLoader);
-            hookConstructor();
-            hookUpdateTime();
+            mMiuiKeyguardLeftTopClockCls = XposedHelpers.findClass(CLASS_MIUI_KEYGUARD_LEFT_TOP_CLOCK, mClassLoader);
+
+            if (mShowHorizontalSec) {
+                hookConstructor();
+                hookUpdateTime();
+            }
+
+            if (mOneSentenceEnabled) {
+                hookOnFinishInflate();
+            }
         } catch (Throwable t) {
             XLog.e("Error occurs when hook MiuiKeyguardLeftTopClock", t);
         }
@@ -104,14 +111,7 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
                         });
                         addClock(keyguardClock);
 
-                        // register receiver
-                        IntentFilter filter = new IntentFilter();
-                        filter.addAction(Intent.ACTION_SCREEN_ON);
-                        filter.addAction(Intent.ACTION_USER_PRESENT);
-                        filter.addAction(Intent.ACTION_SCREEN_OFF);
-                        filter.addAction(IntentAction.KEYGUARD_STOP_TIME_TICK);
-
-                        keyguardClock.getContext().registerReceiver(mScreenReceiver, filter);
+                        ScreenBroadcastManager.getInstance(keyguardClock.getContext()).registerListener(screenListener);
                     }
                 });
     }
@@ -143,18 +143,25 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
         }
     }
 
-    private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
+    private final SimpleScreenListener screenListener = new SimpleScreenListener() {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                TimeTicker.get().registerObserver(MiuiKeyguardLeftTopClockHook.this);
-            } else if (Intent.ACTION_USER_PRESENT.equals(action)
-                    || Intent.ACTION_SCREEN_OFF.equals(action)) {
-                TimeTicker.get().unregisterObserver(MiuiKeyguardLeftTopClockHook.this);
-            } else if (IntentAction.KEYGUARD_STOP_TIME_TICK.equals(action)) {
-                TimeTicker.get().unregisterObserver(MiuiKeyguardLeftTopClockHook.this);
-            }
+        public void onScreenOn() {
+            TimeTicker.get().registerObserver(MiuiKeyguardLeftTopClockHook.this);
+        }
+
+        @Override
+        public void onScreenOff() {
+            TimeTicker.get().unregisterObserver(MiuiKeyguardLeftTopClockHook.this);
+        }
+
+        @Override
+        public void onUserPresent() {
+            TimeTicker.get().unregisterObserver(MiuiKeyguardLeftTopClockHook.this);
+        }
+
+        @Override
+        public void onStopTimeTick() {
+            TimeTicker.get().unregisterObserver(MiuiKeyguardLeftTopClockHook.this);
         }
     };
 
@@ -165,5 +172,31 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
                 XposedHelpers.callMethod(keyguardClock, "updateTime");
             }
         }
+    }
+
+    // com.android.keyguard.MiuiKeyguardLeftTopClock#onFinishInflate()
+    private void hookOnFinishInflate() {
+        findAndHookMethod(mMiuiKeyguardLeftTopClockCls,
+                "onFinishInflate",
+                new MethodHookWrapper() {
+                    @Override
+                    protected void after(MethodHookParam param) {
+                        LinearLayout keyguardClock = (LinearLayout) param.thisObject;
+
+                        try {
+                            // 校正 HitokotoTextView 位置
+                            TextView hitokotoInfo = keyguardClock.findViewById(R.id.hitokoto_info_text_view);
+                            if (hitokotoInfo != null) {
+                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) hitokotoInfo.getLayoutParams();
+                                layoutParams.gravity = Gravity.START;
+
+                                layoutParams.leftMargin = (int) ResolutionUtils.dp2px(keyguardClock.getContext(), 5);
+                            }
+                        } catch (Throwable t) {
+                            // ignore
+                            XLog.e("", t);
+                        }
+                    }
+                });
     }
 }

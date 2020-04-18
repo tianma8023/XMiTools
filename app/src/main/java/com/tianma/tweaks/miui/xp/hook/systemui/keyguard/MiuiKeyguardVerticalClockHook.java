@@ -2,19 +2,20 @@ package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tianma.tweaks.miui.R;
+import com.tianma.tweaks.miui.utils.ResolutionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
+import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
@@ -26,6 +27,7 @@ import java.util.Locale;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
+import io.reactivex.disposables.CompositeDisposable;
 
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
@@ -44,13 +46,6 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
 
     private static final String CLASS_MIUI_KEYGUARD_VERTICAL_CLOCK = "com.android.keyguard.MiuiKeyguardVerticalClock";
 
-    private Class<?> mMiuiKeyguardVerticalClockCls;
-
-    private final boolean mShowVerticalSec;
-    private final boolean mShowHorizontalSec;
-
-    private List<View> mKeyguardClockList = new ArrayList<>();
-
     private static final String M_HORIZONTAL_TIME_LAYOUT = "mHorizontalTimeLayout";
     private static final String M_HORIZONTAL_DOT = "mHorizontalDot";
     private static final String M_HORIZONTAL_DOT_2 = "mHorizontalDot2";
@@ -64,32 +59,45 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
     private static final String M_VERTICAL_TO_HORIZONTAL_ANIM_2 = "mVerticalToHorizontalAnim2";
     private static final String M_HORIZONTAL_TO_VERTICAL_ANIM_2 = "mHorizontalToVerticalAnim2";
 
+    private Class<?> mMiuiKeyguardVerticalClockCls;
+
+    private final boolean mShowVerticalSec;
+    private final boolean mShowHorizontalSec;
+    private final boolean mOneSentenceEnabled;
+
+    private List<View> mKeyguardClockList = new ArrayList<>();
+
     public MiuiKeyguardVerticalClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
 
         mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
         mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
+        mOneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
     }
 
     @Override
     public void startHook() {
-        if (!mShowHorizontalSec && !mShowVerticalSec) {
-            return;
-        }
         try {
             XLog.d("Hooking MiuiKeyguardVerticalClock...");
             mMiuiKeyguardVerticalClockCls = XposedHelpers
                     .findClass(CLASS_MIUI_KEYGUARD_VERTICAL_CLOCK, mClassLoader);
-            hookOnFinishInflate();
-            hookUpdateViewTextSize();
-            hookUpdateTime();
-            hookConstructor();
-            hookShowHorizontalTime();
-            hookShowVerticalTime();
-            hookPlayVerticalToHorizontalAnim();
-            hookPlayHorizontalToVerticalAnim();
-            hookClearAnim();
-            hookSetDarkMode();
+
+            if (mShowHorizontalSec || mShowVerticalSec) {
+                hookOnFinishInflate();
+                hookUpdateViewTextSize();
+                hookUpdateTime();
+                hookConstructor();
+                hookShowHorizontalTime();
+                hookShowVerticalTime();
+                hookPlayVerticalToHorizontalAnim();
+                hookPlayHorizontalToVerticalAnim();
+                hookClearAnim();
+                hookSetDarkMode();
+            }
+
+            if (mOneSentenceEnabled) {
+                hookShowHorizontalTime();
+            }
         } catch (Throwable t) {
             XLog.e("Error occurs when hook MiuiKeyguardVerticalClock", t);
         }
@@ -232,13 +240,15 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
                         addClock(keyguardClock);
 
                         // register receiver
-                        IntentFilter filter = new IntentFilter();
-                        filter.addAction(Intent.ACTION_SCREEN_ON);
-                        filter.addAction(Intent.ACTION_USER_PRESENT);
-                        filter.addAction(Intent.ACTION_SCREEN_OFF);
-                        filter.addAction(IntentAction.KEYGUARD_STOP_TIME_TICK);
+//                        IntentFilter filter = new IntentFilter();
+//                        filter.addAction(Intent.ACTION_SCREEN_ON);
+//                        filter.addAction(Intent.ACTION_USER_PRESENT);
+//                        filter.addAction(Intent.ACTION_SCREEN_OFF);
+//                        filter.addAction(IntentAction.KEYGUARD_STOP_TIME_TICK);
+//
+//                        keyguardClock.getContext().registerReceiver(mScreenReceiver, filter);
 
-                        keyguardClock.getContext().registerReceiver(mScreenReceiver, filter);
+                        ScreenBroadcastManager.getInstance(keyguardClock.getContext()).registerListener(screenListener);
                     }
                 });
     }
@@ -279,18 +289,30 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
         }
     }
 
-    private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
+    private final SimpleScreenListener screenListener = new SimpleScreenListener() {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                TimeTicker.get().registerObserver(MiuiKeyguardVerticalClockHook.this);
-            } else if (Intent.ACTION_USER_PRESENT.equals(action)
-                    || Intent.ACTION_SCREEN_OFF.equals(action)) {
-                TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
-            } else if (IntentAction.KEYGUARD_STOP_TIME_TICK.equals(action)) {
-                TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
-            }
+        public void onScreenOn() {
+            XLog.d("MiuiKeyguardVerticalClockHook -> onScreenOn()");
+            TimeTicker.get().registerObserver(MiuiKeyguardVerticalClockHook.this);
+        }
+
+        @Override
+        public void onScreenOff() {
+            XLog.d("MiuiKeyguardVerticalClockHook -> onScreenOff()");
+
+            TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
+        }
+
+        @Override
+        public void onUserPresent() {
+            XLog.d("MiuiKeyguardVerticalClockHook -> onUserPresent()");
+            TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
+        }
+
+        @Override
+        public void onStopTimeTick() {
+            XLog.d("MiuiKeyguardVerticalClockHook -> onStopTimeTick()");
+            TimeTicker.get().unregisterObserver(MiuiKeyguardVerticalClockHook.this);
         }
     };
 
@@ -301,14 +323,37 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
                 new MethodHookWrapper() {
                     @Override
                     protected void after(MethodHookParam param) {
-                        Object keyguardClock = param.thisObject;
+                        View keyguardClock = (View) param.thisObject;
+
+                        boolean mShowHorizontalTime = getBooleanField(param.thisObject, "mShowHorizontalTime");
 
                         TextView mVerticalSec = (TextView) getAdditionalInstanceField(keyguardClock, M_VERTICAL_SEC);
                         if (mVerticalSec != null) {
-                            boolean mShowHorizontalTime = getBooleanField(param.thisObject, "mShowHorizontalTime");
                             if (mShowHorizontalTime) {
                                 mVerticalSec.setAlpha(0.0f);
                             }
+                        }
+
+                        try {
+                            // 校正 HitokotoTextView 位置
+                            TextView hitokotoInfo = keyguardClock.findViewById(R.id.hitokoto_info_text_view);
+                            if (hitokotoInfo != null) {
+                                if (mShowHorizontalTime) {
+                                    float mVerticalTimeLayoutHeight = getFloatField(keyguardClock, "mVerticalTimeLayoutHeight");
+                                    float mHorizontalTimeLayoutHeight = getFloatField(keyguardClock, "mHorizontalTimeLayoutHeight");
+
+                                    float transY = mHorizontalTimeLayoutHeight - mVerticalTimeLayoutHeight;
+                                    hitokotoInfo.setTranslationY(transY);
+                                }
+
+                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) hitokotoInfo.getLayoutParams();
+                                Context context = keyguardClock.getContext();
+                                layoutParams.leftMargin = (int) ResolutionUtils.dp2px(context, 15);
+                                layoutParams.rightMargin = (int) ResolutionUtils.dp2px(context, 15);
+                            }
+                        } catch (Throwable t) {
+                            // ignore
+                            XLog.e("", t);
                         }
                     }
                 });

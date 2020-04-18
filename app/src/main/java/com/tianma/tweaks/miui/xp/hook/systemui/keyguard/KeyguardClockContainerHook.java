@@ -68,7 +68,7 @@ public class KeyguardClockContainerHook extends BaseSubHook {
                         XposedHelpers.callMethod(parent, "onAttachedToWindow");
 
                         IntentFilter filter = new IntentFilter();
-                        //                            filter.addAction("android.intent.action.TIME_TICK");
+                        // filter.addAction("android.intent.action.TIME_TICK");
                         filter.addAction("android.intent.action.TIME_SET");
                         filter.addAction("android.intent.action.TIMEZONE_CHANGED");
 
