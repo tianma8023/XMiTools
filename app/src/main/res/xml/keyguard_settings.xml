@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
         android:defaultValue="false"
@@ -18,7 +19,8 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="@string/pref_one_sentence_enable"
-            android:title="@string/pref_one_poem_enable_title" />
+            android:title="@string/pref_one_sentence_enable_title"
+            app:summary="@string/pref_one_sentence_enable_summary" />
 
         <Preference
             android:dependency="@string/pref_one_sentence_enable"

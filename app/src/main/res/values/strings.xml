@@ -137,7 +137,8 @@
 
     <!-- 锁屏一言 -->
     <string name="pref_category_title_hitokoto">Hitokoto</string>
-    <string name="pref_one_poem_enable_title">One Sentence</string>
+    <string name="pref_one_sentence_enable_title">One Sentence</string>
+    <string name="pref_one_sentence_enable_summary">Only support system default lock-screen</string>
     <string name="pref_one_sentence_settings_title">One Sentence Settings</string>
     <string name="dialog_api_source">API Source</string>
     <string name="dialog_hitokoto_category">Hitokoto Category</string>

@@ -138,7 +138,8 @@
 
     <!-- 锁屏一言 -->
     <string name="pref_category_title_hitokoto">锁屏一言</string>
-    <string name="pref_one_poem_enable_title">一言</string>
+    <string name="pref_one_sentence_enable_title">一言</string>
+    <string name="pref_one_sentence_enable_summary">仅支持系统默认锁屏!</string>
     <string name="pref_one_sentence_settings_title">一言设置</string>
     <string name="dialog_api_source">一言API源</string>
     <string name="dialog_hitokoto_category">一言类型</string>
