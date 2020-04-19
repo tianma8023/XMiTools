@@ -34,7 +34,6 @@ class MainActivity : BaseActivity() {
             add(StatusBarSettingsFragment(getString(R.string.pref_status_bar_title)))
             add(DropDownStatusBarSettingsFragment(getString(R.string.pref_dropdown_status_bar_title)))
             add(KeyguardSettingsFragment(getString(R.string.pref_keyguard_title)))
-            add(AboutSettingsFragment(getString(R.string.pref_about_title)))
         }
 
         viewPager.adapter = SettingsFragmentPagerAdapter(supportFragmentManager, fragments)

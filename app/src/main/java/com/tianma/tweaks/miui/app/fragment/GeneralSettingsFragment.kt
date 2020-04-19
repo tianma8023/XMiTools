@@ -8,15 +8,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.preference.Preference
+import com.tianma.tweaks.miui.BuildConfig
 import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.cons.AppConst
 import com.tianma.tweaks.miui.cons.PrefConst
-import com.tianma.tweaks.miui.utils.ContextUtils
-import com.tianma.tweaks.miui.utils.ModuleUtils
-import com.tianma.tweaks.miui.utils.StorageUtils
+import com.tianma.tweaks.miui.utils.*
 
-class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceChangeListener {
+class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     private lateinit var mActivity: Activity
 
@@ -28,6 +27,10 @@ class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceC
         addPreferencesFromResource(R.xml.main_settings)
 
         findPreference<Preference>(PrefConst.HIDE_LAUNCHER_ICON).onPreferenceChangeListener = this
+
+        findPreference<Preference>(PrefConst.SOURCE_CODE).onPreferenceClickListener = this
+        findPreference<Preference>(PrefConst.KEY_JOIN_QQ_GROUP).onPreferenceClickListener = this
+        findPreference<Preference>(PrefConst.DONATE_BY_ALIPAY).onPreferenceClickListener = this
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -40,8 +43,32 @@ class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceC
         setPreferenceWorldWritable()
     }
 
-    override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
-        val key = preference.key
+    override fun onResume() {
+        super.onResume()
+
+        showVersionInfo()
+    }
+
+    override fun onPreferenceClick(preference: Preference?): Boolean {
+        when (preference?.key) {
+            PrefConst.SOURCE_CODE -> {
+                showSourceCode()
+            }
+            PrefConst.KEY_JOIN_QQ_GROUP -> {
+                joinQQGroup()
+            }
+            PrefConst.DONATE_BY_ALIPAY -> {
+                donateByAlipay()
+            }
+            else -> {
+                return false
+            }
+        }
+        return true
+    }
+
+    override fun onPreferenceChange(preference: Preference?, newValue: Any): Boolean {
+        val key = preference?.key
         if (PrefConst.HIDE_LAUNCHER_ICON == key) {
             hideOrShowLauncherIcon(newValue as Boolean)
         } else {
@@ -74,5 +101,21 @@ class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceC
         }
         val prefsFile = StorageUtils.getSharedPreferencesFile(context, AppConst.X_MIUI_CLOCK_PREFS_NAME)
         StorageUtils.setFileWorldWritable(prefsFile, 2)
+    }
+
+    private fun showVersionInfo() {
+        findPreference<Preference>(PrefConst.APP_VERSION).summary = BuildConfig.VERSION_NAME
+    }
+
+    private fun showSourceCode() {
+        Utils.showWebPage(activity, AppConst.PROJECT_SOURCE_CODE_URL)
+    }
+
+    private fun joinQQGroup() {
+        PackageUtils.joinQQGroup(context)
+    }
+
+    private fun donateByAlipay() {
+        PackageUtils.startAlipayDonatePage(context)
     }
 }

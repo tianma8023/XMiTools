@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        android:summary="@string/pref_module_instruction_summary"
-        android:title="@string/pref_module_instruction_title"/>
+    <PreferenceCategory android:title="@string/pref_general_title">
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="@string/pref_hide_launcher_icon"
-        android:summary="@string/pref_hide_launcher_icon_summary"
-        android:title="@string/pref_hide_launcher_icon_title"/>
+        <Preference
+            android:summary="@string/pref_module_instruction_summary"
+            android:title="@string/pref_module_instruction_title" />
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="@string/pref_main_switch"
-        android:title="@string/pref_main_switch_title"/>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/pref_hide_launcher_icon"
+            android:summary="@string/pref_hide_launcher_icon_summary"
+            android:title="@string/pref_hide_launcher_icon_title" />
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_main_switch"
+            android:title="@string/pref_main_switch_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_about_title">
+
+        <Preference
+            android:key="@string/pref_app_version"
+            android:title="@string/version_title" />
+
+        <Preference
+            android:key="@string/pref_source_code"
+            android:summary="@string/pref_source_code_summary"
+            android:title="@string/pref_source_code_title" />
+
+        <Preference
+            android:key="@string/pref_join_qq_group"
+            android:summary="@string/pref_join_qq_group_summary"
+            android:title="@string/pref_join_qq_group_title" />
+
+        <Preference
+            android:key="@string/pref_donate_by_alipay"
+            android:summary="@string/pref_donate_by_alipay_summary"
+            android:title="@string/pref_donate_by_alipay_title" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
