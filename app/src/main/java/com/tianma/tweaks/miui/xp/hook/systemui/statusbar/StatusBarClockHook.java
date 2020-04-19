@@ -119,7 +119,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
             hookClockConstructor();
 
             if (mShowSecInStatusBar || mStatusBarClockFormatEnabled || mShowSecInDropdownStatusBar) {
-                if (mShowSecInStatusBar || mShowSecInDropdownStatusBar) {
+                if (mBlockSystemTimeTick) {
                     hookStatusBar();
                     hookReceiverInfo();
                 }

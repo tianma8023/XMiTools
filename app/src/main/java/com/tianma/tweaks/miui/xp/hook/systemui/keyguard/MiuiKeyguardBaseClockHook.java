@@ -54,12 +54,14 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
 
     private boolean oneSentenceEnabled;
     private int oneSentenceColor;
+    private float oneSentenceTextSize;
 
     public MiuiKeyguardBaseClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
         mCompositeDisposable = new CompositeDisposable();
         oneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
         oneSentenceColor = XSPUtils.getOneSentenceColor(xsp);
+        oneSentenceTextSize = XSPUtils.getOneSentenceTextSize(xsp);
     }
 
     @Override
@@ -100,7 +102,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
 //                        XLog.d("mOwnerInfoIndex = " + mOwnerInfoIndex);
 
                         TextView hitokotoTextView = new TextView(context);
-                        hitokotoTextView.setTextSize(14f);
+                        hitokotoTextView.setTextSize(oneSentenceTextSize);
                         hitokotoTextView.setTextColor(oneSentenceColor);
 //                        hitokotoTextView.setBackgroundColor(Color.parseColor("#402384"));
                         hitokotoTextView.setId(R.id.hitokoto_info_text_view);

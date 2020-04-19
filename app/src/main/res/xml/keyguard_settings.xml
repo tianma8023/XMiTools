@@ -25,12 +25,6 @@
             android:key="@string/pref_one_sentence_settings"
             android:title="@string/pref_one_sentence_settings_title" />
 
-        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-            android:defaultValue="@color/white"
-            android:dependency="@string/pref_one_sentence_enable"
-            android:key="@string/pref_one_sentence_color"
-            android:title="@string/pref_one_sentence_color_title" />
-
         <ListPreference
             android:defaultValue="@string/refresh_rate_30_min_value"
             android:dependency="@string/pref_one_sentence_enable"
@@ -39,6 +33,19 @@
             android:key="@string/pref_one_sentence_refresh_rate"
             android:summary="%s"
             android:title="@string/pref_one_sentence_refresh_rate_title" />
+
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="@color/white"
+            android:dependency="@string/pref_one_sentence_enable"
+            android:key="@string/pref_one_sentence_color"
+            android:title="@string/pref_one_sentence_color_title" />
+
+        <EditTextPreference
+            android:defaultValue="14"
+            android:dependency="@string/pref_one_sentence_enable"
+            android:key="@string/pref_one_sentence_text_size"
+            android:title="@string/pref_one_sentence_text_size_title" />
+
 
     </PreferenceCategory>
 

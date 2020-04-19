@@ -71,5 +71,7 @@ object PrefConst {
     const val ONE_SENTENCE_REFRESH_RATE = "one_sentence_refresh_rate"
     const val ONE_SENTENCE_REFRESH_RATE_DEFAULT = "30"
     const val ONE_SENTENCE_COLOR = "one_sentence_color"
+    const val ONE_SENTENCE_TEXT_SIZE = "one_sentence_text_size"
+    const val ONE_SENTENCE_TEXT_SIZE_DEFAULT = "14"
     // 一言 End
 }

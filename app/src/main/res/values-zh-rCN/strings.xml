@@ -147,5 +147,6 @@
     <string name="dialog_show_poem_author">显示诗词作者</string>
     <string name="pref_one_sentence_refresh_rate_title">解锁屏幕时，一言刷新频率</string>
     <string name="pref_one_sentence_color_title">一言颜色</string>
+    <string name="pref_one_sentence_text_size_title">一言字体大小</string>
     <!-- 锁屏一言 end -->
 </resources>

@@ -305,10 +305,24 @@ public class XSPUtils {
     }
 
     /**
-     * 下拉状态栏日期颜色
+     * 锁屏一言文字颜色
      */
     public static int getOneSentenceColor(XSharedPreferences xsp) {
         return xsp.getInt(PrefConst.ONE_SENTENCE_COLOR, Color.WHITE);
+    }
+
+    /**
+     * 锁屏一言文字大小
+     */
+    public static float getOneSentenceTextSize(XSharedPreferences xsp) {
+        String text = xsp.getString(PrefConst.ONE_SENTENCE_TEXT_SIZE, PrefConst.ONE_SENTENCE_TEXT_SIZE_DEFAULT);
+        float size;
+        try {
+            size = Float.parseFloat(text);
+        } catch (Throwable t) {
+            size = Float.parseFloat(PrefConst.ONE_SENTENCE_TEXT_SIZE_DEFAULT);
+        }
+        return size;
     }
 
 }

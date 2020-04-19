@@ -37,22 +37,23 @@ class DropDownStatusBarSettingsFragment: BasePreferenceFragment, Preference.OnPr
         showWeatherTextSize(weatherTextSizePref, weatherTextSizePref.text)
     }
 
-    private fun showWeatherTextSize(preference: EditTextPreference, newValue: String) {
-        preference.summary = newValue
-    }
-
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
         val key = preference?.key
         if (PrefConst.DROPDOWN_STATUS_BAR_WEATHER_TEXT_SIZE == key) {
-            val value = newValue as String
-            if (TextUtils.isEmpty(value)) {
+            val value = newValue as String?
+            if (value.isNullOrEmpty()) {
                 return false
+            } else {
+                showWeatherTextSize(preference, value)
             }
-            showWeatherTextSize((preference as EditTextPreference?)!!, (newValue as String?)!!)
         } else {
             return false
         }
         return true
+    }
+
+    private fun showWeatherTextSize(preference: Preference, newValue: String) {
+        preference.summary = newValue
     }
 
 }
