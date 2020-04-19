@@ -67,10 +67,17 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
                         ((ViewGroup) signalClusterViewContainer.getParent()).removeView(signalClusterViewContainer);
 
                         if (mMiuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
-                            LinearLayout contentsContainer = phoneStatusBarView
-                                    .findViewById(ResHelpers.getId(res, "phone_status_bar_contents_container"));
-                            contentsContainer.setGravity(Gravity.CENTER_VERTICAL);
-                            contentsContainer.addView(signalClusterViewContainer, 0);
+                            try {
+                                LinearLayout contentsContainer = phoneStatusBarView
+                                        .findViewById(ResHelpers.getId(res, "phone_status_bar_contents_container"));
+                                contentsContainer.setGravity(Gravity.CENTER_VERTICAL);
+                                contentsContainer.addView(signalClusterViewContainer, 0);
+                            } catch (Throwable t) {
+                                LinearLayout statusBarContents = phoneStatusBarView
+                                        .findViewById(ResHelpers.getId(res, "status_bar_contents"));
+                                statusBarContents.setGravity(Gravity.CENTER_VERTICAL);
+                                statusBarContents.addView(signalClusterViewContainer, 0);
+                            }
                         } else {
                             LinearLayout statusBarContents = phoneStatusBarView
                                     .findViewById(ResHelpers.getId(res, "status_bar_contents"));
