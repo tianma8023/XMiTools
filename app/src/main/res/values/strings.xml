@@ -86,15 +86,6 @@
     <string name="check_module">Enable Module</string>
     <string name="taichi_install_prompt">Please install Taichi</string>
     <string name="taichi_enable_prompt">Please enable Taichi</string>
-    <string name="pref_category_title_hitokoto">Hitokoto</string>
-    <string name="pref_one_poem_enable_title">One Sentence</string>
-    <string name="pref_one_sentence_settings_title">One Sentence Settings</string>
-    <string name="dialog_api_source">API Source</string>
-    <string name="dialog_hitokoto_category">Hitokoto Category</string>
-    <string name="dialog_one_poem_category">One Poem Category</string>
-    <string name="dialog_show_poem_author">Show Poem Author</string>
-    <string name="dialog_show_source">Show the source of the work</string>
-    <string name="pref_one_sentence_refresh_rate_title">Hitokoto Refresh Rate</string>
 
     <string-array name="api_source_value_array">
         <item>Hitokoto</item>
@@ -143,4 +134,17 @@
     <string name="refresh_rate_6_hour_entry">Every 6 hours</string>
     <string name="refresh_rate_24_hour_entry">Every 24 hours</string>
     <!-- 一言刷新频率 end -->
+
+    <!-- 锁屏一言 -->
+    <string name="pref_category_title_hitokoto">Hitokoto</string>
+    <string name="pref_one_poem_enable_title">One Sentence</string>
+    <string name="pref_one_sentence_settings_title">One Sentence Settings</string>
+    <string name="dialog_api_source">API Source</string>
+    <string name="dialog_hitokoto_category">Hitokoto Category</string>
+    <string name="dialog_one_poem_category">One Poem Category</string>
+    <string name="dialog_show_poem_author">Show Poem Author</string>
+    <string name="dialog_show_source">Show the source of the work</string>
+    <string name="pref_one_sentence_refresh_rate_title">One Sentence Refresh Rate</string>
+    <string name="pref_one_sentence_color_title">One Sentence Color</string>
+    <!-- 锁屏一言 End -->
 </resources>

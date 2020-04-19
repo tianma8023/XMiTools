@@ -45,6 +45,7 @@
     <string name="pref_one_sentence_enable">one_sentence_enable</string>
     <string name="pref_one_sentence_settings">one_sentence_settings</string>
     <string name="pref_one_sentence_refresh_rate">one_sentence_refresh_rate</string>
+    <string name="pref_one_sentence_color">one_sentence_color</string>
     <!-- KEYGUARD SETTINGS END -->
 
 

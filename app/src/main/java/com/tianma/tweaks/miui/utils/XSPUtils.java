@@ -304,4 +304,11 @@ public class XSPUtils {
         return refreshRate;
     }
 
+    /**
+     * 下拉状态栏日期颜色
+     */
+    public static int getOneSentenceColor(XSharedPreferences xsp) {
+        return xsp.getInt(PrefConst.ONE_SENTENCE_COLOR, Color.WHITE);
+    }
+
 }

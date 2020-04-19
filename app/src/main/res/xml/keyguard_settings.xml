@@ -25,6 +25,12 @@
             android:key="@string/pref_one_sentence_settings"
             android:title="@string/pref_one_sentence_settings_title" />
 
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="@color/white"
+            android:dependency="@string/pref_one_sentence_enable"
+            android:key="@string/pref_one_sentence_color"
+            android:title="@string/pref_one_sentence_color_title" />
+
         <ListPreference
             android:defaultValue="@string/refresh_rate_30_min_value"
             android:dependency="@string/pref_one_sentence_enable"

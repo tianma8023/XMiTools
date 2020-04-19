@@ -88,16 +88,6 @@
     <string name="taichi_install_prompt">请先安装太极</string>
     <string name="taichi_enable_prompt">请先启用太极</string>
 
-    <string name="pref_category_title_hitokoto">锁屏一言</string>
-    <string name="pref_one_poem_enable_title">一言</string>
-    <string name="pref_one_sentence_settings_title">一言设置</string>
-    <string name="dialog_api_source">一言API源</string>
-    <string name="dialog_hitokoto_category">一言类型</string>
-    <string name="dialog_show_source">显示一言作品来源</string>
-    <string name="dialog_one_poem_category">诗词类型</string>
-    <string name="dialog_show_poem_author">显示诗词作者</string>
-    <string name="pref_one_sentence_refresh_rate_title">解锁屏幕时，一言刷新频率</string>
-
     <string-array name="api_source_value_array">
         <item>一言Hitokoto</item>
         <item>今日诗词</item>
@@ -145,4 +135,17 @@
     <string name="refresh_rate_6_hour_entry">每隔6小时</string>
     <string name="refresh_rate_24_hour_entry">每隔24小时</string>
     <!-- 一言刷新频率 end -->
+
+    <!-- 锁屏一言 -->
+    <string name="pref_category_title_hitokoto">锁屏一言</string>
+    <string name="pref_one_poem_enable_title">一言</string>
+    <string name="pref_one_sentence_settings_title">一言设置</string>
+    <string name="dialog_api_source">一言API源</string>
+    <string name="dialog_hitokoto_category">一言类型</string>
+    <string name="dialog_show_source">显示一言作品来源</string>
+    <string name="dialog_one_poem_category">诗词类型</string>
+    <string name="dialog_show_poem_author">显示诗词作者</string>
+    <string name="pref_one_sentence_refresh_rate_title">解锁屏幕时，一言刷新频率</string>
+    <string name="pref_one_sentence_color_title">一言颜色</string>
+    <!-- 锁屏一言 end -->
 </resources>

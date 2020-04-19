@@ -70,5 +70,6 @@ object PrefConst {
     const val SHOW_POEM_AUTHOR = "show_poem_author"
     const val ONE_SENTENCE_REFRESH_RATE = "one_sentence_refresh_rate"
     const val ONE_SENTENCE_REFRESH_RATE_DEFAULT = "30"
+    const val ONE_SENTENCE_COLOR = "one_sentence_color"
     // 一言 End
 }
