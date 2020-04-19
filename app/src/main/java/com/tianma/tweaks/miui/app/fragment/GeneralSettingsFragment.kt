@@ -35,11 +35,6 @@ class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceC
         mActivity = requireActivity()
     }
 
-    override fun onResume() {
-        super.onResume()
-        showModuleStatus()
-    }
-
     override fun onPause() {
         super.onPause()
         setPreferenceWorldWritable()
@@ -53,15 +48,6 @@ class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceC
             return false
         }
         return true
-    }
-
-    private fun showModuleStatus() {
-        val preference = findPreference<Preference>(PrefConst.MODULE_STATUS)
-        if (ModuleUtils.isModuleActive()) {
-            preference.setSummary(R.string.module_status_active)
-        } else {
-            preference.setSummary(R.string.module_status_inactive)
-        }
     }
 
     private fun hideOrShowLauncherIcon(hide: Boolean) {

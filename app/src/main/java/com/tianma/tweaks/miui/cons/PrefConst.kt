@@ -6,7 +6,6 @@ object PrefConst {
     const val SHARED_PREFS_NAME = BuildConfig.APPLICATION_ID + "_preferences"
 
     // General Settings
-    const val MODULE_STATUS = "module_status"
     const val MAIN_SWITCH = "main_switch"
     const val HIDE_LAUNCHER_ICON = "hide_launcher_icon"
     // General Settings End

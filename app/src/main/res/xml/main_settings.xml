@@ -6,10 +6,6 @@
         android:summary="@string/pref_module_instruction_summary"
         android:title="@string/pref_module_instruction_title"/>
 
-    <Preference
-        android:key="@string/pref_module_status"
-        android:title="@string/pref_module_status_title"/>
-
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/pref_hide_launcher_icon"

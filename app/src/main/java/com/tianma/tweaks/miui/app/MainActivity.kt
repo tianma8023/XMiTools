@@ -8,6 +8,7 @@ import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.base.BaseActivity
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.app.fragment.*
+import com.tianma.tweaks.miui.utils.ModuleUtils
 import com.tianma.tweaks.miui.utils.PackageUtils
 import com.tianma.tweaks.miui.utils.RootUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,6 +21,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         setupToolbar()
         initFragments()
+        showModuleStatus()
     }
 
     private fun setupToolbar() {
@@ -94,5 +96,16 @@ class MainActivity : BaseActivity() {
                 .negativeText(R.string.add_applications)
                 .onNegative { _, _ -> PackageUtils.startAddAppsInTaiChi(this) }
                 .show()
+    }
+
+    private fun showModuleStatus() {
+        val format = "%s (%s)"
+        val appName = getString(R.string.app_name)
+        val appTitle = if (ModuleUtils.isModuleActive()) {
+            String.format(format, appName, getString(R.string.module_status_active))
+        } else {
+            String.format(format, appName, getString(R.string.module_status_inactive))
+        }
+        title = appTitle
     }
 }
