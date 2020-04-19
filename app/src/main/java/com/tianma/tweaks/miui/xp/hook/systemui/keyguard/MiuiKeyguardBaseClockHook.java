@@ -140,7 +140,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                 });
     }
 
-    // com.android.keyguard.MiuiKeyguardVerticalClock#access()
+    // com.android.keyguard.MiuiKeyguardBaseClock#constructor()
     private void hookConstructor() {
         hookAllConstructors(mKeyguardBaseClockClass,
                 new MethodHookWrapper() {
@@ -193,7 +193,6 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
             loadOneSentence();
         }
     };
-
 
     private void loadOneSentence() {
         try {
@@ -253,16 +252,18 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(hitokoto -> {
-                        XLog.d(hitokoto.toString());
-                        String content = hitokoto.getContent() == null ? "" : hitokoto.getContent();
-                        String oneSentence;
-                        if (showHitokotoSource) {
-                            String source = hitokoto.getFrom() == null ? "" : hitokoto.getFrom();
-                            oneSentence = String.format("%s <%s>", content, source);
-                        } else {
-                            oneSentence = content;
+                        if (hitokoto != null) {
+                            XLog.d(hitokoto.toString());
+                            String content = hitokoto.getContent() == null ? "" : hitokoto.getContent();
+                            String oneSentence;
+                            if (showHitokotoSource) {
+                                String source = hitokoto.getFrom() == null ? "" : hitokoto.getFrom();
+                                oneSentence = String.format("%s <%s>", content, source);
+                            } else {
+                                oneSentence = content;
+                            }
+                            showOneSentence(oneSentence);
                         }
-                        showOneSentence(oneSentence);
                     }, throwable -> XLog.e("Error occurs", throwable));
             mCompositeDisposable.add(disposable);
         } catch (Throwable e) {
@@ -290,16 +291,18 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(poem -> {
-                        XLog.d(poem.toString());
-                        String content = poem.getContent() == null ? "" : poem.getContent();
-                        String oneSentence;
-                        if (showPoemAuthor) {
-                            String author = poem.getAuthor() == null ? "" : poem.getAuthor();
-                            oneSentence = String.format("%s  %s", content, author);
-                        } else {
-                            oneSentence = content;
+                        if (poem != null) {
+                            XLog.d(poem.toString());
+                            String content = poem.getContent() == null ? "" : poem.getContent();
+                            String oneSentence;
+                            if (showPoemAuthor) {
+                                String author = poem.getAuthor() == null ? "" : poem.getAuthor();
+                                oneSentence = String.format("%s  %s", content, author);
+                            } else {
+                                oneSentence = content;
+                            }
+                            showOneSentence(oneSentence);
                         }
-                        showOneSentence(oneSentence);
                     }, throwable -> XLog.e("Error occurs", throwable));
             mCompositeDisposable.add(disposable);
         } catch (Throwable e) {
