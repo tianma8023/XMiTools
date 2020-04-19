@@ -103,8 +103,8 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82:sources'
 
     // ButterKnife
-    implementation 'com.jakewharton:butterknife:10.2.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+    // implementation 'com.jakewharton:butterknife:10.2.0'
+    // annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
 
     // Android Shell
     implementation 'com.jaredrummler:android-shell:1.0.0'
