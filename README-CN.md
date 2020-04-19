@@ -36,7 +36,6 @@ MIUI 10 系统界面模块
  - [custoMIUIzer](https://code.highspec.ru/Mikanoshi/CustoMIUIzer/)
  - [GravityBox](https://github.com/GravityBox/GravityBox)
  - [Xposed](https://github.com/rovo89/Xposed)
- - [ButterKnife](https://github.com/JakeWharton/butterknife)
  - [Material Dialogs](https://github.com/afollestad/material-dialogs)
  - [Android Shell](https://github.com/jaredrummler/AndroidShell)
 

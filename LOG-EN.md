@@ -1,4 +1,7 @@
 # Update Logs
+- 20.04.19 1.2.1
+  1. New option: custom hitokoto text size and color
+  2. Fix: signal align left invalid issue
 - 20.04.18 1.2.0
   1. New option: Hitokoto on lock screen.
 - 19.06.03 1.1.0
