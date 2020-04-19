@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.app;
+package com.tianma.tweaks.miui.app.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

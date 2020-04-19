@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.app
+package com.tianma.tweaks.miui.app.fragment
 
 import android.os.Bundle
 import android.text.InputType

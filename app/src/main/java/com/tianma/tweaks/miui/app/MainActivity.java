@@ -12,6 +12,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.tianma.tweaks.miui.R;
 import com.tianma.tweaks.miui.app.base.BaseActivity;
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment;
+import com.tianma.tweaks.miui.app.fragment.AboutSettingsFragment;
+import com.tianma.tweaks.miui.app.fragment.DropDownStatusBarSettingsFragment;
+import com.tianma.tweaks.miui.app.fragment.GeneralSettingsFragment;
+import com.tianma.tweaks.miui.app.fragment.KeyguardSettingsFragment;
+import com.tianma.tweaks.miui.app.fragment.SettingsFragmentPagerAdapter;
+import com.tianma.tweaks.miui.app.fragment.StatusBarSettingsFragment;
 import com.tianma.tweaks.miui.utils.PackageUtils;
 import com.tianma.tweaks.miui.utils.RootUtils;
 
