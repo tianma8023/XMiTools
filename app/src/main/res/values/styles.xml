@@ -10,8 +10,12 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <!--  处理 Material-Dialog title 尾部有 cursor 的情况 -->
+    <!--  https://github.com/enricocid/Music-Player-GO/issues/104#issuecomment-573447828 -->
+    <!--  https://github.com/afollestad/material-dialogs/issues/1883 -->
     <style name="MyPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="preferenceCategoryStyle">@style/MyPreferenceCategoryStyle</item>
+        <item name="android:scrollbars">none</item>
     </style>
 
     <style name="MyPreferenceCategoryStyle" parent="@style/Preference.Category.Material">

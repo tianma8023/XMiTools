@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.widget.tag.ItemClickCallback
@@ -65,39 +66,43 @@ class OneSentenceSettingsDialogWrapper(private val context: Context) {
         val view = View.inflate(context, R.layout.dialog_hitokoto_settings, null)
 
         // API 源
-        val apiSourceRecyclerView = view.findViewById(R.id.apiSourcesRecyclerView) as RecyclerView
-        apiSourceRecyclerView.layoutManager = FlexboxLayoutManager(context)
-        apiSourceAdapter = TagAdapter(context, mutableListOf())
-        apiSourceAdapter?.itemClickCallback = TagClickCallback(apiSourceAdapter)
-        apiSourceRecyclerView.adapter = apiSourceAdapter
+        view.findViewById<RecyclerView>(R.id.apiSourcesRecyclerView).apply {
+            layoutManager = FlexboxLayoutManager(context)
+            adapter = TagAdapter(context, mutableListOf()).apply {
+                itemClickCallback = TagClickCallback(this)
+                apiSourceAdapter = this
+            }
+        }
 
         // 一言
-        val hitokotoRecyclerView = view.findViewById(R.id.hitokotoCategoryRecyclerView) as RecyclerView
-        hitokotoRecyclerView.layoutManager = FlexboxLayoutManager(context)
-        hitokotoTagAdapter = TagAdapter(context, mutableListOf())
-        hitokotoTagAdapter?.itemClickCallback = TagClickCallback(hitokotoTagAdapter)
-        hitokotoRecyclerView.adapter = hitokotoTagAdapter
+        view.findViewById<RecyclerView>(R.id.hitokotoCategoryRecyclerView).apply {
+            layoutManager = FlexboxLayoutManager(context)
+            adapter = TagAdapter(context, mutableListOf()).apply {
+                itemClickCallback = TagClickCallback(this)
+                hitokotoTagAdapter = this
+            }
+        }
 
         hitokotoSourceCheckBox = view.findViewById(R.id.hitokotoSourceCheckBox)
 
         // 今日诗词
-        val onePoemCategoryRv = view.findViewById(R.id.onePoemCategoryRecyclerView) as RecyclerView
-        onePoemCategoryRv.layoutManager = FlexboxLayoutManager(context)
-        onePoemTagAdapter = TagAdapter(context, mutableListOf())
-        onePoemTagAdapter?.itemClickCallback = TagClickCallback(onePoemTagAdapter)
-        onePoemCategoryRv.adapter = onePoemTagAdapter
+        view.findViewById<RecyclerView>(R.id.onePoemCategoryRecyclerView).apply {
+            layoutManager = FlexboxLayoutManager(context)
+            adapter = TagAdapter(context, mutableListOf()).apply {
+                itemClickCallback = TagClickCallback(this)
+                onePoemTagAdapter = this
+            }
+        }
 
         onePoemAuthorCheckBox = view.findViewById(R.id.onePoemAuthorCheckBox)
 
-        return MaterialDialog.Builder(context)
-                .title("一言设置")
-                .customView(view, true)
-                .positiveText(R.string.confirm)
-                .onPositive { _, _ ->
+        return MaterialDialog(context)
+                .title(R.string.pref_one_sentence_settings_title)
+                .customView(view = view, scrollable = true, horizontalPadding = true)
+                .positiveButton(R.string.confirm) {
                     onDialogConfirmed()
                 }
-                .negativeText(R.string.cancel)
-                .build()
+                .negativeButton(R.string.cancel)
     }
 
     // 初始化 Dialog 中的数据

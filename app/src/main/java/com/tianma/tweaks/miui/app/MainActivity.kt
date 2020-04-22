@@ -3,7 +3,11 @@ package com.tianma.tweaks.miui.app
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.dialog.MaterialDialogs
 import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.base.BaseActivity
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
@@ -11,8 +15,10 @@ import com.tianma.tweaks.miui.app.fragment.*
 import com.tianma.tweaks.miui.utils.ModuleUtils
 import com.tianma.tweaks.miui.utils.PackageUtils
 import com.tianma.tweaks.miui.utils.RootUtils
+import com.tianma.tweaks.miui.utils.XLog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.lang.Exception
 
 class MainActivity : BaseActivity() {
 
@@ -57,44 +63,49 @@ class MainActivity : BaseActivity() {
     }
 
     private fun performRebootSystem() {
-        MaterialDialog.Builder(this)
-                .title(R.string.action_reboot_system)
-                .content(R.string.prompt_reboot_system_message)
-                .positiveText(R.string.confirm)
-                .onPositive { _, _ -> RootUtils.reboot() }
-                .negativeText(R.string.cancel)
-                .show()
+        MaterialDialog(this).show {
+            title(R.string.action_reboot_system)
+            message(R.string.prompt_reboot_system_message)
+            positiveButton(R.string.confirm) {
+                RootUtils.reboot()
+            }
+            negativeButton(R.string.cancel)
+        }
     }
 
     private fun preformSoftRebootSystem() {
-        MaterialDialog.Builder(this)
-                .title(R.string.action_soft_reboot_system)
-                .content(R.string.prompt_soft_reboot_message)
-                .positiveText(R.string.confirm)
-                .onPositive { _, _ -> RootUtils.softReboot() }
-                .negativeText(R.string.cancel)
-                .show()
+        MaterialDialog(this).show {
+            title(R.string.action_soft_reboot_system)
+            message(R.string.prompt_soft_reboot_message)
+            positiveButton(R.string.confirm) {
+                RootUtils.softReboot()
+            }
+            negativeButton(R.string.cancel)
+        }
     }
 
     private fun performRestartHostApps() {
-        MaterialDialog.Builder(this)
-                .title(R.string.action_restart_host_apps)
-                .content(R.string.prompt_restart_host_apps_message)
-                .positiveText(R.string.confirm)
-                .onPositive { _, _ -> RootUtils.restartSystemUI() }
-                .negativeText(R.string.cancel)
-                .show()
+        MaterialDialog(this).show {
+            title(R.string.action_restart_host_apps)
+            message(R.string.prompt_restart_host_apps_message)
+            positiveButton(R.string.confirm) {
+                RootUtils.restartSystemUI()
+            }
+            negativeButton(R.string.cancel)
+        }
     }
 
     private fun showTaiChiUsersNotice() {
-        MaterialDialog.Builder(this)
-                .title(R.string.action_taichi_users_notice)
-                .content(R.string.prompt_taichi_users_notice_message)
-                .positiveText(R.string.check_module)
-                .onPositive { _, _ -> PackageUtils.startCheckModuleInTaiChi(this) }
-                .negativeText(R.string.add_applications)
-                .onNegative { _, _ -> PackageUtils.startAddAppsInTaiChi(this) }
-                .show()
+        MaterialDialog(this).show {
+            title(R.string.action_taichi_users_notice)
+            message(R.string.prompt_taichi_users_notice_message)
+            positiveButton(R.string.check_module) {
+                PackageUtils.startCheckModuleInTaiChi(this@MainActivity)
+            }
+            negativeButton(R.string.add_applications) {
+                PackageUtils.startAddAppsInTaiChi(this@MainActivity)
+            }
+        }
     }
 
     private fun showModuleStatus() {

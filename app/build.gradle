@@ -88,6 +88,8 @@ ext {
 
     okHttpVersion = "3.14.4" // OkHttp
     retrofitVersion = "2.5.0" // retrofit
+
+    materialDialogsVersion = "3.3.0"
 }
 
 dependencies {
@@ -110,7 +112,7 @@ dependencies {
     implementation 'com.jaredrummler:android-shell:1.0.0'
 
     // Material Dialogs
-    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation "com.afollestad.material-dialogs:core:$materialDialogsVersion"
 
     // color picker preference
     implementation 'com.jaredrummler:colorpicker:1.1.0'
