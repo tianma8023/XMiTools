@@ -12,31 +12,32 @@ import com.tianma.tweaks.miui.cons.PrefConst
 /**
  * Settings fragment for LockScreen
  */
-class KeyguardSettingsFragment: BasePreferenceFragment, Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
-    constructor() : super()
-    constructor(title: CharSequence?) : super(title)
-
+class KeyguardSettingsFragment(title: CharSequence? = "") : BasePreferenceFragment(title), Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
 
         addPreferencesFromResource(R.xml.keyguard_settings)
 
-        findPreference<Preference>(PrefConst.ONE_SENTENCE_SETTINGS).onPreferenceClickListener = this
+        findPreference<Preference>(PrefConst.ONE_SENTENCE_SETTINGS)?.onPreferenceClickListener = this
 
         val oneSentencePref = findPreference<EditTextPreference>(PrefConst.ONE_SENTENCE_TEXT_SIZE)
-        oneSentencePref.setOnBindEditTextListener { editText ->
-            editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-            editText.setSelection(editText.text.length)
+        oneSentencePref?.let {
+            oneSentencePref.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+                editText.setSelection(editText.text.length)
+            }
+            oneSentencePref.onPreferenceChangeListener = this
         }
-        oneSentencePref.onPreferenceChangeListener = this
     }
 
     override fun onResume() {
         super.onResume()
 
         val oneSentencePref = findPreference<EditTextPreference>(PrefConst.ONE_SENTENCE_TEXT_SIZE)
-        showOneSentenceTextSize(oneSentencePref, oneSentencePref.text)
+        oneSentencePref?.let {
+            showOneSentenceTextSize(it, it.text)
+        }
     }
 
     override fun onPreferenceClick(preference: Preference?): Boolean {

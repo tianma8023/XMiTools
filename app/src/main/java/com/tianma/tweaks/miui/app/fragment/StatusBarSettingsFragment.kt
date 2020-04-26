@@ -9,16 +9,14 @@ import com.tianma.tweaks.miui.cons.PrefConst
 /**
  * Settings fragment for System StatusBar
  */
-class StatusBarSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceChangeListener {
-    constructor()
-    constructor(title: CharSequence?) : super(title)
+class StatusBarSettingsFragment(title: CharSequence? = "") : BasePreferenceFragment(title), Preference.OnPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         addPreferencesFromResource(R.xml.statusbar_settings)
 
-        findPreference<Preference>(PrefConst.STATUS_BAR_CLOCK_FORMAT).onPreferenceChangeListener = this
-        findPreference<Preference>(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE).onPreferenceChangeListener = this
+        findPreference<Preference>(PrefConst.STATUS_BAR_CLOCK_FORMAT)?.onPreferenceChangeListener = this
+        findPreference<Preference>(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE)?.onPreferenceChangeListener = this
     }
 
     override fun onResume() {
@@ -27,12 +25,16 @@ class StatusBarSettingsFragment : BasePreferenceFragment, Preference.OnPreferenc
         val sp = preferenceManager.sharedPreferences
 
         val timeFormatPref = findPreference<Preference>(PrefConst.STATUS_BAR_CLOCK_FORMAT)
-        val timeFormat = sp.getString(PrefConst.STATUS_BAR_CLOCK_FORMAT, PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT)
-        showStatusBarClockFormat(timeFormatPref, timeFormat)
+        timeFormatPref?.let {
+            val timeFormat = sp.getString(PrefConst.STATUS_BAR_CLOCK_FORMAT, PrefConst.STATUS_BAR_CLOCK_FORMAT_DEFAULT)
+            showStatusBarClockFormat(timeFormatPref, timeFormat)
+        }
 
         val networkTypePref = findPreference<Preference>(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE)
-        val networkType = sp.getString(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE, PrefConst.CUSTOM_MOBILE_NETWORK_TYPE_DEFAULT)
-        showCustomMobileNetworkType(networkTypePref, networkType)
+        networkTypePref?.let {
+            val networkType = sp.getString(PrefConst.CUSTOM_MOBILE_NETWORK_TYPE, PrefConst.CUSTOM_MOBILE_NETWORK_TYPE_DEFAULT)
+            showCustomMobileNetworkType(networkTypePref, networkType)
+        }
     }
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {

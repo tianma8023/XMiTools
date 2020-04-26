@@ -2,7 +2,6 @@ package com.tianma.tweaks.miui.app.fragment
 
 import android.os.Bundle
 import android.text.InputType
-import android.text.TextUtils
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import com.tianma.tweaks.miui.R
@@ -12,29 +11,29 @@ import com.tianma.tweaks.miui.cons.PrefConst
 /**
  * dSettings fragment for System DropDown StatusBar
  */
-class DropDownStatusBarSettingsFragment: BasePreferenceFragment, Preference.OnPreferenceChangeListener {
-
-    constructor() : super()
-    constructor(title: CharSequence?) : super(title)
-
+class DropDownStatusBarSettingsFragment(title: CharSequence? = ""): BasePreferenceFragment(title), Preference.OnPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         addPreferencesFromResource(R.xml.dropdown_statusbar_settings)
 
         val weatherTextSizePref = findPreference<EditTextPreference>(PrefConst.DROPDOWN_STATUS_BAR_WEATHER_TEXT_SIZE)
-        weatherTextSizePref.setOnBindEditTextListener { editText ->
-            editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-            editText.setSelection(editText.text.length)
+        weatherTextSizePref?.let {
+            weatherTextSizePref.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+                editText.setSelection(editText.text.length)
+            }
+            weatherTextSizePref.onPreferenceChangeListener = this
         }
-        weatherTextSizePref.onPreferenceChangeListener = this
     }
 
     override fun onResume() {
         super.onResume()
 
         val weatherTextSizePref = findPreference<EditTextPreference>(PrefConst.DROPDOWN_STATUS_BAR_WEATHER_TEXT_SIZE)
-        showWeatherTextSize(weatherTextSizePref, weatherTextSizePref.text)
+        weatherTextSizePref?.let {
+            showWeatherTextSize(it, it.text)
+        }
     }
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {

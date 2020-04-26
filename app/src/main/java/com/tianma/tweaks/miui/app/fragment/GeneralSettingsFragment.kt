@@ -13,24 +13,24 @@ import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.cons.AppConst
 import com.tianma.tweaks.miui.cons.PrefConst
-import com.tianma.tweaks.miui.utils.*
+import com.tianma.tweaks.miui.utils.ContextUtils
+import com.tianma.tweaks.miui.utils.PackageUtils
+import com.tianma.tweaks.miui.utils.StorageUtils
+import com.tianma.tweaks.miui.utils.Utils
 
-class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
+class GeneralSettingsFragment(title: CharSequence? = "") : BasePreferenceFragment(title), Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     private lateinit var mActivity: Activity
-
-    constructor() : super()
-    constructor(title: CharSequence?) : super(title)
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         addPreferencesFromResource(R.xml.main_settings)
 
-        findPreference<Preference>(PrefConst.HIDE_LAUNCHER_ICON).onPreferenceChangeListener = this
+        findPreference<Preference>(PrefConst.HIDE_LAUNCHER_ICON)?.onPreferenceChangeListener = this
 
-        findPreference<Preference>(PrefConst.SOURCE_CODE).onPreferenceClickListener = this
-        findPreference<Preference>(PrefConst.KEY_JOIN_QQ_GROUP).onPreferenceClickListener = this
-        findPreference<Preference>(PrefConst.DONATE_BY_ALIPAY).onPreferenceClickListener = this
+        findPreference<Preference>(PrefConst.SOURCE_CODE)?.onPreferenceClickListener = this
+        findPreference<Preference>(PrefConst.KEY_JOIN_QQ_GROUP)?.onPreferenceClickListener = this
+        findPreference<Preference>(PrefConst.DONATE_BY_ALIPAY)?.onPreferenceClickListener = this
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -104,7 +104,7 @@ class GeneralSettingsFragment : BasePreferenceFragment, Preference.OnPreferenceC
     }
 
     private fun showVersionInfo() {
-        findPreference<Preference>(PrefConst.APP_VERSION).summary = BuildConfig.VERSION_NAME
+        findPreference<Preference>(PrefConst.APP_VERSION)?.summary = BuildConfig.VERSION_NAME
     }
 
     private fun showSourceCode() {
