@@ -194,6 +194,16 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
         public void onScreenOn() {
             loadOneSentence();
         }
+
+        @Override
+        public void onUserPresent() {
+            cancelLoadOneSentence();
+        }
+
+        @Override
+        public void onScreenOff() {
+            cancelLoadOneSentence();
+        }
     };
 
     private void loadOneSentence() {
@@ -321,6 +331,12 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                 // ignore
                 XLog.e("", t);
             }
+        }
+    }
+
+    private void cancelLoadOneSentence() {
+        if (mCompositeDisposable.size() > 0) {
+            mCompositeDisposable.clear();
         }
     }
 }

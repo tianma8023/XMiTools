@@ -9,6 +9,8 @@ import android.widget.FrameLayout;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
+import com.tianma.tweaks.miui.xp.utils.appinfo.AppVersionConst;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.XSharedPreferences;
@@ -26,7 +28,8 @@ import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
  */
 public class KeyguardClockContainerHook extends BaseSubHook {
 
-    private static final String CLASS_KEYGUARD_CLOCK_CONTAINER = "com.android.keyguard.KeyguardClockContainer";
+    private static final String CLASS_KEYGUARD_CLOCK_CONTAINER_OLD = "com.android.keyguard.KeyguardClockContainer";
+    private static final String CLASS_KEYGUARD_CLOCK_CONTAINER_NEW = "com.android.keyguard.clock.KeyguardClockContainer";
     private static final String CLASS_DEPENDENCY = "com.android.systemui.Dependency";
 
     private boolean mShowHorizontalSec;
@@ -34,8 +37,8 @@ public class KeyguardClockContainerHook extends BaseSubHook {
 
     private Class<?> mKeyguardClockContainerClass;
 
-    public KeyguardClockContainerHook(ClassLoader classLoader, XSharedPreferences xsp) {
-        super(classLoader, xsp);
+    public KeyguardClockContainerHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
+        super(classLoader, xsp, appInfo);
 
         mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
         mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
@@ -48,7 +51,11 @@ public class KeyguardClockContainerHook extends BaseSubHook {
         }
         try {
             XLog.d("Hooking KeyguardClockContainerHook...");
-            mKeyguardClockContainerClass = findClass(CLASS_KEYGUARD_CLOCK_CONTAINER, mClassLoader);
+            if (mAppInfo.getVersionCode() >= AppVersionConst.SYSTEM_UI_V201912130) {
+                mKeyguardClockContainerClass = findClass(CLASS_KEYGUARD_CLOCK_CONTAINER_NEW, mClassLoader);
+            } else {
+                mKeyguardClockContainerClass = findClass(CLASS_KEYGUARD_CLOCK_CONTAINER_OLD, mClassLoader);
+            }
 
             hookOnAttachedToWindow();
         } catch (Throwable t) {
