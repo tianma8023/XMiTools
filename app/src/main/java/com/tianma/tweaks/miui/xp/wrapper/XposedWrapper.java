@@ -52,4 +52,22 @@ public class XposedWrapper {
         }
     }
 
+    public static XC_MethodHook.Unhook findAndHookConstructor(Class<?> clazz, Object... parameterTypesAndCallback) {
+        try {
+            return XposedHelpers.findAndHookConstructor(clazz, parameterTypesAndCallback);
+        } catch (Throwable t) {
+            XLog.e("Error in findAndHookConstructor: %s", clazz.getName(), t);
+            return null;
+        }
+    }
+
+    public static XC_MethodHook.Unhook findAndHookConstructor(String className, ClassLoader classLoader, Object... parameterTypesAndCallback) {
+        try {
+            return XposedHelpers.findAndHookConstructor(className, classLoader, parameterTypesAndCallback);
+        } catch (Throwable t) {
+            XLog.e("Error in findAndHookConstructor: %s", className, t);
+            return null;
+        }
+    }
+
 }

@@ -21,10 +21,10 @@ import java.util.*
  * 锁屏左上角小时钟
  * 适用版本 20.4.27+
  */
-class MiuLeftToplClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, appInfo: AppInfo?) : BaseSubHook(classLoader, xsp, appInfo), TickObserver {
+class MiuiLeftToplClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, appInfo: AppInfo?) : BaseSubHook(classLoader, xsp, appInfo), TickObserver {
 
     companion object {
-        private const val CLASS_MIUI_LEFT_TOP_CLOCK = "miui.keyguard.clock.MiuiLeftTopClock"
+        const val CLASS_MIUI_LEFT_TOP_CLOCK = "miui.keyguard.clock.MiuiLeftTopClock"
     }
 
     private var leftTopClockClass: Class<*>? = null
@@ -62,7 +62,7 @@ class MiuLeftToplClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, 
 
                             addClock(miuiBaseClock)
 
-                            ScreenBroadcastManager.getInstance(miuiBaseClock.getContext()).registerListener(screenListener)
+                            ScreenBroadcastManager.getInstance(miuiBaseClock.context).registerListener(screenListener)
                         }
                     }
                 })
@@ -82,7 +82,7 @@ class MiuLeftToplClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, 
             }
         }
         if (clockList.isNotEmpty()) {
-            TimeTicker.get().registerObserver(this@MiuLeftToplClockHook)
+            TimeTicker.get().registerObserver(this@MiuiLeftToplClockHook)
         }
     }
 
@@ -90,25 +90,25 @@ class MiuLeftToplClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, 
     private fun removeClock(clock: View) {
         clockList.remove(clock)
         if (clockList.isEmpty()) {
-            TimeTicker.get().unregisterObserver(this@MiuLeftToplClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftToplClockHook)
         }
     }
 
     private val screenListener: SimpleScreenListener = object : SimpleScreenListener() {
         override fun onScreenOn() {
-            TimeTicker.get().registerObserver(this@MiuLeftToplClockHook)
+            TimeTicker.get().registerObserver(this@MiuiLeftToplClockHook)
         }
 
         override fun onScreenOff() {
-            TimeTicker.get().unregisterObserver(this@MiuLeftToplClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftToplClockHook)
         }
 
         override fun onUserPresent() {
-            TimeTicker.get().unregisterObserver(this@MiuLeftToplClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftToplClockHook)
         }
 
         override fun onStopTimeTick() {
-            TimeTicker.get().unregisterObserver(this@MiuLeftToplClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftToplClockHook)
         }
     }
 

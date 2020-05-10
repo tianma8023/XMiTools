@@ -24,7 +24,7 @@ import java.util.*
 class MiuiVerticalClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, appInfo: AppInfo?) : BaseSubHook(classLoader, xsp, appInfo), TickObserver {
 
     companion object {
-        private const val CLASS_MIUI_VERTICAL_CLOCK = "miui.keyguard.clock.MiuiVerticalClock"
+        const val CLASS_MIUI_VERTICAL_CLOCK = "miui.keyguard.clock.MiuiVerticalClock"
     }
 
     private var verticalClockClass: Class<*>? = null
@@ -62,7 +62,7 @@ class MiuiVerticalClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?,
 
                             addClock(miuiBaseClock)
 
-                            ScreenBroadcastManager.getInstance(miuiBaseClock.getContext()).registerListener(screenListener)
+                            ScreenBroadcastManager.getInstance(miuiBaseClock.context).registerListener(screenListener)
                         }
                     }
                 })

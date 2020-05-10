@@ -3,8 +3,8 @@ package com.tianma.tweaks.miui.xp.hook.systemui;
 
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuLeftToplClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuLeftToplLargeClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiLeftToplClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiLeftToplLargeClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiBaseClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiCenterHorizontalClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiVerticalClockHook;
@@ -63,8 +63,8 @@ public class SystemUIHook extends BaseHook {
 
                     new MiuiCenterHorizontalClockHook(classLoader, xsp, appInfo).startHook();
                     new MiuiVerticalClockHook(classLoader, xsp, appInfo).startHook();
-                    new MiuLeftToplClockHook(classLoader, xsp, appInfo).startHook();
-                    new MiuLeftToplLargeClockHook(classLoader, xsp, appInfo).startHook();
+                    new MiuiLeftToplClockHook(classLoader, xsp, appInfo).startHook();
+                    new MiuiLeftToplLargeClockHook(classLoader, xsp, appInfo).startHook();
                     new ChooseKeyguardClockActivityHook(classLoader, xsp).startHook();
                     new MiuiBaseClockHook(classLoader, xsp, appInfo).startHook();
 

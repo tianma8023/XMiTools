@@ -1,18 +1,13 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard
 
 import android.content.Context
-import android.os.SystemClock
-import android.view.Gravity
+import android.graphics.Color
 import android.view.View
 import android.view.ViewTreeObserver.OnWindowAttachListener
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.tianma.tweaks.miui.R
-import com.tianma.tweaks.miui.cons.PrefConst
-import com.tianma.tweaks.miui.data.http.repository.DataRepository.getHitokoto
-import com.tianma.tweaks.miui.data.http.repository.DataRepository.getPoem
 import com.tianma.tweaks.miui.utils.ResolutionUtils
-import com.tianma.tweaks.miui.utils.SPUtils
 import com.tianma.tweaks.miui.utils.XLog
 import com.tianma.tweaks.miui.utils.XSPUtils
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
@@ -24,10 +19,6 @@ import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper
 import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedHelpers
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import java.util.*
 
 /**
  * 锁屏时钟基类 Hook
@@ -53,7 +44,7 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
         if (oneSentenceEnabled) {
             XLog.d("OneSentence enabled, hooking MiuiBaseClock...")
             hookOnFinishInflate()
-            hookConstructor()
+            hookOnAttachedToWindow()
         }
     }
 
@@ -73,18 +64,41 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
                         hitokotoTextView.setTextColor(oneSentenceColor)
                         hitokotoTextView.id = R.id.hitokoto_info_text_view
 
-                        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                        hitokotoTextView.layoutParams = params
-                        params.gravity = Gravity.CENTER
-                        params.topMargin = ResolutionUtils.dp2px(context, 5.5f).toInt()
+                        val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                        hitokotoTextView.layoutParams = layoutParams
+                        // params.gravity = Gravity.CENTER
+                        layoutParams.topMargin = ResolutionUtils.dp2px(context, 5.5f).toInt()
+
+                        when (val className = param.thisObject.javaClass.name) {
+                            MiuiCenterHorizontalClockHook.CLASS_MIUI_CENTER_HORIZONTAL_CLOCK -> {
+                                layoutParams.leftMargin = ResolutionUtils.dp2px(context, 10f).toInt()
+                                layoutParams.rightMargin = ResolutionUtils.dp2px(context, 10f).toInt()
+                            }
+                            MiuiVerticalClockHook.CLASS_MIUI_VERTICAL_CLOCK -> {
+                                layoutParams.leftMargin = ResolutionUtils.dp2px(context, 10f).toInt()
+                                layoutParams.rightMargin = ResolutionUtils.dp2px(context, 10f).toInt()
+                            }
+                            MiuiLeftToplClockHook.CLASS_MIUI_LEFT_TOP_CLOCK -> {
+                                layoutParams.leftMargin = ResolutionUtils.dp2px(context, 2f).toInt()
+                                layoutParams.rightMargin = ResolutionUtils.dp2px(context, 20f).toInt()
+                            }
+                            MiuiLeftToplLargeClockHook.CLASS_MIUI_LEFT_TOP_LARGE_CLOCK -> {
+                                layoutParams.leftMargin = ResolutionUtils.dp2px(context, 2f).toInt()
+                                layoutParams.rightMargin = ResolutionUtils.dp2px(context, 20f).toInt()
+                            }
+                            else -> {
+                                XLog.d("Unknown subclass of MiuiBaseClock: $className")
+                            }
+                        }
 
                         miuiBaseClock.addView(hitokotoTextView, mOwnerInfoIndex + 1)
                     }
                 })
     }
 
-    private fun hookConstructor() {
-        XposedWrapper.hookAllConstructors(miuiBaseClockClass,
+    private fun hookOnAttachedToWindow() {
+        XposedWrapper.findAndHookMethod(miuiBaseClockClass,
+                "onAttachedToWindow",
                 object : MethodHookWrapper() {
                     override fun after(param: MethodHookParam) {
                         val keyguardClock = param.thisObject as LinearLayout

@@ -17,10 +17,13 @@ import com.tianma.tweaks.miui.utils.SPUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.hitokoto.OneSentenceManager;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -207,118 +210,18 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
     };
 
     private void loadOneSentence() {
-        try {
-            Set<String> apiSources = XSPUtils.getOneSentenceApiSources(xsp);
-            if (apiSources == null || apiSources.isEmpty()) {
-                XLog.e("No OneSentence API chosen");
-                return;
-            }
-
-            // 判断是否满足刷新频率
-            long duration = XSPUtils.getOneSentenceRefreshRate(xsp) * 60 * 1000;
-
-            if (duration > 0) {
-                // 因为是 modContext, 所以上次刷新时间数据的存取都是在 com.android.systemui 的 shared_prefs 文件中
-                long lastTime = SPUtils.getOneSentenceLastRefreshTime(modContext);
-                long curTime = SystemClock.elapsedRealtime();
-
-                if (curTime - lastTime < duration) {
-                    XLog.d("Cannot fetch new data due to refresh rate");
-                    return;
+        if (modContext != null) {
+            OneSentenceManager.getInstance().loadOneSentence(modContext, xsp, new OneSentenceManager.OneSentenceLoadListener() {
+                @Override
+                public void onSuccess(@NotNull String oneSentence) {
+                    showOneSentence(oneSentence);
                 }
 
-                SPUtils.setOneSentenceLastRefreshTime(modContext, curTime);
-            }
-
-            int randIdx = new Random().nextInt(apiSources.size());
-            String apiSource = new ArrayList<>(apiSources).get(randIdx);
-            if (PrefConst.API_SOURCE_HITOKOTO.equals(apiSource)) {
-                loadHitokoto();
-            } else if (PrefConst.API_SOURCE_ONE_POEM.equals(apiSource)) {
-                loadOnePoem();
-            } else {
-                XLog.e("Unknown API source: " + apiSource);
-            }
-        } catch (Exception e) {
-            XLog.e("Error occurs when load OneSentence", e);
-        }
-    }
-
-    private void loadHitokoto() {
-        try {
-            Set<String> hitokotoCategories = XSPUtils.getHitokotoCategories(xsp);
-            List<String> params = new ArrayList<>();
-
-            if (hitokotoCategories == null || hitokotoCategories.isEmpty()) {
-                params.add("");
-            } else {
-                if (hitokotoCategories.contains(PrefConst.ONE_POEM_CATEGORY_ALL)) {
-                    params.add("");
-                } else {
-                    params.addAll(hitokotoCategories);
+                @Override
+                public void onFailed(@NotNull Throwable throwable) {
+                    XLog.e("Error occurs when load OneSentence", throwable);
                 }
-            }
-
-            final boolean showHitokotoSource = XSPUtils.getShowHitokotoSource(xsp);
-            Disposable disposable = DataRepository.getHitokoto(params)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(hitokoto -> {
-                        if (hitokoto != null) {
-                            XLog.d(hitokoto.toString());
-                            String content = hitokoto.getContent() == null ? "" : hitokoto.getContent();
-                            String oneSentence;
-                            if (showHitokotoSource) {
-                                String source = hitokoto.getFrom() == null ? "" : hitokoto.getFrom();
-                                oneSentence = String.format("%s <%s>", content, source);
-                            } else {
-                                oneSentence = content;
-                            }
-                            showOneSentence(oneSentence);
-                        }
-                    }, throwable -> XLog.e("Error occurs", throwable));
-            mCompositeDisposable.add(disposable);
-        } catch (Throwable e) {
-            XLog.e("Error occurs when load Hitokoto", e);
-        }
-    }
-
-    private void loadOnePoem() {
-        try {
-            Set<String> onePoemCategories = XSPUtils.getOnePoemCategories(xsp);
-            String onePoemCategory;
-            if (onePoemCategories == null || onePoemCategories.isEmpty()) {
-                onePoemCategory = PrefConst.ONE_POEM_CATEGORY_ALL;
-            } else {
-                if (onePoemCategories.contains(PrefConst.ONE_POEM_CATEGORY_ALL)) {
-                    onePoemCategory = PrefConst.ONE_POEM_CATEGORY_ALL;
-                } else {
-                    int randIdx = new Random().nextInt(onePoemCategories.size());
-                    onePoemCategory = new ArrayList<>(onePoemCategories).get(randIdx);
-                }
-            }
-
-            final boolean showPoemAuthor = XSPUtils.getShowPoemAuthor(xsp);
-            Disposable disposable = DataRepository.getPoem(onePoemCategory)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(poem -> {
-                        if (poem != null) {
-                            XLog.d(poem.toString());
-                            String content = poem.getContent() == null ? "" : poem.getContent();
-                            String oneSentence;
-                            if (showPoemAuthor) {
-                                String author = poem.getAuthor() == null ? "" : poem.getAuthor();
-                                oneSentence = String.format("%s  %s", content, author);
-                            } else {
-                                oneSentence = content;
-                            }
-                            showOneSentence(oneSentence);
-                        }
-                    }, throwable -> XLog.e("Error occurs", throwable));
-            mCompositeDisposable.add(disposable);
-        } catch (Throwable e) {
-            XLog.e("Error occurs when load OnePoem", e);
+            });
         }
     }
 
@@ -338,5 +241,6 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
         if (mCompositeDisposable.size() > 0) {
             mCompositeDisposable.clear();
         }
+        OneSentenceManager.getInstance().cancelLoadOneSentence();
     }
 }

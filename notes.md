@@ -40,7 +40,7 @@ MiuiKeyguardBaseClock 有2个直接子类:
 以上时钟都只是时钟的包裹类，具体实现类，实际上是 MiuiBaseClock 及其子类。
 
 MiuiBaseClock 类所在位置 /system/app/miuisystem/miuisystem.apk
-MiuiBaseClock 有四个子类:
+MiuiBaseClock 继承自 LinearLayout, MiuiBaseClock 有四个子类:
 1. MiuiCenterHorizontalClock - 居中横向时钟
 2. MiuiVerticalClock - 垂直时钟
 3. MiuiLeftTopClock - 左上角时钟

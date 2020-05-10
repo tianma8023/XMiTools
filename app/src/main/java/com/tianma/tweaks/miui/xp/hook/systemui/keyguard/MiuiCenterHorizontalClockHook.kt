@@ -24,7 +24,7 @@ import java.util.*
 class MiuiCenterHorizontalClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, appInfo: AppInfo?) : BaseSubHook(classLoader, xsp, appInfo), TickObserver {
 
     companion object {
-        private const val CLASS_MIUI_CENTER_HORIZONTAL_CLOCK = "miui.keyguard.clock.MiuiCenterHorizontalClock"
+        const val CLASS_MIUI_CENTER_HORIZONTAL_CLOCK = "miui.keyguard.clock.MiuiCenterHorizontalClock"
     }
 
     private var centerHorizontalClockClass: Class<*>? = null
@@ -63,7 +63,7 @@ class MiuiCenterHorizontalClockHook(classLoader: ClassLoader?, xsp: XSharedPrefe
 
                             addClock(miuiBaseClock)
 
-                            ScreenBroadcastManager.getInstance(miuiBaseClock.getContext()).registerListener(screenListener)
+                            ScreenBroadcastManager.getInstance(miuiBaseClock.context).registerListener(screenListener)
                         }
                     }
                 })
