@@ -1,4 +1,6 @@
 # Update Logs
+- 20.05.11 1.2.3
+  1. Fix: the issue of Hitokoto alignment
 - 20.05.10 1.2.2
   1. Adapt MIUI 12: Show seconds in lock-screen clock
   2. Adapt MIUI 12: Hitokoto for lock-screen
