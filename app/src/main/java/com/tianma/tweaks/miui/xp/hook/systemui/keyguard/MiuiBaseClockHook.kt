@@ -64,7 +64,7 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
                         hitokotoTextView.setTextColor(oneSentenceColor)
                         hitokotoTextView.id = R.id.hitokoto_info_text_view
 
-                        val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                        val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                         hitokotoTextView.layoutParams = layoutParams
                         // params.gravity = Gravity.CENTER
                         layoutParams.topMargin = ResolutionUtils.dp2px(context, 5.5f).toInt()
