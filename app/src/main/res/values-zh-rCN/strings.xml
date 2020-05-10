@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">XMiTools</string>
 
-    <string name="xposed_description">MIUI 10/MIUI 11 模块</string>
+    <string name="xposed_description">MIUI 10/MIUI 11/MIUI 12 模块</string>
 
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>

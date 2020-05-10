@@ -1,4 +1,7 @@
 # Update Logs
+- 20.05.10 1.2.2
+  1. Adapt MIUI 12: Show seconds in lock-screen clock
+  2. Adapt MIUI 12: Hitokoto for lock-screen
 - 20.04.19 1.2.1
   1. New option: custom hitokoto text size and color
   2. Fix: signal align left invalid issue

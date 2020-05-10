@@ -1,5 +1,5 @@
 # XMiTools
-MIUI 10 系统界面模块
+MIUI 10 / MIUI 11 / MIUI 12 系统界面模块
 
 [English README](/README-EN.md)
 # 效果截图
