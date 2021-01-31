@@ -32,13 +32,16 @@ public class XLog {
 
         // Duplicate to the Xposed log if enabled
         if (LOG_TO_XPOSED) {
-            if (priority <= Log.DEBUG) { // DEBUG level 不会在Xposed日志中生成,所以调整等级
+            if (priority <= Log.DEBUG) { // DEBUG level 不会在 Xposed 日志中生成,所以调整等级
                 priority = Log.INFO;
             }
             Log.println(priority, "Xposed", LOG_TAG + ": " + message);
         }
 
         if (LOG_TO_EDXPOSED) {
+            if (priority <= Log.DEBUG){ // DEBUG level 不会在 EdXposed 日志中生成,所以调整等级
+                priority = Log.INFO;
+            }
             Log.println(priority, "EdXposed-Bridge", LOG_TAG + ": " + message);
         }
     }
