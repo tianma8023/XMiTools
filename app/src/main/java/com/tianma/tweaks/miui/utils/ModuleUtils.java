@@ -11,7 +11,7 @@ public class ModuleUtils {
     }
 
     /**
-     * 当前模块是否在XposedInstaller中被启用
+     * 当前模块是否在Xposed Installer中被启用
      */
     public static boolean isModuleActive() {
         Log.d("Something", "Not important");

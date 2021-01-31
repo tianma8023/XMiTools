@@ -2,7 +2,7 @@ package com.tianma.tweaks.miui.xp;
 
 
 import com.tianma.tweaks.miui.xp.hook.BaseHook;
-import com.tianma.tweaks.miui.xp.hook.ModuleUtilsHook;
+import com.tianma.tweaks.miui.xp.hook.self.ModuleUtilsHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
 
 import java.util.ArrayList;
@@ -14,11 +14,11 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
-    private List<BaseHook> mHookList;
+    private final List<BaseHook> mHookList;
 
     {
         mHookList = new ArrayList<>();
-        mHookList.add(new ModuleUtilsHook()); // MiuiTweaks Hook
+        mHookList.add(new ModuleUtilsHook()); // Self Hook
         mHookList.add(new SystemUIHook()); // SystemUI Hook
         // mHookList.add(new MiuiLauncherHook()); // Miui Launcher Hook
     }

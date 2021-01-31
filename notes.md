@@ -1,3 +1,12 @@
+## 基础 
+```shell
+adb shell pm list packages -f | grep ${package_name}
+```
+通过上述命令，可以找到对应包名的app在手机中的存储位置。
+XMiTools中有两个关键app：
+1. SystemUI - 包名(com.android.systemui) - 位置: /system_ext/priv-app/MiuiSystemUI/MiuiSystemUI.apk
+2. miuisystem - 包名(com.miui.system) - 位置：/system/app/miuisystem/miuisystem.apk
+
 ## MIUI 12 - 12.4.30
 锁屏界面对应的View为: NotificationPanelView；锁屏布局为 status_bar_expanded.xml
 

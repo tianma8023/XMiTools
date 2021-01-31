@@ -1,9 +1,10 @@
-package com.tianma.tweaks.miui.xp.hook;
+package com.tianma.tweaks.miui.xp.hook.self;
 
 
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.utils.ModuleUtils;
 import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.xp.hook.BaseHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -11,7 +12,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 /**
- * Hook class com.github.tianma8023.xposed.smscode.utils.ModuleUtils
+ * Hook class ModuleUtils
  */
 public class ModuleUtilsHook extends BaseHook {
 
