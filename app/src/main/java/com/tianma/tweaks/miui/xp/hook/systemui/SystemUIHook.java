@@ -3,28 +3,29 @@ package com.tianma.tweaks.miui.xp.hook.systemui;
 
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiLeftToplClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiLeftToplLargeClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiBaseClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiCenterHorizontalClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiVerticalClockHook;
-import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
-import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfoHelper;
 import com.tianma.tweaks.miui.utils.rom.MiuiUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.ChooseKeyguardClockActivityHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.KeyguardClockContainerHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiBaseClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiCenterHorizontalClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardBaseClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardLeftTopClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardVerticalClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiLeftToplClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiLeftToplLargeClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiVerticalClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.BatteryMeterViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.CollapsedStatusBarFragmentHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.HeaderViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.PhoneStatusBarViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.SignalClusterViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.StatusBarClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109.StatusBarClockHook20201109;
+import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
+import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfoHelper;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppVersionConst;
 
 import de.robv.android.xposed.XSharedPreferences;
@@ -49,7 +50,7 @@ public class SystemUIHook extends BaseHook {
 
             ClassLoader classLoader = lpparam.classLoader;
             if (XSPUtils.isMainSwitchEnabled(xsp)) {
-                if(!MiuiUtils.isMiui()) {
+                if (!MiuiUtils.isMiui()) {
                     XLog.e("Only support MIUI");
                     return;
                 }
@@ -59,35 +60,102 @@ public class SystemUIHook extends BaseHook {
 
                 AppInfo appInfo = AppInfoHelper.getAppInfo(lpparam);
                 XLog.i(appInfo.toString());
-                if (appInfo.getVersionCode() >= AppVersionConst.SYSTEM_UI_V201912130) {
-
-                    new MiuiCenterHorizontalClockHook(classLoader, xsp, appInfo).startHook();
-                    new MiuiVerticalClockHook(classLoader, xsp, appInfo).startHook();
-                    new MiuiLeftToplClockHook(classLoader, xsp, appInfo).startHook();
-                    new MiuiLeftToplLargeClockHook(classLoader, xsp, appInfo).startHook();
-                    new ChooseKeyguardClockActivityHook(classLoader, xsp).startHook();
-                    new MiuiBaseClockHook(classLoader, xsp, appInfo).startHook();
-
+                if (appInfo.getVersionCode() >= AppVersionConst.SYSTEM_UI_V202011090) {
+                    hookAfter20201109(classLoader, xsp, miuiVersion, appInfo);
+                } else if (appInfo.getVersionCode() >= AppVersionConst.SYSTEM_UI_V201912130) {
+                    hookAfter201912130(classLoader, xsp, miuiVersion, appInfo);
                 } else if (miuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
-
-                    new MiuiKeyguardVerticalClockHook(classLoader, xsp).startHook();
-                    new MiuiKeyguardLeftTopClockHook(classLoader, xsp).startHook();
-                    new ChooseKeyguardClockActivityHook(classLoader, xsp).startHook();
-                    new MiuiKeyguardBaseClockHook(classLoader, xsp).startHook();
-
+                    hookAfter190507(classLoader, xsp, miuiVersion, appInfo);
                 } else {
-                    new MiuiKeyguardClockHook(classLoader, xsp).startHook();
+                    hookByDefault(classLoader, xsp, miuiVersion, appInfo);
                 }
-                new PhoneStatusBarViewHook(classLoader, xsp).startHook();
-                new StatusBarClockHook(classLoader, xsp).startHook();
-                new KeyguardClockContainerHook(classLoader, xsp, appInfo).startHook();
-
-                new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
-                new SignalClusterViewHook(classLoader, xsp, miuiVersion).startHook();
-
-                new HeaderViewHook(classLoader, xsp, miuiVersion).startHook();
-                new BatteryMeterViewHook(classLoader, xsp, miuiVersion).startHook();
             }
         }
+    }
+
+    // 默认 Hook 逻辑（兜底）
+    private void hookByDefault(ClassLoader classLoader,
+                               XSharedPreferences xsp,
+                               MiuiVersion miuiVersion,
+                               AppInfo appInfo) {
+        XLog.d("hook by default");
+        new MiuiKeyguardClockHook(classLoader, xsp).startHook();
+
+        new PhoneStatusBarViewHook(classLoader, xsp).startHook();
+        new StatusBarClockHook(classLoader, xsp).startHook();
+        new KeyguardClockContainerHook(classLoader, xsp, appInfo).startHook();
+
+        new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
+        new SignalClusterViewHook(classLoader, xsp, miuiVersion).startHook();
+
+        new HeaderViewHook(classLoader, xsp, miuiVersion).startHook();
+        new BatteryMeterViewHook(classLoader, xsp, miuiVersion).startHook();
+    }
+
+    private void hookAfter190507(ClassLoader classLoader,
+                                 XSharedPreferences xsp,
+                                 MiuiVersion miuiVersion,
+                                 AppInfo appInfo) {
+        XLog.d("hook after MIUI 19.05.07");
+        new MiuiKeyguardVerticalClockHook(classLoader, xsp).startHook();
+        new MiuiKeyguardLeftTopClockHook(classLoader, xsp).startHook();
+        new ChooseKeyguardClockActivityHook(classLoader, xsp).startHook();
+        new MiuiKeyguardBaseClockHook(classLoader, xsp).startHook();
+
+        new PhoneStatusBarViewHook(classLoader, xsp).startHook();
+        new StatusBarClockHook(classLoader, xsp).startHook();
+        new KeyguardClockContainerHook(classLoader, xsp, appInfo).startHook();
+
+        new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
+        new SignalClusterViewHook(classLoader, xsp, miuiVersion).startHook();
+
+        new HeaderViewHook(classLoader, xsp, miuiVersion).startHook();
+        new BatteryMeterViewHook(classLoader, xsp, miuiVersion).startHook();
+    }
+
+    private void hookAfter201912130(ClassLoader classLoader,
+                                    XSharedPreferences xsp,
+                                    MiuiVersion miuiVersion,
+                                    AppInfo appInfo) {
+        XLog.d("hook after v201912130");
+        new MiuiCenterHorizontalClockHook(classLoader, xsp, appInfo).startHook();
+        new MiuiVerticalClockHook(classLoader, xsp, appInfo).startHook();
+        new MiuiLeftToplClockHook(classLoader, xsp, appInfo).startHook();
+        new MiuiLeftToplLargeClockHook(classLoader, xsp, appInfo).startHook();
+        new ChooseKeyguardClockActivityHook(classLoader, xsp).startHook();
+        new MiuiBaseClockHook(classLoader, xsp, appInfo).startHook();
+
+        new PhoneStatusBarViewHook(classLoader, xsp).startHook();
+        new StatusBarClockHook(classLoader, xsp).startHook();
+        new KeyguardClockContainerHook(classLoader, xsp, appInfo).startHook();
+
+        new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
+        new SignalClusterViewHook(classLoader, xsp, miuiVersion).startHook();
+
+        new HeaderViewHook(classLoader, xsp, miuiVersion).startHook();
+        new BatteryMeterViewHook(classLoader, xsp, miuiVersion).startHook();
+    }
+
+    private void hookAfter20201109(ClassLoader classLoader,
+                                   XSharedPreferences xsp,
+                                   MiuiVersion miuiVersion,
+                                   AppInfo appInfo) {
+        XLog.d("hook after v20201109");
+        new MiuiCenterHorizontalClockHook(classLoader, xsp, appInfo).startHook();
+        new MiuiVerticalClockHook(classLoader, xsp, appInfo).startHook();
+        new MiuiLeftToplClockHook(classLoader, xsp, appInfo).startHook();
+        new MiuiLeftToplLargeClockHook(classLoader, xsp, appInfo).startHook();
+        new ChooseKeyguardClockActivityHook(classLoader, xsp).startHook();
+        new MiuiBaseClockHook(classLoader, xsp, appInfo).startHook();
+
+        new PhoneStatusBarViewHook(classLoader, xsp).startHook();
+        new StatusBarClockHook(classLoader, xsp).startHook();
+        new KeyguardClockContainerHook(classLoader, xsp, appInfo).startHook();
+
+        new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
+        new SignalClusterViewHook(classLoader, xsp, miuiVersion).startHook();
+
+        new HeaderViewHook(classLoader, xsp, miuiVersion).startHook();
+        new BatteryMeterViewHook(classLoader, xsp, miuiVersion).startHook();
     }
 }
