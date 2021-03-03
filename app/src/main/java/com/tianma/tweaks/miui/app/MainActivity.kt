@@ -1,13 +1,11 @@
 package com.tianma.tweaks.miui.app
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
-import com.google.android.material.dialog.MaterialDialogs
 import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.base.BaseActivity
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
@@ -15,10 +13,8 @@ import com.tianma.tweaks.miui.app.fragment.*
 import com.tianma.tweaks.miui.utils.ModuleUtils
 import com.tianma.tweaks.miui.utils.PackageUtils
 import com.tianma.tweaks.miui.utils.RootUtils
-import com.tianma.tweaks.miui.utils.XLog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
-import java.lang.Exception
 
 class MainActivity : BaseActivity() {
 
@@ -109,13 +105,19 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showModuleStatus() {
-        val format = "%s (%s)"
-        val appName = getString(R.string.app_name)
-        val appTitle = if (ModuleUtils.isModuleActive()) {
-            String.format(format, appName, getString(R.string.module_status_active))
-        } else {
-            String.format(format, appName, getString(R.string.module_status_inactive))
-        }
-        title = appTitle
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            if (isFinishing) {
+                return@postDelayed
+            }
+            val format = "%s (%s)"
+            val appName = getString(R.string.app_name)
+            val appTitle = if (ModuleUtils.isModuleActive()) {
+                String.format(format, appName, getString(R.string.module_status_active))
+            } else {
+                String.format(format, appName, getString(R.string.module_status_inactive))
+            }
+            title = appTitle
+        }, 50L)
     }
 }

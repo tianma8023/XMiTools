@@ -23,7 +23,11 @@ import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.HeaderViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.PhoneStatusBarViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.SignalClusterViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.StatusBarClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109.CollapsedStatusBarFragmentHook20201109;
+import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109.MiuiQSHeaderViewHook20201109;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109.StatusBarClockHook20201109;
+import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109.StatusBarMobileViewHook20201109;
+import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109.StatusBarSignalPolicyHook20201109;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfoHelper;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppVersionConst;
@@ -149,13 +153,13 @@ public class SystemUIHook extends BaseHook {
         new MiuiBaseClockHook(classLoader, xsp, appInfo).startHook();
 
         new PhoneStatusBarViewHook(classLoader, xsp).startHook();
-        new StatusBarClockHook(classLoader, xsp).startHook();
+        new StatusBarClockHook20201109(classLoader, xsp, appInfo).startHook();
         new KeyguardClockContainerHook(classLoader, xsp, appInfo).startHook();
 
-        new CollapsedStatusBarFragmentHook(classLoader, xsp, miuiVersion).startHook();
-        new SignalClusterViewHook(classLoader, xsp, miuiVersion).startHook();
+        new CollapsedStatusBarFragmentHook20201109(classLoader, xsp, appInfo).startHook();
+        new StatusBarSignalPolicyHook20201109(classLoader, xsp, appInfo).startHook();
+        new StatusBarMobileViewHook20201109(classLoader, xsp, appInfo).startHook();
 
-        new HeaderViewHook(classLoader, xsp, miuiVersion).startHook();
-        new BatteryMeterViewHook(classLoader, xsp, miuiVersion).startHook();
+        new MiuiQSHeaderViewHook20201109(classLoader, xsp, appInfo).startHook();
     }
 }
