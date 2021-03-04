@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.BuildConfig;
-import com.tianma.tweaks.miui.R;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
@@ -97,9 +96,6 @@ public class MiuiQSHeaderViewHook20201109 extends BaseSubHook implements Weather
 
                         // 右上角齿轮快捷按钮
                         ImageView shortcutView = (ImageView) miuiQSHeaderView.getChildAt(miuiQSHeaderView.getChildCount() - 1);
-                        shortcutView.setImageDrawable(
-                                mAppContext.getDrawable(R.mipmap.ic_launcher)
-                        );
 
                         mWeatherInfoTv = new TextView(miuiQSHeaderView.getContext());
                         RelativeLayout.LayoutParams weatherInfoLp = new RelativeLayout.LayoutParams(
