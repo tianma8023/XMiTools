@@ -53,6 +53,7 @@ class MainActivity : BaseActivity() {
             R.id.action_soft_reboot_system -> preformSoftRebootSystem()
             R.id.action_restart_host_apps -> performRestartHostApps()
             R.id.action_taichi_users_notice -> showTaiChiUsersNotice()
+            R.id.action_edxposed_users_notice -> showEdXposedUsersNotice()
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -100,6 +101,15 @@ class MainActivity : BaseActivity() {
             }
             negativeButton(R.string.add_applications) {
                 PackageUtils.startAddAppsInTaiChi(this@MainActivity)
+            }
+        }
+    }
+
+    private fun showEdXposedUsersNotice() {
+        MaterialDialog(this).show {
+            title(R.string.action_edxposed_users_notice)
+            message(R.string.edxposed_users_notice_content)
+            positiveButton(R.string.confirm) {
             }
         }
     }

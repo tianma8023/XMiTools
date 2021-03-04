@@ -87,6 +87,11 @@
     <string name="taichi_install_prompt">Please install Taichi</string>
     <string name="taichi_enable_prompt">Please enable Taichi</string>
 
+    <!-- edxposed users notice -->
+    <string name="action_edxposed_users_notice">EdXposed Users Notice</string>
+    <string name="edxposed_users_notice_content">1. This module should hook these apps：\n\t· Phone Services(com.android.phone)\n\n2. If this module is inactive after updating, please re-check this module in module manager list and reboot. \n\n3. If it cannot work in global mode, then try to change to whitelist(Xposed Hide White) mode or scope mode and add the apps above.</string>
+    <!-- edxposed users notice end -->
+
     <string-array name="api_source_value_array">
         <item>Hitokoto</item>
         <item>DailyPoem</item>

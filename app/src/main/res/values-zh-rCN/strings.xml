@@ -88,6 +88,11 @@
     <string name="taichi_install_prompt">请先安装太极</string>
     <string name="taichi_enable_prompt">请先启用太极</string>
 
+    <!-- edxposed users notice -->
+    <string name="action_edxposed_users_notice">EdXposed用户须知</string>
+    <string name="edxposed_users_notice_content">1. 本模块作用在以下应用中(也就是需要Hook以下应用)：\n\t· 系统界面(com.android.systemui)\n\n2. 若模块显示未激活，请在模块管理列表中重新勾选本模块，并重启手机。\n\n3. 若您使用全局模式不生效，则切换为白名单（Xposed Hide 白）模式或者在作用域模式，同时需要将第1点中的应用添加进去。</string>
+    <!-- edxposed users notice end -->
+
     <string-array name="api_source_value_array">
         <item>一言Hitokoto</item>
         <item>今日诗词</item>
