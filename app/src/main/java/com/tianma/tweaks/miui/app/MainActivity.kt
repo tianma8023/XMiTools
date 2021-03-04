@@ -10,11 +10,10 @@ import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.base.BaseActivity
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.app.fragment.*
-import com.tianma.tweaks.miui.utils.ModuleUtils
-import com.tianma.tweaks.miui.utils.PackageUtils
-import com.tianma.tweaks.miui.utils.RootUtils
+import com.tianma.tweaks.miui.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlin.math.max
 
 class MainActivity : BaseActivity() {
 
@@ -109,8 +108,7 @@ class MainActivity : BaseActivity() {
         MaterialDialog(this).show {
             title(R.string.action_edxposed_users_notice)
             message(R.string.edxposed_users_notice_content)
-            positiveButton(R.string.confirm) {
-            }
+            positiveButton(R.string.confirm)
         }
     }
 
