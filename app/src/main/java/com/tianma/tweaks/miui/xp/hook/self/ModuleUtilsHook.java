@@ -5,8 +5,8 @@ import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.utils.ModuleUtils;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.xp.hook.BaseHook;
-import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
@@ -17,6 +17,7 @@ import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 public class ModuleUtilsHook extends BaseHook {
 
     private static final String MI_TWEAKS_PACKAGE = BuildConfig.APPLICATION_ID;
+    private static final int MODULE_VERSION = BuildConfig.MODULE_VERSION;
 
     @Override
     public void onLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
@@ -35,13 +36,8 @@ public class ModuleUtilsHook extends BaseHook {
         String className = ModuleUtils.class.getName();
 
         findAndHookMethod(className, lpparam.classLoader,
-                "isModuleActive",
-                new MethodHookWrapper() {
-                    @Override
-                    protected void before(MethodHookParam param) {
-                        param.setResult(true);
-                    }
-                });
+                "getModuleVersion",
+                XC_MethodReplacement.returnConstant(MODULE_VERSION));
     }
 
 }

@@ -118,6 +118,6 @@ class MainActivity : BaseActivity() {
                 String.format(format, appName, getString(R.string.module_status_inactive))
             }
             title = appTitle
-        }, 50L)
+        }, 1000L)
     }
 }

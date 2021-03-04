@@ -15,18 +15,24 @@ def static releaseTime() {
     return new Date().format("yyMMdd", TimeZone.default)
 }
 
+ext {
+    VERSION_CODE = 16
+    VERSION_NAME = "1.2.4"
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.tianma.tweaks.miui"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 15
-        versionName "1.2.3"
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
 
         buildConfigField("String", "LOG_TAG", "\"XMiTools\"")
         buildConfigField("boolean", "LOG_TO_XPOSED", "true")
         buildConfigField("boolean", "LOG_TO_EDXPOSED", "true")
+        buildConfigField("int", "MODULE_VERSION", "" + VERSION_CODE)
     }
 
     lintOptions {

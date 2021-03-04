@@ -29,5 +29,5 @@
 }
 
 -keep class com.tianma.tweaks.miui.utils.ModuleUtils {
-    boolean isModuleActive();
+    int getModuleVersion();
 }
