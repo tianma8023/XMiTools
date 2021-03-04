@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
+package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

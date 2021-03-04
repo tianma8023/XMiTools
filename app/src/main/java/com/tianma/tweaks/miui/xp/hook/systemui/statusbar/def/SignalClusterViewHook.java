@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
+package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
 import android.view.View;
 import android.widget.ImageView;

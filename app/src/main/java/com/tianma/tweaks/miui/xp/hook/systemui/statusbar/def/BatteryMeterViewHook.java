@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
+package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
 import android.text.SpannableString;
 import android.text.Spanned;

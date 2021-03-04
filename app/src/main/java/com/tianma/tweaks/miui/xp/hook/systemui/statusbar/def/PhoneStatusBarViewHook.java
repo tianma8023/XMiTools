@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.statusbar;
+package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,6 +13,7 @@ import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
+import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -38,8 +39,8 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
     private boolean mAlignmentCenter = false;
     private boolean mAlignmentRight = false;
 
-    public PhoneStatusBarViewHook(ClassLoader classLoader, XSharedPreferences xsp) {
-        super(classLoader, xsp);
+    public PhoneStatusBarViewHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
+        super(classLoader, xsp, appInfo);
         String alignment = XSPUtils.getStatusBarClockAlignment(xsp);
         if (PrefConst.ALIGNMENT_CENTER.equals(alignment)) {
             mAlignmentCenter = true;
