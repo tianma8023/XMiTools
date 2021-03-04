@@ -1,4 +1,6 @@
 # Update Logs
+- 21.03.04 1.3.0
+  1. Adapt MIUI 12.5+
 - 20.05.11 1.2.3
   1. Fix: the issue of Hitokoto alignment
 - 20.05.10 1.2.2
