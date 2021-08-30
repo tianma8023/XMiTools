@@ -56,6 +56,8 @@ android {
                 println "using keystore"
                 signingConfig signingConfigs.release
             }
+
+            debuggable false
         }
 
         release {
