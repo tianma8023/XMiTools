@@ -19,7 +19,9 @@ public class XLog {
         if (priority < sLogLevel)
             return;
 
-        message = String.format(message, args);
+        if (args.length > 0) {
+            message = String.format(message, args);
+        }
 
         if (args.length > 0 && args[args.length - 1] instanceof Throwable) {
             Throwable throwable = (Throwable) args[args.length - 1];
