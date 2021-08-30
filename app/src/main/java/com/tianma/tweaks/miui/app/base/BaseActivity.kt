@@ -1,31 +1,28 @@
-package com.tianma.tweaks.miui.app.base;
+package com.tianma.tweaks.miui.app.base
 
-import android.content.Context;
-import android.os.Build;
-import android.view.MenuItem;
+import android.content.Context
+import android.os.Build
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import com.tianma.tweaks.miui.utils.ContextUtils
 
-import com.tianma.tweaks.miui.utils.ContextUtils;
+abstract class BaseActivity : AppCompatActivity() {
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public abstract class BaseActivity extends AppCompatActivity {
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        Context context = newBase;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context = ContextUtils.getProtectedContext(newBase);
+    override fun attachBaseContext(newBase: Context?) {
+        val context = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            ContextUtils.getProtectedContext(newBase)
+        } else {
+            newBase
         }
-        super.attachBaseContext(context);
+        super.attachBaseContext(context)
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
         if (itemId == android.R.id.home) {
-            onBackPressed();
-            return true;
+            onBackPressed()
+            return true
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 }

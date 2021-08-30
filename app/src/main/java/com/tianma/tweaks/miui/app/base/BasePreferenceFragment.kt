@@ -1,35 +1,20 @@
-package com.tianma.tweaks.miui.app.base;
+package com.tianma.tweaks.miui.app.base
 
-import android.os.Bundle;
+import kotlin.jvm.JvmOverloads
+import androidx.preference.PreferenceFragmentCompat
+import android.os.Bundle
+import com.tianma.tweaks.miui.cons.AppConst
 
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
+abstract class BasePreferenceFragment @JvmOverloads constructor(val title: CharSequence? = "") :
+    PreferenceFragmentCompat() {
+    // var title: CharSequence? = null
 
-import com.tianma.tweaks.miui.cons.AppConst;
-
-public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
-
-    private CharSequence title;
-
-    public BasePreferenceFragment() {
-        this("");
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        val pm = preferenceManager
+        pm.sharedPreferencesName = AppConst.X_MIUI_CLOCK_PREFS_NAME
     }
 
-    public BasePreferenceFragment(CharSequence title) {
-        setTitle(title);
-    }
-
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        PreferenceManager pm = getPreferenceManager();
-        pm.setSharedPreferencesName(AppConst.X_MIUI_CLOCK_PREFS_NAME);
-    }
-
-    public void setTitle(CharSequence title) {
-        this.title = title;
-    }
-
-    final public CharSequence getTitle() {
-        return title;
-    }
+//    init {
+//        title = title
+//    }
 }
