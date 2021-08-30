@@ -84,6 +84,7 @@ public class XposedWrapper {
     }
 
     // 通过方法名查找方法，模糊查询
+    @Nullable
     public static Method findMethodByNameIfExists(Class<?> clazz, String methodName) {
         if (clazz == null) {
             return null;
