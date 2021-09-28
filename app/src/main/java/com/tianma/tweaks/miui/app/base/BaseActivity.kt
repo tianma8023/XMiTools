@@ -10,7 +10,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context?) {
         val context = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            ContextUtils.getProtectedContext(newBase)
+            if (newBase != null) {
+                ContextUtils.getProtectedContext(newBase)
+            } else {
+                newBase
+            }
         } else {
             newBase
         }

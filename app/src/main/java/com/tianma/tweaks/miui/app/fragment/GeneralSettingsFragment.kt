@@ -88,7 +88,7 @@ class GeneralSettingsFragment(title: CharSequence? = "") : BasePreferenceFragmen
 
     @SuppressLint("SetWorldReadable", "SetWorldWritable")
     private fun setPreferenceWorldWritable() {
-        val context: Context = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        val context: Context? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // API >= 24 (Android 7.0+)
             // dataDir: /data/user_de/0/<package_name>/
             // spDir: /data/user_de/0/<package_name>/shared_prefs/
@@ -99,6 +99,9 @@ class GeneralSettingsFragment(title: CharSequence? = "") : BasePreferenceFragmen
             // dataDir: /data/data/<package_name>/
             mActivity.applicationContext
         }
+
+        context ?: return
+
         val prefsFile = StorageUtils.getSharedPreferencesFile(context, AppConst.X_MIUI_CLOCK_PREFS_NAME)
         StorageUtils.setFileWorldWritable(prefsFile, 2)
     }

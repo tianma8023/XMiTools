@@ -1,49 +1,43 @@
-package com.tianma.tweaks.miui.utils;
+package com.tianma.tweaks.miui.utils
 
-import android.content.Context;
-import android.util.DisplayMetrics;
-import android.view.WindowManager;
+import android.content.Context
+import android.util.DisplayMetrics
+import com.tianma.tweaks.miui.utils.ResolutionUtils
+import android.view.WindowManager
 
-import androidx.annotation.NonNull;
-
-public class ResolutionUtils {
-
-    private ResolutionUtils() {
-
+object ResolutionUtils {
+    private fun getDisplayMetrics(context: Context): DisplayMetrics {
+        return context.resources.displayMetrics
     }
 
-    private static DisplayMetrics getDisplayMetrics(Context context) {
-        return context.getResources().getDisplayMetrics();
+    @JvmStatic
+    fun dp2px(context: Context, dp: Float): Float {
+        return dp * getDisplayMetrics(context).density
     }
 
-    public static float dp2px(Context context, float dp) {
-        return dp * getDisplayMetrics(context).density;
+    fun px2dp(context: Context, px: Float): Float {
+        return px / getDisplayMetrics(context).density
     }
 
-    public static float px2dp(Context context, float px) {
-        return px / getDisplayMetrics(context).density;
-    }
-
-    public static int getScreenWidth(@NonNull Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        if (wm != null) {
-            wm.getDefaultDisplay().getMetrics(outMetrics);
-            return outMetrics.widthPixels;
+    fun getScreenWidth(context: Context): Int {
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val outMetrics = DisplayMetrics()
+        return if (wm != null) {
+            wm.defaultDisplay.getMetrics(outMetrics)
+            outMetrics.widthPixels
         } else {
-            return 0;
+            0
         }
     }
 
-    public static int getScreenHeight(@NonNull Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        if (wm != null) {
-            wm.getDefaultDisplay().getMetrics(outMetrics);
-            return outMetrics.heightPixels;
+    fun getScreenHeight(context: Context): Int {
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val outMetrics = DisplayMetrics()
+        return if (wm != null) {
+            wm.defaultDisplay.getMetrics(outMetrics)
+            outMetrics.heightPixels
         } else {
-            return 0;
+            0
         }
     }
-
 }
