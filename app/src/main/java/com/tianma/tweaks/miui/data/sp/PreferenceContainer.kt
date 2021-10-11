@@ -5,10 +5,10 @@ import com.tianma.tweaks.miui.cons.PrefConst
 import com.tianma.tweaks.miui.utils.prefs.PreferenceDelegate
 
 /**
- * desc: App Settings
+ * desc: App Preference Container
  * date: 2021/10/11
  */
-object AppPreferenceSettings {
+object PreferenceContainer {
 
     /**
      * 一言 API 源
