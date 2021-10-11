@@ -10,6 +10,7 @@ import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.base.BaseActivity
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.app.fragment.*
+import com.tianma.tweaks.miui.data.sp.AppPreferenceSettings
 import com.tianma.tweaks.miui.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*

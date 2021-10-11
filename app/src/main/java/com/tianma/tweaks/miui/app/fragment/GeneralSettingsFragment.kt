@@ -3,9 +3,7 @@ package com.tianma.tweaks.miui.app.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ComponentName
-import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import androidx.preference.Preference
 import com.tianma.tweaks.miui.BuildConfig
@@ -88,21 +86,9 @@ class GeneralSettingsFragment(title: CharSequence? = "") : BasePreferenceFragmen
 
     @SuppressLint("SetWorldReadable", "SetWorldWritable")
     private fun setPreferenceWorldWritable() {
-        val context: Context? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // API >= 24 (Android 7.0+)
-            // dataDir: /data/user_de/0/<package_name>/
-            // spDir: /data/user_de/0/<package_name>/shared_prefs/
-            // spFile: /data/user_de/0/<package_name>/shared_prefs/<preferences_name>.xml
-            ContextUtils.getProtectedContext(mActivity.applicationContext)
-        } else {
-            // API < 24, there is no data encrypt.
-            // dataDir: /data/data/<package_name>/
-            mActivity.applicationContext
-        }
+        val context = ContextUtils.getProtectedContextIfNecessary(mActivity.applicationContext)
 
-        context ?: return
-
-        val prefsFile = StorageUtils.getSharedPreferencesFile(context, AppConst.X_MIUI_CLOCK_PREFS_NAME)
+        val prefsFile = StorageUtils.getSharedPreferencesFile(context, AppConst.XMI_TOOLS_PREFS_NAME)
         StorageUtils.setFileWorldWritable(prefsFile, 2)
     }
 

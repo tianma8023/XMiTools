@@ -129,8 +129,7 @@ class OneSentenceManager private constructor(){
                         poem?.let {
                             XLog.d(poem.toString())
                             val content = if (poem.content == null) "" else poem.content
-                            val oneSentence: String
-                            oneSentence = if (showPoemAuthor) {
+                            val oneSentence: String = if (showPoemAuthor) {
                                 val author = if (poem.author == null) "" else poem.author
                                 String.format("%s  %s", content, author)
                             } else {

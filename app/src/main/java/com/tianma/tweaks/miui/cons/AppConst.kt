@@ -6,7 +6,7 @@ object AppConst {
     // MiTweaks begin
     const val MAIN_ACTIVITY_ALIAS = BuildConfig.APPLICATION_ID + ".app.MainActivityAlias"
     const val PROJECT_SOURCE_CODE_URL = "https://github.com/tianma8023/XMiTools"
-    const val X_MIUI_CLOCK_PREFS_NAME = BuildConfig.APPLICATION_ID + "_preferences"
+    const val XMI_TOOLS_PREFS_NAME = BuildConfig.APPLICATION_ID + "_preferences"
     // MiTweaks end
 
     // Alipay begin

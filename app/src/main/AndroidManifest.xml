@@ -4,6 +4,7 @@
     package="com.tianma.tweaks.miui">
 
     <application
+        android:name=".app.App"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,6 +25,7 @@
 
         <activity
             android:name=".app.MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="unspecified">
             <intent-filter>
@@ -35,6 +37,7 @@
 
         <activity-alias
             android:name=".app.MainActivityAlias"
+            android:exported="true"
             android:targetActivity=".app.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

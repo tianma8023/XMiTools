@@ -11,7 +11,7 @@ abstract class BasePreferenceFragment @JvmOverloads constructor(val title: CharS
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val pm = preferenceManager
-        pm.sharedPreferencesName = AppConst.X_MIUI_CLOCK_PREFS_NAME
+        pm.sharedPreferencesName = AppConst.XMI_TOOLS_PREFS_NAME
     }
 
 //    init {

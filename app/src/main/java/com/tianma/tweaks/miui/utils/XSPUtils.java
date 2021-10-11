@@ -51,7 +51,7 @@ public class XSPUtils {
      * 获取XSharedPreferences
      */
     public static XSharedPreferences getXSharedPreferences() {
-        File prefsFile = new File("/data/user_de/0/" + BuildConfig.APPLICATION_ID + "/shared_prefs/" + AppConst.X_MIUI_CLOCK_PREFS_NAME + ".xml");
+        File prefsFile = new File("/data/user_de/0/" + BuildConfig.APPLICATION_ID + "/shared_prefs/" + AppConst.XMI_TOOLS_PREFS_NAME + ".xml");
         XSharedPreferences xsp;
         if (prefsFile.exists()) { // Android 7.0+
             xsp = new XSharedPreferences(prefsFile);
