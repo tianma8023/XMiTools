@@ -3,13 +3,12 @@ package com.tianma.tweaks.miui.app.fragment
 import android.os.Bundle
 import androidx.preference.Preference
 import com.tianma.tweaks.miui.R
-import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.cons.PrefConst
 
 /**
  * Settings fragment for System StatusBar
  */
-class StatusBarSettingsFragment(title: CharSequence? = "") : BasePreferenceFragment(title), Preference.OnPreferenceChangeListener {
+class StatusBarSettingsFragment(title: CharSequence? = "") : BaseSettingsFragment(title), Preference.OnPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)

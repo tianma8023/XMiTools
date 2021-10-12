@@ -8,7 +8,6 @@ import android.view.MenuItem
 import com.afollestad.materialdialogs.MaterialDialog
 import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.app.base.BaseActivity
-import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.app.fragment.*
 import com.tianma.tweaks.miui.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,7 +31,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initFragments() {
-        val fragments = mutableListOf<BasePreferenceFragment>().apply {
+        val fragments = mutableListOf<BaseSettingsFragment>().apply {
             add(GeneralSettingsFragment(getString(R.string.pref_general_title)))
             add(StatusBarSettingsFragment(getString(R.string.pref_status_bar_title)))
             add(DropDownStatusBarSettingsFragment(getString(R.string.pref_dropdown_status_bar_title)))

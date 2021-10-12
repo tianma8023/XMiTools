@@ -1,6 +1,5 @@
 package com.tianma.tweaks.miui.app.fragment
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ComponentName
 import android.content.pm.PackageManager
@@ -8,15 +7,12 @@ import android.os.Bundle
 import androidx.preference.Preference
 import com.tianma.tweaks.miui.BuildConfig
 import com.tianma.tweaks.miui.R
-import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.cons.AppConst
 import com.tianma.tweaks.miui.cons.PrefConst
-import com.tianma.tweaks.miui.utils.ContextUtils
 import com.tianma.tweaks.miui.utils.PackageUtils
-import com.tianma.tweaks.miui.utils.StorageUtils
 import com.tianma.tweaks.miui.utils.Utils
 
-class GeneralSettingsFragment(title: CharSequence? = "") : BasePreferenceFragment(title), Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
+class GeneralSettingsFragment(title: CharSequence? = "") : BaseSettingsFragment(title), Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     private lateinit var mActivity: Activity
 
@@ -34,11 +30,6 @@ class GeneralSettingsFragment(title: CharSequence? = "") : BasePreferenceFragmen
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mActivity = requireActivity()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        setPreferenceWorldWritable()
     }
 
     override fun onResume() {
@@ -82,14 +73,6 @@ class GeneralSettingsFragment(title: CharSequence? = "") : BasePreferenceFragmen
         if (pm.getComponentEnabledSetting(launcherCN) != state) {
             pm.setComponentEnabledSetting(launcherCN, state, PackageManager.DONT_KILL_APP)
         }
-    }
-
-    @SuppressLint("SetWorldReadable", "SetWorldWritable")
-    private fun setPreferenceWorldWritable() {
-        val context = ContextUtils.getProtectedContextIfNecessary(mActivity.applicationContext)
-
-        val prefsFile = StorageUtils.getSharedPreferencesFile(context, AppConst.XMI_TOOLS_PREFS_NAME)
-        StorageUtils.setFileWorldWritable(prefsFile, 2)
     }
 
     private fun showVersionInfo() {
