@@ -1,13 +1,15 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
+
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.UserHandle;
 import android.widget.TextView;
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
@@ -31,8 +33,6 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
 
 /**
  * 状态栏时钟 Hook
@@ -91,24 +91,33 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
     public StatusBarClockHook20201109(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
         super(classLoader, xsp, appInfo);
 
-        mShowSecInStatusBar = XSPUtils.showSecInStatusBar(xsp);
-        mStatusBarClockFormatEnabled = XSPUtils.isStatusBarClockFormatEnabled(xsp);
-        mShowSecInDropdownStatusBar = XSPUtils.showSecInDropdownStatusBar(xsp);
+        // mShowSecInStatusBar = XSPUtils.showSecInStatusBar(xsp);
+        mShowSecInStatusBar = XPrefContainer.getShowSecInStatusBar();
+        // mStatusBarClockFormatEnabled = XSPUtils.isStatusBarClockFormatEnabled(xsp);
+        mStatusBarClockFormatEnabled = XPrefContainer.getStatusBarClockFormatEnabled();
+        // mShowSecInDropdownStatusBar = XSPUtils.showSecInDropdownStatusBar(xsp);
+        mShowSecInDropdownStatusBar = XPrefContainer.getShowSecInDropdownStatusBar();
 
         if (mStatusBarClockFormatEnabled) {
-            String timeFormat = XSPUtils.getStatusBarClockFormat(xsp);
+            // String timeFormat = XSPUtils.getStatusBarClockFormat(xsp);
+            String timeFormat = XPrefContainer.getStatusBarClockFormat();
             mStatusBarClockFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
         }
 
-        mStatusBarClockColorEnabled = XSPUtils.isStatusBarClockColorEnabled(xsp);
+        // mStatusBarClockColorEnabled = XSPUtils.isStatusBarClockColorEnabled(xsp);
+        mStatusBarClockColorEnabled = XPrefContainer.getStatusBarClockColorEnabled();
         if (mStatusBarClockColorEnabled) {
-            mStatusBarClockColor = XSPUtils.getStatusBarClockColor(xsp);
+            // mStatusBarClockColor = XSPUtils.getStatusBarClockColor(xsp);
+            mStatusBarClockColor = XPrefContainer.getStatusBarClockColor();
         }
 
-        mDropdownStatusBarClockColorEnabled = XSPUtils.isDropdownStatusBarClockColorEnabled(xsp);
+        // mDropdownStatusBarClockColorEnabled = XSPUtils.isDropdownStatusBarClockColorEnabled(xsp);
+        mDropdownStatusBarClockColorEnabled = XPrefContainer.getDropdownStatusBarClockColorEnabled();
         if (mDropdownStatusBarClockColorEnabled) {
-            mDropdownStatusBarClockColor = XSPUtils.getDropdownStatusBarClockColor(xsp);
-            mDropdownStatusBarDateColor = XSPUtils.getDropdownStatusBarDateColor(xsp);
+            // mDropdownStatusBarClockColor = XSPUtils.getDropdownStatusBarClockColor(xsp);
+            mDropdownStatusBarClockColor = XPrefContainer.getDropdownStatusBarClockColor();
+            // mDropdownStatusBarDateColor = XSPUtils.getDropdownStatusBarDateColor(xsp);
+            mDropdownStatusBarDateColor = XPrefContainer.getDropdownStatusBarDateColor();
         }
 
         mBlockSystemTimeTick = mShowSecInStatusBar || mShowSecInDropdownStatusBar;

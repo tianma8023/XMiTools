@@ -1,5 +1,13 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
+import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
+import static de.robv.android.xposed.XposedHelpers.getBooleanField;
+import static de.robv.android.xposed.XposedHelpers.getFloatField;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
+
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
@@ -12,8 +20,8 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
@@ -26,14 +34,6 @@ import java.util.Set;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
-import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
-import static de.robv.android.xposed.XposedHelpers.getBooleanField;
-import static de.robv.android.xposed.XposedHelpers.getFloatField;
-import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 /**
  * 锁屏界面
@@ -67,8 +67,10 @@ public class MiuiKeyguardClockHook extends BaseSubHook implements TickObserver {
     public MiuiKeyguardClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
 
-        mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
-        mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
+        // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
+        mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();
+        // mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
+        mShowVerticalSec = XPrefContainer.getShowSecInKeyguardVertical();
     }
 
     @Override

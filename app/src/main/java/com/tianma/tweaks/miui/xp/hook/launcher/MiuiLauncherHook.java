@@ -1,5 +1,6 @@
 package com.tianma.tweaks.miui.xp.hook.launcher;
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiUtils;
@@ -23,7 +24,7 @@ public class MiuiLauncherHook extends BaseHook {
             XSharedPreferences xsp = XSPUtils.getXSharedPreferences();
 
             ClassLoader classLoader = lpparam.classLoader;
-            if (XSPUtils.isMainSwitchEnabled(xsp)) {
+            if (XPrefContainer.getMainSwitchEnable()) {
                 if(!MiuiUtils.isMiui()) {
                     return;
                 }

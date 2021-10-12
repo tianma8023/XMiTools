@@ -1,21 +1,20 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
-import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
 
@@ -27,8 +26,10 @@ public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
     public CollapsedStatusBarFragmentHook20201109(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
         super(classLoader, xsp, appInfo);
 
-        mSignalAlignLeft = XSPUtils.isSignalAlignLeft(xsp);
-        mAlwaysShowStatusBarClock = XSPUtils.alwaysShowStatusBarClock(xsp);
+        // mSignalAlignLeft = XSPUtils.isSignalAlignLeft(xsp);
+        mSignalAlignLeft = XPrefContainer.isSignalAlignLeft();
+        // mAlwaysShowStatusBarClock = XSPUtils.alwaysShowStatusBarClock(xsp);
+        mAlwaysShowStatusBarClock = XPrefContainer.getAlwaysShowStatusBarClock();
     }
 
     @Override

@@ -10,9 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.BuildConfig;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.weather.WeatherMonitor;
 import com.tianma.tweaks.miui.xp.hook.systemui.weather.WeatherObserver;
@@ -43,10 +43,13 @@ public class MiuiQSHeaderViewHook20201109 extends BaseSubHook implements Weather
     public MiuiQSHeaderViewHook20201109(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
         super(classLoader, xsp, appInfo);
 
-        mWeatherEnabled = XSPUtils.isDropdownStatusBarWeatherEnabled(xsp);
+        // mWeatherEnabled = XSPUtils.isDropdownStatusBarWeatherEnabled(xsp);
+        mWeatherEnabled = XPrefContainer.isDropdownStatusBarWeatherEnabled();
         if (mWeatherEnabled) {
-            mWeatherTextColor = XSPUtils.getDropdownStatusBarWeatherTextColor(xsp);
-            mWeatherTextSize = XSPUtils.getDropdownStatusBarWeatherTextSize(xsp);
+            // mWeatherTextColor = XSPUtils.getDropdownStatusBarWeatherTextColor(xsp);
+            mWeatherTextColor = XPrefContainer.getDropdownStatusBarWeatherTextColor();
+            // mWeatherTextSize = XSPUtils.getDropdownStatusBarWeatherTextSize(xsp);
+            mWeatherTextSize = XPrefContainer.getDropdownStatusBarWeatherTextSize();
         }
     }
 

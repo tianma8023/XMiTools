@@ -1,5 +1,13 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
+import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
+import static de.robv.android.xposed.XposedHelpers.getBooleanField;
+import static de.robv.android.xposed.XposedHelpers.getFloatField;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
+
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -10,9 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.R;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener;
@@ -27,14 +35,6 @@ import java.util.Locale;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
-import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
-import static de.robv.android.xposed.XposedHelpers.getBooleanField;
-import static de.robv.android.xposed.XposedHelpers.getFloatField;
-import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 /**
  * 锁屏界面
@@ -69,9 +69,12 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
     public MiuiKeyguardVerticalClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
 
-        mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
-        mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
-        mOneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
+        // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
+        mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();
+        // mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
+        mShowVerticalSec = XPrefContainer.getShowSecInKeyguardVertical();
+        // mOneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
+        mOneSentenceEnabled = XPrefContainer.getOneSentenceEnabled();
     }
 
     @Override

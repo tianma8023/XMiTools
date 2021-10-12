@@ -4,9 +4,9 @@ import android.content.Context
 import android.os.SystemClock
 import com.tianma.tweaks.miui.cons.PrefConst
 import com.tianma.tweaks.miui.data.http.repository.DataRepository
+import com.tianma.tweaks.miui.data.sp.XPrefContainer
 import com.tianma.tweaks.miui.utils.SPUtils
 import com.tianma.tweaks.miui.utils.XLog
-import com.tianma.tweaks.miui.utils.XSPUtils
 import de.robv.android.xposed.XSharedPreferences
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,14 +34,16 @@ class OneSentenceManager private constructor(){
 
     fun loadOneSentence(modContext: Context, xsp: XSharedPreferences, oneSentenceLoadListener: OneSentenceLoadListener?) {
         try {
-            val apiSources = XSPUtils.getOneSentenceApiSources(xsp)
+            // val apiSources = XSPUtils.getOneSentenceApiSources(xsp)
+            val apiSources = XPrefContainer.oneSentenceApiSources
             if (apiSources == null || apiSources.isEmpty()) {
                 XLog.e("No OneSentence API chosen")
                 return
             }
 
             // 判断是否满足刷新频率
-            val duration = XSPUtils.getOneSentenceRefreshRate(xsp) * 60 * 1000
+            // val duration = XSPUtils.getOneSentenceRefreshRate(xsp) * 60 * 1000
+            val duration = XPrefContainer.getOneSentenceRefreshRate() * 60 * 1000
             if (duration > 0) {
                 // 因为是 modContext, 所以上次刷新时间数据的存取都是在 com.android.systemui 的 shared_prefs 文件中
                 val lastTime = SPUtils.getOneSentenceLastRefreshTime(modContext)
@@ -72,7 +74,8 @@ class OneSentenceManager private constructor(){
 
     private fun loadHitokoto(xsp: XSharedPreferences, oneSentenceLoadListener: OneSentenceLoadListener?) {
         try {
-            val hitokotoCategories = XSPUtils.getHitokotoCategories(xsp)
+            // val hitokotoCategories = XSPUtils.getHitokotoCategories(xsp)
+            val hitokotoCategories = XPrefContainer.hitokotoCategories
             val params = mutableListOf<String>()
             if (hitokotoCategories.isNullOrEmpty()) {
                 params.add("")
@@ -84,7 +87,8 @@ class OneSentenceManager private constructor(){
                 }
             }
 
-            val showHitokotoSource = XSPUtils.getShowHitokotoSource(xsp)
+            // val showHitokotoSource = XSPUtils.getShowHitokotoSource(xsp)
+            val showHitokotoSource = XPrefContainer.showHitokotoSource
             val disposable = DataRepository.getHitokoto(params)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -109,7 +113,8 @@ class OneSentenceManager private constructor(){
 
     private fun loadOnePoem(xsp: XSharedPreferences, oneSentenceLoadListener: OneSentenceLoadListener?) {
         try {
-            val onePoemCategories = XSPUtils.getOnePoemCategories(xsp)
+            // val onePoemCategories = XSPUtils.getOnePoemCategories(xsp)
+            val onePoemCategories = XPrefContainer.onePoemCategories
             val onePoemCategory = if (onePoemCategories.isNullOrEmpty()) {
                 PrefConst.ONE_POEM_CATEGORY_ALL
             } else {
@@ -121,7 +126,8 @@ class OneSentenceManager private constructor(){
                 }
             }
 
-            val showPoemAuthor = XSPUtils.getShowPoemAuthor(xsp)
+            // val showPoemAuthor = XSPUtils.getShowPoemAuthor(xsp)
+            val showPoemAuthor = XPrefContainer.showPoemAuthor
             val disposable = DataRepository.getPoem(onePoemCategory)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

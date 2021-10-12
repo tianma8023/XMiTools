@@ -1,17 +1,17 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+
 import android.content.Context;
 import android.content.Intent;
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.XSharedPreferences;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 /**
  * MIUI设置页面 - 选择锁屏时钟界面 Hook
@@ -27,8 +27,10 @@ public class ChooseKeyguardClockActivityHook extends BaseSubHook {
     public ChooseKeyguardClockActivityHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
         super(classLoader, xsp, appInfo);
 
-        mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
-        mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
+        // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
+        mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();
+        // mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
+        mShowVerticalSec = XPrefContainer.getShowSecInKeyguardVertical();
     }
 
     @Override

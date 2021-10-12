@@ -1,15 +1,14 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import android.view.ViewTreeObserver.OnWindowAttachListener
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.tianma.tweaks.miui.R
+import com.tianma.tweaks.miui.data.sp.XPrefContainer
 import com.tianma.tweaks.miui.utils.ResolutionUtils
 import com.tianma.tweaks.miui.utils.XLog
-import com.tianma.tweaks.miui.utils.XSPUtils
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.hook.systemui.hitokoto.OneSentenceManager
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager
@@ -31,9 +30,12 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
 
     private var modContext: Context? = null
 
-    private val oneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp)
-    private val oneSentenceColor = XSPUtils.getOneSentenceColor(xsp)
-    private val oneSentenceTextSize = XSPUtils.getOneSentenceTextSize(xsp)
+    // private val oneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp)
+    private val oneSentenceEnabled = XPrefContainer.oneSentenceEnabled
+    // private val oneSentenceColor = XSPUtils.getOneSentenceColor(xsp)
+    private val oneSentenceColor = XPrefContainer.oneSentenceColor
+    // private val oneSentenceTextSize = XSPUtils.getOneSentenceTextSize(xsp)
+    private val oneSentenceTextSize = XPrefContainer.getOneSentenceTextSize()
 
     companion object {
         private const val CLASS_MIUI_BASE_CLOCK = "miui.keyguard.clock.MiuiBaseClock"

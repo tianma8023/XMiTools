@@ -1,7 +1,7 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer
 import com.tianma.tweaks.miui.utils.XLog
-import com.tianma.tweaks.miui.utils.XSPUtils
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
@@ -23,7 +23,8 @@ class StatusBarSignalPolicyHook20201109(
         private const val CLASS_STATUS_BAR_POLICY = "com.android.systemui.statusbar.phone.StatusBarSignalPolicy"
     }
 
-    private val mHideVpnIcon: Boolean = XSPUtils.isHideVpnIcon(xsp)
+    // private val mHideVpnIcon: Boolean = XSPUtils.isHideVpnIcon(xsp)
+    private val mHideVpnIcon: Boolean = XPrefContainer.isHideVpnIcon
 
     override fun startHook() {
 

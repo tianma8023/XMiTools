@@ -1,8 +1,8 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109
 
 import android.widget.TextView
+import com.tianma.tweaks.miui.data.sp.XPrefContainer
 import com.tianma.tweaks.miui.utils.XLog
-import com.tianma.tweaks.miui.utils.XSPUtils
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
@@ -25,12 +25,14 @@ class StatusBarMobileViewHook20201109(
         private const val CLASS_STATUS_BAR_MOBILE_VIEW = "com.android.systemui.statusbar.StatusBarMobileView"
     }
 
-    private val isCustomNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp)
+    // private val isCustomNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp)
+    private val isCustomNetworkTypeEnabled = XPrefContainer.isCustomMobileNetworkEnabled
     private var customNetworkType: String = ""
 
     init {
         if (isCustomNetworkTypeEnabled) {
-            customNetworkType = XSPUtils.customMobileNetwork(xsp)
+            // customNetworkType = XSPUtils.customMobileNetwork(xsp)
+            customNetworkType = XPrefContainer.customMobileNetwork
         }
     }
 

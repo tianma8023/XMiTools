@@ -1,11 +1,15 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.getSurroundingThis;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
@@ -14,10 +18,6 @@ import java.util.List;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
-import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.getSurroundingThis;
 
 public class SignalClusterViewHook extends BaseSubHook {
 
@@ -35,13 +35,18 @@ public class SignalClusterViewHook extends BaseSubHook {
     public SignalClusterViewHook(ClassLoader classLoader, XSharedPreferences xsp, MiuiVersion miuiVersion) {
         super(classLoader, xsp, miuiVersion);
 
-        mDualMobileSignal = XSPUtils.isDualMobileSignal(xsp);
-        mHideVpnIcon = XSPUtils.isHideVpnIcon(xsp);
-        mHideHDIcon = XSPUtils.isHideHDIcon(xsp);
+        // mDualMobileSignal = XSPUtils.isDualMobileSignal(xsp);
+        mDualMobileSignal = XPrefContainer.isDualMobileSignal();
+        // mHideVpnIcon = XSPUtils.isHideVpnIcon(xsp);
+        mHideVpnIcon = XPrefContainer.isHideVpnIcon();
+        // mHideHDIcon = XSPUtils.isHideHDIcon(xsp);
+        mHideHDIcon = XPrefContainer.isHideHDIcon();
 
-        mCustomMobileNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp);
+        // mCustomMobileNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp);
+        mCustomMobileNetworkTypeEnabled = XPrefContainer.isCustomMobileNetworkEnabled();
         if (mCustomMobileNetworkTypeEnabled) {
-            mCustomMobileNetworkType = XSPUtils.customMobileNetwork(xsp);
+            // mCustomMobileNetworkType = XSPUtils.customMobileNetwork(xsp);
+            mCustomMobileNetworkType = XPrefContainer.getCustomMobileNetwork();
         }
     }
 

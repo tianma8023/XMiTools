@@ -3,8 +3,8 @@ package com.tianma.tweaks.miui.xp.hook.systemui.keyguard
 import android.view.View
 import android.view.ViewTreeObserver.OnWindowAttachListener
 import android.widget.TextView
+import com.tianma.tweaks.miui.data.sp.XPrefContainer
 import com.tianma.tweaks.miui.utils.XLog
-import com.tianma.tweaks.miui.utils.XSPUtils
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener
@@ -31,7 +31,7 @@ class MiuiLeftToplClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?,
 
     private val clockList = mutableListOf<View?>()
 
-    private val showHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp)
+    private val showHorizontalSec = XPrefContainer.showSecInKeyguardHorizontal
 
     override fun startHook() {
         if (showHorizontalSec) {

@@ -1,6 +1,7 @@
 package com.tianma.tweaks.miui.xp.hook.systemui;
 
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiUtils;
@@ -53,7 +54,8 @@ public class SystemUIHook extends BaseHook {
             XSharedPreferences xsp = XSPUtils.getXSharedPreferences();
 
             ClassLoader classLoader = lpparam.classLoader;
-            if (XSPUtils.isMainSwitchEnabled(xsp)) {
+
+            if (XPrefContainer.getMainSwitchEnable()) {
                 if (!MiuiUtils.isMiui()) {
                     XLog.e("Only support MIUI");
                     return;

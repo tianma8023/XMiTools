@@ -1,13 +1,19 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
+
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.os.UserHandle;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppVersionConst;
@@ -15,12 +21,6 @@ import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
-import static de.robv.android.xposed.XposedHelpers.callMethod;
-import static de.robv.android.xposed.XposedHelpers.findClass;
-import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 
 /**
  * 锁屏时钟容器 Hook
@@ -40,8 +40,10 @@ public class KeyguardClockContainerHook extends BaseSubHook {
     public KeyguardClockContainerHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
         super(classLoader, xsp, appInfo);
 
-        mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
-        mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
+        // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
+        mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();
+        // mShowVerticalSec = XSPUtils.showSecInKeyguardVertical(xsp);
+        mShowVerticalSec = XPrefContainer.getShowSecInKeyguardVertical();
     }
 
     @Override

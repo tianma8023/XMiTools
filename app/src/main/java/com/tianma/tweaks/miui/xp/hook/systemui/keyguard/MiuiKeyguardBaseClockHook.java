@@ -1,8 +1,8 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
+
 import android.content.Context;
-import android.graphics.Color;
-import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -10,12 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.R;
-import com.tianma.tweaks.miui.cons.PrefConst;
-import com.tianma.tweaks.miui.data.http.repository.DataRepository;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
-import com.tianma.tweaks.miui.utils.SPUtils;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.hitokoto.OneSentenceManager;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
@@ -27,17 +24,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
 
 /**
  * MIUI 锁屏界面 Hook
@@ -62,9 +52,12 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
     public MiuiKeyguardBaseClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
         mCompositeDisposable = new CompositeDisposable();
-        oneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
-        oneSentenceColor = XSPUtils.getOneSentenceColor(xsp);
-        oneSentenceTextSize = XSPUtils.getOneSentenceTextSize(xsp);
+        // oneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
+        oneSentenceEnabled = XPrefContainer.getOneSentenceEnabled();
+        // oneSentenceColor = XSPUtils.getOneSentenceColor(xsp);
+        oneSentenceColor = XPrefContainer.getOneSentenceColor();
+        // oneSentenceTextSize = XSPUtils.getOneSentenceTextSize(xsp);
+        oneSentenceTextSize = XPrefContainer.getOneSentenceTextSize();
     }
 
     @Override

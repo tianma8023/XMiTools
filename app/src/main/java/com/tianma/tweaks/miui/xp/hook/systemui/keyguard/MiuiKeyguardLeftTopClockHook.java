@@ -1,5 +1,8 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
+
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -7,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.R;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener;
@@ -24,9 +27,6 @@ import java.util.Locale;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
 
 /**
  * 锁屏界面
@@ -46,8 +46,10 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
 
     public MiuiKeyguardLeftTopClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
         super(classLoader, xsp);
-        mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
-        mOneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
+        // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
+        mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();
+        // mOneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
+        mOneSentenceEnabled = XPrefContainer.getOneSentenceEnabled();
     }
 
     @Override

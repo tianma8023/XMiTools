@@ -9,8 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.cons.PrefConst;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
@@ -41,7 +41,8 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
 
     public PhoneStatusBarViewHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
         super(classLoader, xsp, appInfo);
-        String alignment = XSPUtils.getStatusBarClockAlignment(xsp);
+        // String alignment = XSPUtils.getStatusBarClockAlignment(xsp);
+        String alignment = XPrefContainer.getStatusBarClockAlignment();
         if (PrefConst.ALIGNMENT_CENTER.equals(alignment)) {
             mAlignmentCenter = true;
             mAlignmentRight = false;
