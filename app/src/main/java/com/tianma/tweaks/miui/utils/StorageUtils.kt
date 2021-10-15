@@ -1,27 +1,24 @@
-package com.tianma.tweaks.miui.utils;
+package com.tianma.tweaks.miui.utils
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Environment;
-
-import com.tianma.tweaks.miui.BuildConfig;
-
-import java.io.File;
-
-import androidx.core.content.ContextCompat;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Environment
+import androidx.core.content.ContextCompat
+import com.tianma.tweaks.miui.BuildConfig
+import java.io.File
 
 /**
  * Utils for storage.
  */
-public class StorageUtils {
+object StorageUtils {
 
-    private StorageUtils() {
-
-    }
-
-    public static boolean isSDCardMounted() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
+    /**
+     * 是否有SD卡
+     */
+    @JvmStatic
+    fun isSDCardMounted(): Boolean {
+        val state = Environment.getExternalStorageState()
+        return Environment.MEDIA_MOUNTED == state
     }
 
     /**
@@ -29,104 +26,95 @@ public class StorageUtils {
      *
      * @return SD card directory
      */
-    public static File getSDCardDir() {
-        return Environment.getExternalStorageDirectory();
-    }
+    @JvmStatic
+    fun getSDCardDir(): File = Environment.getExternalStorageDirectory()
 
     /**
      * get sdcard public documents directory
      *
      * @return SD card public documents directory
      */
-    public static File getPublicDocumentsDir() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-    }
+    @JvmStatic
+    fun getPublicDocumentsDir(): File =
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
 
-    public static File getSharedPreferencesFile(Context context, String preferencesName) {
-        File dataDir = ContextCompat.getDataDir(context);
-        File prefsDir = new File(dataDir, "shared_prefs");
-        return new File(prefsDir, preferencesName + ".xml");
+
+    @JvmStatic
+    fun getSharedPreferencesFile(context: Context?, preferencesName: String): File {
+        val dataDir = ContextCompat.getDataDir(context!!)
+        val prefsDir = File(dataDir, "shared_prefs")
+        return File(prefsDir, "$preferencesName.xml")
     }
 
     /**
-     * Get internal data dir. /data/data/<package_name>/
-     */
-    public static File getInternalDataDir() {
-        return new File(Environment.getDataDirectory(),
-                "data/" + BuildConfig.APPLICATION_ID);
+     * Get internal data dir. /data/data/<package_name>/</package_name>
+     * */
+    @JvmStatic
+    fun getInternalDataDir(): File {
+        return File(Environment.getDataDirectory(), "data/" + BuildConfig.APPLICATION_ID)
     }
 
     /**
      * Get internal files dir. /data/data/<package_name>/files/
      *
-     * @return
-     */
-    public static File getInternalFilesDir() {
-        return new File(getInternalDataDir(), "files");
+     * @return</package_name>
+     * */
+    @JvmStatic
+    fun getInternalFilesDir(): File {
+        return File(getInternalDataDir(), "files")
     }
 
     /**
-     * Get external files dir. /sdcard/Android/data/<package_name>/files/
-     */
-    public static File getExternalFilesDir() {
-        return new File(Environment.getExternalStorageDirectory(),
-                "Android/data/" + BuildConfig.APPLICATION_ID + "/files/");
+     * Get external files dir. /sdcard/Android/data/<package_name>/files/</package_name>
+     * */
+    @JvmStatic
+    fun getExternalFilesDir(): File {
+        return File(
+            Environment.getExternalStorageDirectory(),
+            "Android/data/" + BuildConfig.APPLICATION_ID + "/files/"
+        )
     }
 
     /**
      * Get files dir
      *
-     * @see StorageUtils#getExternalFilesDir()
-     * @see StorageUtils#getInternalFilesDir()
+     * @see StorageUtils.getExternalFilesDir
+     * @see StorageUtils.getInternalFilesDir
      */
-    public static File getFilesDir() {
-        if (isSDCardMounted()) {
-            File externalFilesDir = getExternalFilesDir();
+    @JvmStatic
+    fun getFilesDir(): File {
+        return if (isSDCardMounted()) {
+            val externalFilesDir = getExternalFilesDir()
             if (!externalFilesDir.exists()) {
-                externalFilesDir.mkdirs();
+                externalFilesDir.mkdirs()
             }
-            return externalFilesDir;
+            externalFilesDir
         } else {
-            return getInternalFilesDir();
+            getInternalFilesDir()
         }
     }
 
     /**
      * Set file world writable
      */
-    @SuppressLint({"SetWorldWritable", "SetWorldReadable"})
-    public static void setFileWorldWritable(File file, int parentDepth) {
+    @JvmStatic
+    @SuppressLint("SetWorldWritable", "SetWorldReadable")
+    fun setFileWorldWritable(file: File?, parentDepth: Int) {
+        file ?: return
         if (!file.exists()) {
-            return;
+            return
         }
-        parentDepth = parentDepth + 1;
-        for (int i = 0; i < parentDepth; i++) {
-            file.setExecutable(true, false);
-            file.setWritable(true, false);
-            file.setReadable(true, false);
-            file = file.getParentFile();
-            if (file == null) {
-                break;
+        var tempFile: File? = file
+        val tempDepth = parentDepth + 1
+        for (i in 0 until tempDepth) {
+            tempFile?.setExecutable(true, false)
+            tempFile?.setWritable(true, false)
+            tempFile?.setReadable(true, false)
+            tempFile = tempFile?.parentFile
+            if (tempFile == null) {
+                break
             }
         }
     }
 
-    /**
-     * Set file world readable
-     */
-    @SuppressLint("SetWorldReadable")
-    public static void setFileWorldReadable(File file, int parentDepth) {
-        if (!file.exists()) {
-            return;
-        }
-
-        for (int i = 0; i < parentDepth; i++) {
-            file.setReadable(true, false);
-            file.setExecutable(true, false);
-            file = file.getParentFile();
-            if (file == null) {
-                break;
-            }
-        }
-    }
 }

@@ -1,7 +1,5 @@
 package com.tianma.tweaks.miui.xp.wrapper;
 
-import androidx.annotation.NonNull;
-
 import com.tianma.tweaks.miui.utils.XLog;
 
 import de.robv.android.xposed.XC_MethodHook;

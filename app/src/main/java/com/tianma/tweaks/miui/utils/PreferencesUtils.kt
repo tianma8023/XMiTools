@@ -1,77 +1,83 @@
-package com.tianma.tweaks.miui.utils;
+package com.tianma.tweaks.miui.utils
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.tianma.tweaks.miui.cons.PrefConst;
-
-import java.util.Set;
-
+import android.content.Context
+import android.content.SharedPreferences
+import com.tianma.tweaks.miui.cons.PrefConst
 
 /**
  * Common Shared preferences utils.
  */
-public class PreferencesUtils {
+object PreferencesUtils {
 
-    private PreferencesUtils() {
-
+    private fun getPreferences(context: Context): SharedPreferences {
+        return context.getSharedPreferences(
+            PrefConst.SHARED_PREFS_NAME,
+            Context.MODE_PRIVATE
+        )
     }
 
-    private static SharedPreferences getPreferences(Context context) {
-        return context.getSharedPreferences(PrefConst.SHARED_PREFS_NAME,
-                Context.MODE_PRIVATE);
+    @JvmStatic
+    fun contains(context: Context, key: String?): Boolean {
+        return getPreferences(context).contains(key)
     }
 
-    public static boolean contains(Context context, String key) {
-        return getPreferences(context).contains(key);
+    @JvmStatic
+    fun getString(context: Context, key: String?, defValue: String?): String? {
+        return getPreferences(context).getString(key, defValue)
     }
 
-    public static String getString(Context context, String key, String defValue) {
-        return getPreferences(context).getString(key, defValue);
+    @JvmStatic
+    fun putString(context: Context, key: String?, value: String?) {
+        getPreferences(context).edit().putString(key, value).apply()
     }
 
-    public static void putString(Context context, String key, String value) {
-        getPreferences(context).edit().putString(key, value).apply();
+    @JvmStatic
+    fun getBoolean(context: Context, key: String?, defValue: Boolean): Boolean {
+        return getPreferences(context).getBoolean(key, defValue)
     }
 
-    public static boolean getBoolean(Context context, String key, boolean defValue) {
-        return getPreferences(context).getBoolean(key, defValue);
+    @JvmStatic
+    fun putBoolean(context: Context, key: String?, value: Boolean) {
+        getPreferences(context).edit().putBoolean(key, value).apply()
     }
 
-    public static void putBoolean(Context context, String key, boolean value) {
-        getPreferences(context).edit().putBoolean(key, value).apply();
+    @JvmStatic
+    fun getInt(context: Context, key: String?, defValue: Int): Int {
+        return getPreferences(context).getInt(key, defValue)
     }
 
-    public static int getInt(Context context, String key, int defValue) {
-        return getPreferences(context).getInt(key, defValue);
+    @JvmStatic
+    fun putInt(context: Context, key: String?, value: Int) {
+        getPreferences(context).edit().putInt(key, value).apply()
     }
 
-    public static void putInt(Context context, String key, int value) {
-        getPreferences(context).edit().putInt(key, value).apply();
+    @JvmStatic
+    fun getFloat(context: Context, key: String?, defValue: Float): Float {
+        return getPreferences(context).getFloat(key, defValue)
     }
 
-    public static float getFloat(Context context, String key, float defValue) {
-        return getPreferences(context).getFloat(key, defValue);
+    @JvmStatic
+    fun putFloat(context: Context, key: String?, value: Float) {
+        getPreferences(context).edit().putFloat(key, value).apply()
     }
 
-    public static void putFloat(Context context, String key, float value) {
-        getPreferences(context).edit().putFloat(key, value).apply();
+    @JvmStatic
+    fun getLong(context: Context, key: String?, defValue: Long): Long {
+        return getPreferences(context).getLong(key, defValue)
     }
 
-    public static long getLong(Context context, String key, long defValue) {
-        return getPreferences(context).getLong(key, defValue);
+    @JvmStatic
+    fun putLong(context: Context, key: String?, value: Long) {
+        getPreferences(context).edit().putLong(key, value).apply()
     }
 
-    public static void putLong(Context context, String key, long value) {
-        getPreferences(context).edit().putLong(key, value).apply();
+    @JvmStatic
+    fun putStringSet(context: Context, key: String?, values: Set<String?>?) {
+        getPreferences(context).edit().putStringSet(key, values).apply()
     }
 
-    public static void putStringSet(Context context, String key, Set<String> values) {
-        getPreferences(context).edit().putStringSet(key, values).apply();
+    @JvmStatic
+    fun getStringSet(context: Context, key: String?, defValues: Set<String>): Set<String>? {
+        return getPreferences(context).getStringSet(key, defValues)
     }
-
-    public static Set<String> getStringSet(Context context, String key, Set<String> defValues) {
-        return getPreferences(context).getStringSet(key, defValues);
-    }
-
 }

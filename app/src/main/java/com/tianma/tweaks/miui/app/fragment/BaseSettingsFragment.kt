@@ -1,6 +1,5 @@
 package com.tianma.tweaks.miui.app.fragment
 
-import android.annotation.SuppressLint
 import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.cons.AppConst
 import com.tianma.tweaks.miui.utils.ContextUtils
@@ -17,7 +16,6 @@ abstract class BaseSettingsFragment @JvmOverloads constructor(val title: CharSeq
         setPreferenceWorldWritable()
     }
 
-    @SuppressLint("SetWorldReadable", "SetWorldWritable")
     private fun setPreferenceWorldWritable() {
         val activity = activity ?: return
         val context = ContextUtils.getProtectedContextIfNecessary(activity.applicationContext)
