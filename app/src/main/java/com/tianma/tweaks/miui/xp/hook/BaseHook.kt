@@ -5,7 +5,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 
 open class BaseHook : IHook {
     @Throws(Throwable::class)
-    override fun initZygote(startupParam: StartupParam?) {
+    override fun initZygote(startupParam: StartupParam) {
     }
 
     open fun shouldHookInitZygote(): Boolean {
@@ -13,7 +13,7 @@ open class BaseHook : IHook {
     }
 
     @Throws(Throwable::class)
-    override fun onLoadPackage(lpparam: LoadPackageParam?) {
+    override fun onLoadPackage(lpparam: LoadPackageParam) {
     }
 
     open fun shouldHookOnLoadPackage(): Boolean {

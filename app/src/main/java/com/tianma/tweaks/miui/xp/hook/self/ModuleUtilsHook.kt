@@ -1,43 +1,43 @@
-package com.tianma.tweaks.miui.xp.hook.self;
+package com.tianma.tweaks.miui.xp.hook.self
 
-
-import com.tianma.tweaks.miui.BuildConfig;
-import com.tianma.tweaks.miui.utils.ModuleUtils;
-import com.tianma.tweaks.miui.utils.XLogKt;
-import com.tianma.tweaks.miui.xp.hook.BaseHook;
-
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import com.tianma.tweaks.miui.BuildConfig
+import com.tianma.tweaks.miui.utils.ModuleUtils
+import com.tianma.tweaks.miui.utils.logE
+import com.tianma.tweaks.miui.utils.logI
+import com.tianma.tweaks.miui.xp.hook.BaseHook
+import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper
+import de.robv.android.xposed.XC_MethodReplacement
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 
 /**
  * Hook class ModuleUtils
  */
-public class ModuleUtilsHook extends BaseHook {
+class ModuleUtilsHook : BaseHook() {
 
-    private static final String MI_TWEAKS_PACKAGE = BuildConfig.APPLICATION_ID;
-    private static final int MODULE_VERSION = BuildConfig.MODULE_VERSION;
+    companion object {
+        private const val MI_TWEAKS_PACKAGE = BuildConfig.APPLICATION_ID
+        private const val MODULE_VERSION = BuildConfig.MODULE_VERSION
+    }
 
-    @Override
-    public void onLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        if (MI_TWEAKS_PACKAGE.equals(lpparam.packageName)) {
+    @Throws(Throwable::class)
+    override fun onLoadPackage(lpparam: LoadPackageParam) {
+        if (MI_TWEAKS_PACKAGE == lpparam.packageName) {
             try {
-                XLogKt.logI("Hooking current Xposed module status...");
-                hookModuleUtils(lpparam);
-            } catch (Throwable e) {
-                XLogKt.logE("Failed to hook current Xposed module status.");
+                logI("Hooking current Xposed module status...")
+                hookModuleUtils(lpparam)
+            } catch (e: Throwable) {
+                logE("Failed to hook current Xposed module status.")
             }
         }
-
     }
 
-    private void hookModuleUtils(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        String className = ModuleUtils.class.getName();
-
-        findAndHookMethod(className, lpparam.classLoader,
-                "getModuleVersion",
-                XC_MethodReplacement.returnConstant(MODULE_VERSION));
+    @Throws(Throwable::class)
+    private fun hookModuleUtils(lpparam: LoadPackageParam) {
+        val className = ModuleUtils::class.java.name
+        XposedWrapper.findAndHookMethod(
+            className, lpparam.classLoader,
+            "getModuleVersion",
+            XC_MethodReplacement.returnConstant(MODULE_VERSION)
+        )
     }
-
 }

@@ -20,6 +20,7 @@ class HookEntry : IXposedHookLoadPackage, IXposedHookZygoteInit {
 
     @Throws(Throwable::class)
     override fun initZygote(startupParam: StartupParam?) {
+        startupParam ?: return
         for (hook in hookList) {
             if (hook.shouldHookInitZygote()) {
                 hook.initZygote(startupParam)
@@ -29,6 +30,7 @@ class HookEntry : IXposedHookLoadPackage, IXposedHookZygoteInit {
 
     @Throws(Throwable::class)
     override fun handleLoadPackage(lpparam: LoadPackageParam?) {
+        lpparam ?: return
         for (hook in hookList) {
             if (hook.shouldHookOnLoadPackage()) {
                 hook.onLoadPackage(lpparam)
