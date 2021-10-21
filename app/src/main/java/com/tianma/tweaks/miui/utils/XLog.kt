@@ -26,10 +26,7 @@ private fun log(priority: Int, message: String, vararg args: Any) {
     if (args.isNotEmpty() && args[args.size - 1] is Throwable) {
         val throwable = args[args.size - 1] as Throwable
         val stacktraceStr = Log.getStackTraceString(throwable)
-        msg += """
-            
-            $stacktraceStr
-            """.trimIndent()
+        msg += "\n${stacktraceStr}"
     }
 
     // Write to the default log tag
