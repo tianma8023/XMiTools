@@ -1,7 +1,7 @@
 package com.tianma.tweaks.miui.xp.hook.launcher;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseHook;
@@ -19,7 +19,7 @@ public class MiuiLauncherHook extends BaseHook {
     @Override
     public void onLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (PACKAGE_NAME.equals(lpparam.packageName)) {
-            XLog.i("Hooking MIUI Launcher...");
+            XLogKt.logI("Hooking MIUI Launcher...");
 
             XSharedPreferences xsp = XSPUtils.getXSharedPreferences();
 

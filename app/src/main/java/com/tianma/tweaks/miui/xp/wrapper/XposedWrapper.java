@@ -2,7 +2,7 @@ package com.tianma.tweaks.miui.xp.wrapper;
 
 import androidx.annotation.Nullable;
 
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -27,7 +27,7 @@ public class XposedWrapper {
         try {
             return XposedHelpers.findClass(className, classLoader);
         } catch (Throwable t) {
-            XLog.e("Class not found: %s", className);
+            XLogKt.logE("Class not found: %s", className);
             return null;
         }
     }
@@ -36,7 +36,7 @@ public class XposedWrapper {
         try {
             return XposedHelpers.findAndHookMethod(className, classLoader, methodName, parameterTypesAndCallback);
         } catch (Throwable t) {
-            XLog.e("Error in hook %s#%s", className, methodName, t);
+            XLogKt.logE("Error in hook %s#%s", className, methodName, t);
             return null;
         }
     }
@@ -45,7 +45,7 @@ public class XposedWrapper {
         try {
             return XposedHelpers.findAndHookMethod(clazz, methodName, parameterTypesAndCallback);
         } catch (Throwable t) {
-            XLog.e("Error in hook %s#%s", clazz.getName(), methodName, t);
+            XLogKt.logE("Error in hook %s#%s", clazz.getName(), methodName, t);
             return null;
         }
     }
@@ -54,7 +54,7 @@ public class XposedWrapper {
         try {
             return XposedBridge.hookAllConstructors(hookClass, callback);
         } catch (Throwable t) {
-            XLog.e("Error in hookAllConstructors: %s", hookClass.getName(), t);
+            XLogKt.logE("Error in hookAllConstructors: %s", hookClass.getName(), t);
             return null;
         }
     }
@@ -63,7 +63,7 @@ public class XposedWrapper {
         try {
             return XposedHelpers.findAndHookConstructor(clazz, parameterTypesAndCallback);
         } catch (Throwable t) {
-            XLog.e("Error in findAndHookConstructor: %s", clazz.getName(), t);
+            XLogKt.logE("Error in findAndHookConstructor: %s", clazz.getName(), t);
             return null;
         }
     }
@@ -72,7 +72,7 @@ public class XposedWrapper {
         try {
             return XposedHelpers.findAndHookConstructor(className, classLoader, parameterTypesAndCallback);
         } catch (Throwable t) {
-            XLog.e("Error in findAndHookConstructor: %s", className, t);
+            XLogKt.logE("Error in findAndHookConstructor: %s", className, t);
             return null;
         }
     }

@@ -1,7 +1,8 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer
-import com.tianma.tweaks.miui.utils.XLog
+import com.tianma.tweaks.miui.utils.logE
+import com.tianma.tweaks.miui.utils.logI
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
@@ -29,14 +30,14 @@ class StatusBarSignalPolicyHook20201109(
     override fun startHook() {
 
         try {
-            XLog.i("Hooking StatusBarSignalPolicy...")
+            logI("Hooking StatusBarSignalPolicy...")
 
             if (mHideVpnIcon) {
                 hookUpdateVpn()
             }
 
         } catch (t: Throwable) {
-            XLog.e("Error occurs when hook StatusBarSignalPolicy", t)
+            logE("Error occurs when hook StatusBarSignalPolicy", t)
         }
 
     }

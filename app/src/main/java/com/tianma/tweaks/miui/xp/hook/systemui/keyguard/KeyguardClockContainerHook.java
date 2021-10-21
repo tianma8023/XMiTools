@@ -13,7 +13,8 @@ import android.view.ViewParent;
 import android.widget.FrameLayout;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppVersionConst;
@@ -52,7 +53,7 @@ public class KeyguardClockContainerHook extends BaseSubHook {
             return;
         }
         try {
-            XLog.d("Hooking KeyguardClockContainerHook...");
+            XLogKt.logD("Hooking KeyguardClockContainerHook...");
             if (mAppInfo.getVersionCode() >= AppVersionConst.SYSTEM_UI_V201912130) {
                 mKeyguardClockContainerClass = findClass(CLASS_KEYGUARD_CLOCK_CONTAINER_NEW, mClassLoader);
             } else {
@@ -61,7 +62,7 @@ public class KeyguardClockContainerHook extends BaseSubHook {
 
             hookOnAttachedToWindow();
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook KeyguardClockContainerHook", t);
+            XLogKt.logE("Error occurs when hook KeyguardClockContainerHook", t);
         }
     }
 

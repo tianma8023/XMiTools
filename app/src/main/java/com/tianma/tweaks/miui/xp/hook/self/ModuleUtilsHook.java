@@ -3,7 +3,7 @@ package com.tianma.tweaks.miui.xp.hook.self;
 
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.utils.ModuleUtils;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseHook;
 
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -23,10 +23,10 @@ public class ModuleUtilsHook extends BaseHook {
     public void onLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (MI_TWEAKS_PACKAGE.equals(lpparam.packageName)) {
             try {
-                XLog.i("Hooking current Xposed module status...");
+                XLogKt.logI("Hooking current Xposed module status...");
                 hookModuleUtils(lpparam);
             } catch (Throwable e) {
-                XLog.e("Failed to hook current Xposed module status.");
+                XLogKt.logE("Failed to hook current Xposed module status.");
             }
         }
 

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
@@ -57,7 +57,7 @@ public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
 
     @Override
     public void startHook() {
-        XLog.d("Hooking HeaderView...");
+        XLogKt.logD("Hooking HeaderView...");
         if (mWeatherEnabled) {
             mHeaderViewClass = findClass(CLASS_HEADER_VIEW, mClassLoader);
             hookConstructor();

@@ -3,7 +3,8 @@ package com.tianma.tweaks.miui.xp.hook.launcher;
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
@@ -25,12 +26,12 @@ public class WorkSpaceHook extends BaseSubHook {
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking WorkSpace...");
+            XLogKt.logD("Hooking WorkSpace...");
             if (mAlwaysShowStatusBarClock) {
                 hookIsScreenHasClockGadgets();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook WorkSpace", t);
+            XLogKt.logE("Error occurs when hook WorkSpace", t);
         }
     }
 

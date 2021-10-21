@@ -6,7 +6,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
@@ -30,7 +30,7 @@ public class BatteryMeterViewHook extends BaseSubHook {
 
     @Override
     public void startHook() {
-        XLog.d("Hooking BatteryMeterView...");
+        XLogKt.logD("Hooking BatteryMeterView...");
         if (mShowSmallPercentSign) {
             hookUpdateShowPercent();
         }

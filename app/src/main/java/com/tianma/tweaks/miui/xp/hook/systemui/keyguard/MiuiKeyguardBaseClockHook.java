@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.tianma.tweaks.miui.R;
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.hitokoto.OneSentenceManager;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
@@ -65,14 +65,14 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
         try {
             mKeyguardBaseClockClass = XposedWrapper.findClass(CLASS_MIUI_KEYGUARD_BASE_CLOCK, mClassLoader);
             if (oneSentenceEnabled) {
-                XLog.d("OneSentence enabled, hooking MiuiKeyguardBaseClock...");
+                XLogKt.logD("OneSentence enabled, hooking MiuiKeyguardBaseClock...");
 
                 hookOnFinishInflate();
                 hookHandleNotificationChange();
                 hookConstructor();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook MiuiKeyguardBaseClock", t);
+            XLogKt.logE("Error occurs when hook MiuiKeyguardBaseClock", t);
         }
     }
 
@@ -95,7 +95,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
 //                        mOwnerInfoLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
 
                         int mOwnerInfoIndex = miuiKeyguardBaseClock.indexOfChild(mOwnerInfo);
-//                        XLog.d("mOwnerInfoIndex = " + mOwnerInfoIndex);
+//                        XLogKt.logD("mOwnerInfoIndex = " + mOwnerInfoIndex);
 
                         TextView hitokotoTextView = new TextView(context);
                         hitokotoTextView.setTextSize(oneSentenceTextSize);
@@ -132,7 +132,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                             }
                         } catch (Throwable t) {
                             // ignore
-                            XLog.e("", t);
+                            XLogKt.logE("", t);
                         }
                     }
                 });
@@ -212,7 +212,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
 
                 @Override
                 public void onFailed(@NotNull Throwable throwable) {
-                    XLog.e("Error occurs when load OneSentence", throwable);
+                    XLogKt.logE("Error occurs when load OneSentence", throwable);
                 }
             });
         }
@@ -225,7 +225,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                 hitokotoInfo.setText(oneSentence);
             } catch (Throwable t) {
                 // ignore
-                XLog.e("", t);
+                XLogKt.logE("", t);
             }
         }
     }

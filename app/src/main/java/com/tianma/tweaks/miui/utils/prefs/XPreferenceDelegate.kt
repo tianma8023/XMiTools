@@ -2,7 +2,8 @@ package com.tianma.tweaks.miui.utils.prefs
 
 import android.os.Build
 import androidx.core.content.edit
-import com.tianma.tweaks.miui.utils.XLog
+import com.tianma.tweaks.miui.utils.logD
+import com.tianma.tweaks.miui.utils.logE
 import com.tianma.tweaks.miui.utils.safeAs
 import de.robv.android.xposed.XSharedPreferences
 import java.io.File
@@ -30,7 +31,7 @@ class XPreferenceDelegate<T>(
             try {
                 xsp.makeWorldReadable()
             } catch (t: Throwable) {
-                XLog.e("", t)
+                logE("", t)
             }
         }
     }
@@ -58,7 +59,7 @@ class XPreferenceDelegate<T>(
             is Set<*> -> sharedPrefs.getStringSet(key, defaultValue.safeAs()).safeAs()
             else -> throw IllegalArgumentException("Unsupported type. $key $defaultValue")
         } as T).also { value ->
-            XLog.d("XPreferenceDelegate: $key = $value")
+            logD("XPreferenceDelegate: $key = $value")
         }
     }
 

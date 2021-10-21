@@ -8,7 +8,8 @@ import android.widget.TextView
 import com.tianma.tweaks.miui.R
 import com.tianma.tweaks.miui.data.sp.XPrefContainer
 import com.tianma.tweaks.miui.utils.ResolutionUtils
-import com.tianma.tweaks.miui.utils.XLog
+import com.tianma.tweaks.miui.utils.logD
+import com.tianma.tweaks.miui.utils.logE
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.hook.systemui.hitokoto.OneSentenceManager
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager
@@ -44,7 +45,7 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
     override fun startHook() {
         miuiBaseClockClass = XposedWrapper.findClass(CLASS_MIUI_BASE_CLOCK, mClassLoader)
         if (oneSentenceEnabled) {
-            XLog.d("OneSentence enabled, hooking MiuiBaseClock...")
+            logD("OneSentence enabled, hooking MiuiBaseClock...")
             hookOnFinishInflate()
             hookOnAttachedToWindow()
         }
@@ -89,7 +90,7 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
                                 layoutParams.rightMargin = ResolutionUtils.dp2px(context, 20f).toInt()
                             }
                             else -> {
-                                XLog.d("Unknown subclass of MiuiBaseClock: $className")
+                                logD("Unknown subclass of MiuiBaseClock: $className")
                             }
                         }
 
@@ -162,7 +163,7 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
                 }
 
                 override fun onFailed(throwable: Throwable) {
-                    XLog.e("Error occurs when load OneSentence", throwable)
+                    logE("Error occurs when load OneSentence", throwable)
                 }
             })
         }
@@ -176,7 +177,7 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
                 hitokotoInfo.text = oneSentence
             } catch (t: Throwable) {
                 // ignore
-                XLog.e("", t)
+                logE("", t)
             }
         }
     }

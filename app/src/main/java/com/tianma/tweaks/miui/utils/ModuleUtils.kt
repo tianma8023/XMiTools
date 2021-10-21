@@ -16,7 +16,7 @@ object ModuleUtils {
      */
     @JvmStatic
     fun getModuleVersion(): Int {
-        XLog.d("getModuleVersion()")
+        logD("getModuleVersion()")
         return -1
     }
 }

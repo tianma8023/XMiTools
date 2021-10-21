@@ -26,7 +26,7 @@ public class XSPUtils {
         try {
             xsp.makeWorldReadable();
         } catch (Throwable t) {
-            XLog.e("", t);
+            XLogKt.logE("", t);
         }
         return xsp;
     }

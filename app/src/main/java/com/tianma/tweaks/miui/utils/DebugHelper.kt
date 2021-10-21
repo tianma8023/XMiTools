@@ -3,11 +3,8 @@ package com.tianma.tweaks.miui.utils
 import android.database.Cursor
 import android.net.Uri
 import android.view.View
-import com.tianma.tweaks.miui.utils.DebugHelper
 import android.view.ViewGroup
 import android.widget.TextView
-import com.tianma.tweaks.miui.utils.XLog
-import java.lang.StringBuilder
 
 object DebugHelper {
     fun printViewTree(rootView: View) {
@@ -39,11 +36,11 @@ object DebugHelper {
                 .append(view.text)
                 .append(")")
         }
-        XLog.d("%s", sb.toString())
+        logD("%s", sb.toString())
     }
 
     fun printCursor(uri: Uri, c: Cursor?) {
-        XLog.d("%s", uri.toString())
+        logD("%s", uri.toString())
         if (c == null) {
             return
         }
@@ -79,7 +76,7 @@ object DebugHelper {
                 sb.append(columnNames[i]).append(" = ").append(value).append(", ")
             }
             sb.append("\n")
-            XLog.d("%s", sb.toString())
+            logD("%s", sb.toString())
         }
     }
 }

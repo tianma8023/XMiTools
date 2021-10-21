@@ -13,7 +13,7 @@ import android.os.UserHandle;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
@@ -121,7 +121,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking StatusBar Clock...");
+            XLogKt.logD("Hooking StatusBar Clock...");
             mClockCls = XposedHelpers.findClass(CLASS_CLOCK, mClassLoader);
 
             hookClockConstructor();
@@ -138,7 +138,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
                 hookOnDarkChanged();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook StatusBar Clock", t);
+            XLogKt.logE("Error occurs when hook StatusBar Clock", t);
         }
     }
 

@@ -2,7 +2,8 @@ package com.tianma.tweaks.miui.xp.hook.systemui;
 
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
@@ -49,7 +50,7 @@ public class SystemUIHook extends BaseHook {
     @Override
     public void onLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (PACKAGE_NAME.equals(lpparam.packageName)) {
-            XLog.i("Hooking SystemUI...");
+            XLogKt.logI("Hooking SystemUI...");
 
             XSharedPreferences xsp = XSPUtils.getXSharedPreferences();
 
@@ -57,15 +58,15 @@ public class SystemUIHook extends BaseHook {
 
             if (XPrefContainer.getMainSwitchEnable()) {
                 if (!MiuiUtils.isMiui()) {
-                    XLog.e("Only support MIUI");
+                    XLogKt.logE("Only support MIUI");
                     return;
                 }
 
                 MiuiVersion miuiVersion = MiuiUtils.getMiuiVersion();
-                XLog.i(miuiVersion.toString());
+                XLogKt.logI(miuiVersion.toString());
 
                 AppInfo appInfo = AppInfoHelper.getAppInfo(lpparam);
-                XLog.i(appInfo.toString());
+                XLogKt.logI(appInfo.toString());
                 if (appInfo.getVersionCode() >= AppVersionConst.SYSTEM_UI_V202011090) {
                     hookAfter20201109(classLoader, xsp, appInfo);
                 } else if (appInfo.getVersionCode() >= AppVersionConst.SYSTEM_UI_V201912130) {
@@ -84,7 +85,7 @@ public class SystemUIHook extends BaseHook {
                                XSharedPreferences xsp,
                                MiuiVersion miuiVersion,
                                AppInfo appInfo) {
-        XLog.d("hook by default");
+        XLogKt.logD("hook by default");
         new MiuiKeyguardClockHook(classLoader, xsp).startHook();
 
         new PhoneStatusBarViewHook(classLoader, xsp, appInfo).startHook();
@@ -102,7 +103,7 @@ public class SystemUIHook extends BaseHook {
                                  XSharedPreferences xsp,
                                  MiuiVersion miuiVersion,
                                  AppInfo appInfo) {
-        XLog.d("hook after MIUI 19.05.07");
+        XLogKt.logD("hook after MIUI 19.05.07");
         new MiuiKeyguardVerticalClockHook(classLoader, xsp).startHook();
         new MiuiKeyguardLeftTopClockHook(classLoader, xsp).startHook();
         new ChooseKeyguardClockActivityHook(classLoader, xsp, appInfo).startHook();
@@ -123,7 +124,7 @@ public class SystemUIHook extends BaseHook {
                                     XSharedPreferences xsp,
                                     MiuiVersion miuiVersion,
                                     AppInfo appInfo) {
-        XLog.d("hook after v201912130");
+        XLogKt.logD("hook after v201912130");
         new MiuiCenterHorizontalClockHook(classLoader, xsp, appInfo).startHook();
         new MiuiVerticalClockHook(classLoader, xsp, appInfo).startHook();
         new MiuiLeftToplClockHook(classLoader, xsp, appInfo).startHook();
@@ -145,7 +146,7 @@ public class SystemUIHook extends BaseHook {
     private void hookAfter20201109(ClassLoader classLoader,
                                    XSharedPreferences xsp,
                                    AppInfo appInfo) {
-        XLog.d("hook after v20201109");
+        XLogKt.logD("hook after v20201109");
         // 锁屏
         new MiuiCenterHorizontalClockHook(classLoader, xsp, appInfo).startHook();
         new MiuiVerticalClockHook(classLoader, xsp, appInfo).startHook();

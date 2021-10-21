@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewTreeObserver.OnWindowAttachListener
 import android.widget.TextView
 import com.tianma.tweaks.miui.data.sp.XPrefContainer
-import com.tianma.tweaks.miui.utils.XLog
+import com.tianma.tweaks.miui.utils.logD
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener
@@ -36,7 +36,7 @@ class MiuiCenterHorizontalClockHook(classLoader: ClassLoader?, xsp: XSharedPrefe
 
     override fun startHook() {
         if (showHorizontalSec) {
-            XLog.d("Hooking MiuiCenterHorizontalClock...")
+            logD("Hooking MiuiCenterHorizontalClock...")
             centerHorizontalClockClass = XposedWrapper.findClass(CLASS_MIUI_CENTER_HORIZONTAL_CLOCK, mClassLoader)
 
             centerHorizontalClockClass?.let {

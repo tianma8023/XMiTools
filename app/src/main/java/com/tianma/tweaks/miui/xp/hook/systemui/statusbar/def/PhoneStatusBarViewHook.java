@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.tianma.tweaks.miui.cons.PrefConst;
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
@@ -55,13 +55,13 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
     public void startHook() {
         if (mAlignmentCenter || mAlignmentRight) {
             try {
-                XLog.d("Hooking PhoneStatusBarView...");
+                XLogKt.logD("Hooking PhoneStatusBarView...");
                 hookSetBar();
                 if (mAlignmentCenter) {
                     hookGetActualWidth();
                 }
             } catch (Throwable t) {
-                XLog.e("Error occurs when hook PhoneStatusBarView", t);
+                XLogKt.logE("Error occurs when hook PhoneStatusBarView", t);
             }
         }
     }

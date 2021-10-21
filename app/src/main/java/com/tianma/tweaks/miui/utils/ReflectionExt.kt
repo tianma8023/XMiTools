@@ -44,7 +44,7 @@ operator fun Any?.get(propertyName: String): Any? = when {
 //    }
 //    else -> {
 //        val method = this::class.java.getMethod(methodName, *XposedHelpers.getParameterTypes(*args))
-//        XLog.d("method = $method")
+//        logD("method = $method")
 //        method.invoke(this, *args)
 //    }
 //}

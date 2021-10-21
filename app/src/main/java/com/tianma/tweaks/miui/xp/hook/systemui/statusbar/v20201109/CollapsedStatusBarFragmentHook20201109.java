@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
@@ -35,7 +35,7 @@ public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking CollapsedStatusBarFragment... ");
+            XLogKt.logD("Hooking CollapsedStatusBarFragment... ");
             if (mSignalAlignLeft) {
                 hookOnViewCreated();
             }
@@ -44,7 +44,7 @@ public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
                 hookClockVisibleAnimate();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook CollapsedStatusBarFragment", t);
+            XLogKt.logE("Error occurs when hook CollapsedStatusBarFragment", t);
         }
     }
 
@@ -59,7 +59,7 @@ public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
                     @Override
                     protected void after(MethodHookParam param) {
                         ViewGroup phoneStatusBarView = (ViewGroup) XposedHelpers.getObjectField(param.thisObject, "mStatusBar");
-                        // XLog.e("PhoneStatusBarView:");
+                        // XLogKt.logE("PhoneStatusBarView:");
                         // DebugHelper.printViewTree(phoneStatusBarView);
 
                         Resources res = phoneStatusBarView.getResources();

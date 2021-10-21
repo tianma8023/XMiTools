@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
@@ -53,7 +53,7 @@ public class SignalClusterViewHook extends BaseSubHook {
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking SignalClusterView... ");
+            XLogKt.logD("Hooking SignalClusterView... ");
             if (mDualMobileSignal) {
                 hookSetSubs();
             }
@@ -70,7 +70,7 @@ public class SignalClusterViewHook extends BaseSubHook {
                 hookIsImsRegisted();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook SignalClusterView", t);
+            XLogKt.logE("Error occurs when hook SignalClusterView", t);
         }
     }
 

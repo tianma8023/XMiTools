@@ -6,7 +6,8 @@ import com.tianma.tweaks.miui.cons.PrefConst
 import com.tianma.tweaks.miui.data.http.repository.DataRepository
 import com.tianma.tweaks.miui.data.sp.XPrefContainer
 import com.tianma.tweaks.miui.utils.SPUtils
-import com.tianma.tweaks.miui.utils.XLog
+import com.tianma.tweaks.miui.utils.logD
+import com.tianma.tweaks.miui.utils.logE
 import de.robv.android.xposed.XSharedPreferences
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -37,7 +38,7 @@ class OneSentenceManager private constructor(){
             // val apiSources = XSPUtils.getOneSentenceApiSources(xsp)
             val apiSources = XPrefContainer.oneSentenceApiSources
             if (apiSources == null || apiSources.isEmpty()) {
-                XLog.e("No OneSentence API chosen")
+                logE("No OneSentence API chosen")
                 return
             }
 
@@ -49,7 +50,7 @@ class OneSentenceManager private constructor(){
                 val lastTime = SPUtils.getOneSentenceLastRefreshTime(modContext)
                 val curTime = SystemClock.elapsedRealtime()
                 if (curTime - lastTime < duration) {
-                    XLog.d("Cannot fetch new data due to refresh rate")
+                    logD("Cannot fetch new data due to refresh rate")
                     return
                 }
                 SPUtils.setOneSentenceLastRefreshTime(modContext, curTime)
@@ -64,11 +65,11 @@ class OneSentenceManager private constructor(){
                     loadOnePoem(xsp, oneSentenceLoadListener)
                 }
                 else -> {
-                    XLog.e("Unknown API source: $apiSource")
+                    logE("Unknown API source: $apiSource")
                 }
             }
         } catch (e: Exception) {
-            XLog.e("Error occurs when load OneSentence", e)
+            logE("Error occurs when load OneSentence", e)
         }
     }
 
@@ -94,7 +95,7 @@ class OneSentenceManager private constructor(){
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ hitokoto ->
                         hitokoto?.let {
-                            XLog.d(hitokoto.toString())
+                            logD(hitokoto.toString())
                             val content = hitokoto.content ?: ""
                             val oneSentence = if (showHitokotoSource) {
                                 val source = hitokoto.from ?: ""
@@ -107,7 +108,7 @@ class OneSentenceManager private constructor(){
                     }, { throwable -> oneSentenceLoadListener?.onFailed(throwable) })
             compositeDisposable.add(disposable)
         } catch (e: Throwable) {
-            XLog.e("Error occurs when load Hitokoto", e)
+            logE("Error occurs when load Hitokoto", e)
         }
     }
 
@@ -133,7 +134,7 @@ class OneSentenceManager private constructor(){
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ poem ->
                         poem?.let {
-                            XLog.d(poem.toString())
+                            logD(poem.toString())
                             val content = poem.content ?: ""
                             val oneSentence: String = if (showPoemAuthor) {
                                 val author = poem.author ?: ""
@@ -143,10 +144,10 @@ class OneSentenceManager private constructor(){
                             }
                             oneSentenceLoadListener?.onSuccess(oneSentence)
                         }
-                    }, { throwable -> XLog.e("Error occurs", throwable) })
+                    }, { throwable -> logE("Error occurs", throwable) })
             compositeDisposable.add(disposable)
         } catch (e: Throwable) {
-            XLog.e("Error occurs when load OnePoem", e)
+            logE("Error occurs when load OnePoem", e)
         }
     }
 

@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker;
@@ -79,7 +79,7 @@ public class MiuiKeyguardClockHook extends BaseSubHook implements TickObserver {
             return;
         }
         try {
-            XLog.d("Hooking MiuiKeyguardClock...");
+            XLogKt.logD("Hooking MiuiKeyguardClock...");
             mMiuiKeyguardClockCls = XposedHelpers
                     .findClass(CLASS_MIUI_KEYGUARD_CLOCK, mClassLoader);
             hookOnFinishInflate();
@@ -93,7 +93,7 @@ public class MiuiKeyguardClockHook extends BaseSubHook implements TickObserver {
             hookClearAnim();
             hookSetDarkMode();
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook MiuiKeyguardClock", t);
+            XLogKt.logE("Error occurs when hook MiuiKeyguardClock", t);
         }
     }
 

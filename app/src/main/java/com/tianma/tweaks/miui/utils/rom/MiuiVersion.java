@@ -1,6 +1,6 @@
 package com.tianma.tweaks.miui.utils.rom;
 
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +19,7 @@ public class MiuiVersion {
         try {
             time = sdf.parse(timeStr).getTime();
         } catch (Exception e) {
-            XLog.e("time format error %s", timeStr, e);
+            XLogKt.logE("time format error %s", timeStr, e);
         }
     }
 

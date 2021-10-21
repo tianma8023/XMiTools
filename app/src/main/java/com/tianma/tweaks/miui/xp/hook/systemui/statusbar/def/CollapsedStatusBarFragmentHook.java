@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
@@ -38,7 +38,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking CollapsedStatusBarFragment... ");
+            XLogKt.logD("Hooking CollapsedStatusBarFragment... ");
             if (mSignalAlignLeft) {
                 hookOnViewCreated();
             }
@@ -47,7 +47,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
                 hookClockVisibleAnimate();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook CollapsedStatusBarFragment", t);
+            XLogKt.logE("Error occurs when hook CollapsedStatusBarFragment", t);
         }
     }
 

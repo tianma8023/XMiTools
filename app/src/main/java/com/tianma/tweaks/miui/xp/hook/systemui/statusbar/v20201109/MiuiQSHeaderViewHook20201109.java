@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.tianma.tweaks.miui.BuildConfig;
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.weather.WeatherMonitor;
 import com.tianma.tweaks.miui.xp.hook.systemui.weather.WeatherObserver;
@@ -55,7 +55,7 @@ public class MiuiQSHeaderViewHook20201109 extends BaseSubHook implements Weather
 
     @Override
     public void startHook() {
-        XLog.d("Hooking MiuiQSHeaderView...");
+        XLogKt.logD("Hooking MiuiQSHeaderView...");
         if (mWeatherEnabled) {
             mHeaderViewClass = XposedWrapper.findClass(CLASS_HEADER_VIEW, mClassLoader);
             if (mHeaderViewClass != null) {
@@ -148,7 +148,7 @@ public class MiuiQSHeaderViewHook20201109 extends BaseSubHook implements Weather
 
     @Override
     public void onWeatherChanged(String newWeatherInfo) {
-        XLog.d("onWeatherChanged: %s", newWeatherInfo);
+        XLogKt.logD("onWeatherChanged: %s", newWeatherInfo);
         if (mWeatherInfoTv != null) {
             mWeatherInfoTv.setText(newWeatherInfo);
         }

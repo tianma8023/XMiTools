@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.tianma.tweaks.miui.R;
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener;
@@ -80,7 +80,7 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking MiuiKeyguardVerticalClock...");
+            XLogKt.logD("Hooking MiuiKeyguardVerticalClock...");
             mMiuiKeyguardVerticalClockCls = XposedHelpers
                     .findClass(CLASS_MIUI_KEYGUARD_VERTICAL_CLOCK, mClassLoader);
 
@@ -101,7 +101,7 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
                 hookShowHorizontalTime();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook MiuiKeyguardVerticalClock", t);
+            XLogKt.logE("Error occurs when hook MiuiKeyguardVerticalClock", t);
         }
     }
 
@@ -350,7 +350,7 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
                             }
                         } catch (Throwable t) {
                             // ignore
-                            XLog.e("", t);
+                            XLogKt.logE("", t);
                         }
                     }
                 });

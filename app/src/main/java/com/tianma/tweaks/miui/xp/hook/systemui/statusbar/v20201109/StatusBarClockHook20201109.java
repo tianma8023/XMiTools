@@ -9,7 +9,7 @@ import android.os.UserHandle;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
@@ -126,7 +126,7 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking StatusBar Clock...");
+            XLogKt.logD("Hooking StatusBar Clock...");
             mMiuiClockClass = XposedHelpers.findClass(CLASS_MIUI_CLOCK, mClassLoader);
 
             hookClockConstructor();
@@ -143,7 +143,7 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
                 hookOnDarkChanged();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook StatusBar Clock", t);
+            XLogKt.logE("Error occurs when hook StatusBar Clock", t);
         }
     }
 
@@ -234,7 +234,7 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
             Method targetMethod = XposedWrapper.findMethodByNameIfExists(mMiuiClockClass, methodName);
 
             if (targetMethod == null) {
-                XLog.e("method %s#%s not found", CLASS_MIUI_CLOCK, methodName);
+                XLogKt.logE("method %s#%s not found", CLASS_MIUI_CLOCK, methodName);
                 return;
             }
 
