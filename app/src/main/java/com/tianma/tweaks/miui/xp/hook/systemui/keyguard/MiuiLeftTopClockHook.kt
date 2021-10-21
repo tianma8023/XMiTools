@@ -13,33 +13,30 @@ import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper
-import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedHelpers
 import java.util.*
 
 /**
- * 锁屏左上角大时钟
+ * 锁屏左上角小时钟
  * 适用版本 20.4.27+
  */
-class MiuiLeftToplLargeClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, appInfo: AppInfo?) : BaseSubHook(classLoader, xsp, appInfo), TickObserver {
+class MiuiLeftTopClockHook(classLoader: ClassLoader?, appInfo: AppInfo?) : BaseSubHook(classLoader, appInfo), TickObserver {
 
     companion object {
-        const val CLASS_MIUI_LEFT_TOP_LARGE_CLOCK = "miui.keyguard.clock.MiuiLeftTopLargeClock"
+        const val CLASS_MIUI_LEFT_TOP_CLOCK = "miui.keyguard.clock.MiuiLeftTopClock"
     }
 
-    private var leftTopLargeClockClass: Class<*>? = null
+    private var leftTopClockClass: Class<*>? = null
 
     private val clockList = mutableListOf<View?>()
 
-    // private val showHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp)
     private val showHorizontalSec = XPrefContainer.showSecInKeyguardHorizontal
 
     override fun startHook() {
         if (showHorizontalSec) {
-            logD("Hooking MiuiLeftTopLargeClock...")
-            leftTopLargeClockClass = XposedWrapper.findClass(CLASS_MIUI_LEFT_TOP_LARGE_CLOCK, mClassLoader)
-
-            leftTopLargeClockClass?.let {
+            logD("Hooking MiuiLeftTopClock...")
+            leftTopClockClass = XposedWrapper.findClass(CLASS_MIUI_LEFT_TOP_CLOCK, mClassLoader)
+            leftTopClockClass?.let {
                 hookConstructor()
                 hookUpdateTime()
             }
@@ -47,7 +44,7 @@ class MiuiLeftToplLargeClockHook(classLoader: ClassLoader?, xsp: XSharedPreferen
     }
 
     private fun hookConstructor() {
-        XposedWrapper.hookAllConstructors(leftTopLargeClockClass,
+        XposedWrapper.hookAllConstructors(leftTopClockClass,
                 object : MethodHookWrapper() {
                     override fun after(param: MethodHookParam?) {
                         param?.let {
@@ -84,7 +81,7 @@ class MiuiLeftToplLargeClockHook(classLoader: ClassLoader?, xsp: XSharedPreferen
             }
         }
         if (clockList.isNotEmpty()) {
-            TimeTicker.get().registerObserver(this)
+            TimeTicker.get().registerObserver(this@MiuiLeftTopClockHook)
         }
     }
 
@@ -92,25 +89,25 @@ class MiuiLeftToplLargeClockHook(classLoader: ClassLoader?, xsp: XSharedPreferen
     private fun removeClock(clock: View) {
         clockList.remove(clock)
         if (clockList.isEmpty()) {
-            TimeTicker.get().unregisterObserver(this)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftTopClockHook)
         }
     }
 
     private val screenListener: SimpleScreenListener = object : SimpleScreenListener() {
         override fun onScreenOn() {
-            TimeTicker.get().registerObserver(this@MiuiLeftToplLargeClockHook)
+            TimeTicker.get().registerObserver(this@MiuiLeftTopClockHook)
         }
 
         override fun onScreenOff() {
-            TimeTicker.get().unregisterObserver(this@MiuiLeftToplLargeClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftTopClockHook)
         }
 
         override fun onUserPresent() {
-            TimeTicker.get().unregisterObserver(this@MiuiLeftToplLargeClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftTopClockHook)
         }
 
         override fun onStopTimeTick() {
-            TimeTicker.get().unregisterObserver(this@MiuiLeftToplLargeClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftTopClockHook)
         }
     }
 
@@ -123,7 +120,7 @@ class MiuiLeftToplLargeClockHook(classLoader: ClassLoader?, xsp: XSharedPreferen
     }
 
     private fun hookUpdateTime() {
-        XposedWrapper.findAndHookMethod(leftTopLargeClockClass,
+        XposedWrapper.findAndHookMethod(leftTopClockClass,
                 "updateTime",
                 object : MethodHookWrapper() {
                     override fun after(param: MethodHookParam?) {

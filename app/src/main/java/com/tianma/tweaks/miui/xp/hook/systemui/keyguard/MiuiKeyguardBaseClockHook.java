@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -49,8 +48,8 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
     private int oneSentenceColor;
     private float oneSentenceTextSize;
 
-    public MiuiKeyguardBaseClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
-        super(classLoader, xsp);
+    public MiuiKeyguardBaseClockHook(ClassLoader classLoader) {
+        super(classLoader);
         mCompositeDisposable = new CompositeDisposable();
         // oneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
         oneSentenceEnabled = XPrefContainer.getOneSentenceEnabled();
@@ -204,7 +203,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
 
     private void loadOneSentence() {
         if (modContext != null) {
-            OneSentenceManager.getInstance().loadOneSentence(modContext, xsp, new OneSentenceManager.OneSentenceLoadListener() {
+            OneSentenceManager.getInstance().loadOneSentence(modContext, new OneSentenceManager.OneSentenceLoadListener() {
                 @Override
                 public void onSuccess(@NotNull String oneSentence) {
                     showOneSentence(oneSentence);

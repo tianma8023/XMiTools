@@ -12,7 +12,6 @@ import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
 public class BatteryMeterViewHook extends BaseSubHook {
@@ -21,8 +20,8 @@ public class BatteryMeterViewHook extends BaseSubHook {
 
     private boolean mShowSmallPercentSign;
 
-    public BatteryMeterViewHook(ClassLoader classLoader, XSharedPreferences xsp, MiuiVersion miuiVersion) {
-        super(classLoader, xsp, miuiVersion);
+    public BatteryMeterViewHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
+        super(classLoader, miuiVersion);
 
         // mShowSmallPercentSign = XSPUtils.showSmallBatteryPercentSign(xsp);
         mShowSmallPercentSign = XPrefContainer.getShowSmallBatteryPercentSign();

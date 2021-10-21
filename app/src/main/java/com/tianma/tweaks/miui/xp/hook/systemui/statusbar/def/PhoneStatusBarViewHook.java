@@ -1,5 +1,7 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.Gravity;
@@ -17,9 +19,6 @@ import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 /**
  * 状态栏时钟居中显示
@@ -39,8 +38,8 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
     private boolean mAlignmentCenter = false;
     private boolean mAlignmentRight = false;
 
-    public PhoneStatusBarViewHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
-        super(classLoader, xsp, appInfo);
+    public PhoneStatusBarViewHook(ClassLoader classLoader, AppInfo appInfo) {
+        super(classLoader, appInfo);
         // String alignment = XSPUtils.getStatusBarClockAlignment(xsp);
         String alignment = XPrefContainer.getStatusBarClockAlignment();
         if (PrefConst.ALIGNMENT_CENTER.equals(alignment)) {

@@ -4,11 +4,8 @@ import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLogKt;
-import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
-
-import de.robv.android.xposed.XSharedPreferences;
 
 public class WorkSpaceHook extends BaseSubHook {
 
@@ -16,8 +13,8 @@ public class WorkSpaceHook extends BaseSubHook {
 
     private boolean mAlwaysShowStatusBarClock;
 
-    public WorkSpaceHook(ClassLoader classLoader, XSharedPreferences xsp) {
-        super(classLoader, xsp);
+    public WorkSpaceHook(ClassLoader classLoader) {
+        super(classLoader);
 
         // mAlwaysShowStatusBarClock = XSPUtils.alwaysShowStatusBarClock(xsp);
         mAlwaysShowStatusBarClock = XPrefContainer.getAlwaysShowStatusBarClock();

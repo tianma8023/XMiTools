@@ -14,13 +14,11 @@ import android.widget.FrameLayout;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLogKt;
-import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppVersionConst;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
 /**
@@ -38,8 +36,8 @@ public class KeyguardClockContainerHook extends BaseSubHook {
 
     private Class<?> mKeyguardClockContainerClass;
 
-    public KeyguardClockContainerHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
-        super(classLoader, xsp, appInfo);
+    public KeyguardClockContainerHook(ClassLoader classLoader, AppInfo appInfo) {
+        super(classLoader, appInfo);
 
         // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
         mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();

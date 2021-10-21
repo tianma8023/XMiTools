@@ -28,7 +28,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
 /**
@@ -84,8 +83,8 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
 
     private boolean mBlockSystemTimeTick;
 
-    public StatusBarClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
-        super(classLoader, xsp);
+    public StatusBarClockHook(ClassLoader classLoader) {
+        super(classLoader);
 
         mShowSecInStatusBar = XPrefContainer.getShowSecInStatusBar();
         // mStatusBarClockFormatEnabled = XSPUtils.isStatusBarClockFormatEnabled(xsp);

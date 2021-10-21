@@ -33,7 +33,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
 /**
@@ -66,8 +65,8 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
 
     private List<View> mKeyguardClockList = new ArrayList<>();
 
-    public MiuiKeyguardVerticalClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
-        super(classLoader, xsp);
+    public MiuiKeyguardVerticalClockHook(ClassLoader classLoader) {
+        super(classLoader);
 
         // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
         mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();

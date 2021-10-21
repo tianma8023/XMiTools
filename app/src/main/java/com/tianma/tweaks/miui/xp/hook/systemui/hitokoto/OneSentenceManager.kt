@@ -8,7 +8,6 @@ import com.tianma.tweaks.miui.data.sp.XPrefContainer
 import com.tianma.tweaks.miui.utils.SPUtils
 import com.tianma.tweaks.miui.utils.logD
 import com.tianma.tweaks.miui.utils.logE
-import de.robv.android.xposed.XSharedPreferences
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -33,7 +32,7 @@ class OneSentenceManager private constructor(){
 
     private val compositeDisposable = CompositeDisposable()
 
-    fun loadOneSentence(modContext: Context, xsp: XSharedPreferences, oneSentenceLoadListener: OneSentenceLoadListener?) {
+    fun loadOneSentence(modContext: Context, oneSentenceLoadListener: OneSentenceLoadListener?) {
         try {
             // val apiSources = XSPUtils.getOneSentenceApiSources(xsp)
             val apiSources = XPrefContainer.oneSentenceApiSources
@@ -59,10 +58,10 @@ class OneSentenceManager private constructor(){
             val randIdx = Random().nextInt(apiSources.size)
             when (val apiSource = ArrayList(apiSources)[randIdx]) {
                 PrefConst.API_SOURCE_HITOKOTO -> {
-                    loadHitokoto(xsp, oneSentenceLoadListener)
+                    loadHitokoto(oneSentenceLoadListener)
                 }
                 PrefConst.API_SOURCE_ONE_POEM -> {
-                    loadOnePoem(xsp, oneSentenceLoadListener)
+                    loadOnePoem(oneSentenceLoadListener)
                 }
                 else -> {
                     logE("Unknown API source: $apiSource")
@@ -73,7 +72,7 @@ class OneSentenceManager private constructor(){
         }
     }
 
-    private fun loadHitokoto(xsp: XSharedPreferences, oneSentenceLoadListener: OneSentenceLoadListener?) {
+    private fun loadHitokoto(oneSentenceLoadListener: OneSentenceLoadListener?) {
         try {
             // val hitokotoCategories = XSPUtils.getHitokotoCategories(xsp)
             val hitokotoCategories = XPrefContainer.hitokotoCategories
@@ -112,7 +111,7 @@ class OneSentenceManager private constructor(){
         }
     }
 
-    private fun loadOnePoem(xsp: XSharedPreferences, oneSentenceLoadListener: OneSentenceLoadListener?) {
+    private fun loadOnePoem(oneSentenceLoadListener: OneSentenceLoadListener?) {
         try {
             // val onePoemCategories = XSPUtils.getOnePoemCategories(xsp)
             val onePoemCategories = XPrefContainer.onePoemCategories

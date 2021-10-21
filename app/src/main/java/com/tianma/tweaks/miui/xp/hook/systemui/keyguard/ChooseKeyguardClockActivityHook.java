@@ -11,8 +11,6 @@ import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
-import de.robv.android.xposed.XSharedPreferences;
-
 /**
  * MIUI设置页面 - 选择锁屏时钟界面 Hook
  * 适用版本 9.5.7+
@@ -24,8 +22,8 @@ public class ChooseKeyguardClockActivityHook extends BaseSubHook {
     private boolean mShowVerticalSec;
     private boolean mShowHorizontalSec;
 
-    public ChooseKeyguardClockActivityHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
-        super(classLoader, xsp, appInfo);
+    public ChooseKeyguardClockActivityHook(ClassLoader classLoader, AppInfo appInfo) {
+        super(classLoader, appInfo);
 
         // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
         mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();

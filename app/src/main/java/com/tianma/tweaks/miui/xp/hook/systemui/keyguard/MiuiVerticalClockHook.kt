@@ -13,7 +13,6 @@ import com.tianma.tweaks.miui.xp.hook.systemui.tick.TimeTicker
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper
-import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedHelpers
 import java.util.*
 
@@ -21,7 +20,7 @@ import java.util.*
  * 锁屏居中垂直时钟
  * 适用版本 20.4.27+
  */
-class MiuiVerticalClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, appInfo: AppInfo?) : BaseSubHook(classLoader, xsp, appInfo), TickObserver {
+class MiuiVerticalClockHook(classLoader: ClassLoader?, appInfo: AppInfo?) : BaseSubHook(classLoader, appInfo), TickObserver {
 
     companion object {
         const val CLASS_MIUI_VERTICAL_CLOCK = "miui.keyguard.clock.MiuiVerticalClock"

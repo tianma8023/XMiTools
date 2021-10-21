@@ -13,7 +13,6 @@ import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
 public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
@@ -23,8 +22,8 @@ public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
     private boolean mSignalAlignLeft;
     private boolean mAlwaysShowStatusBarClock;
 
-    public CollapsedStatusBarFragmentHook20201109(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
-        super(classLoader, xsp, appInfo);
+    public CollapsedStatusBarFragmentHook20201109(ClassLoader classLoader, AppInfo appInfo) {
+        super(classLoader, appInfo);
 
         // mSignalAlignLeft = XSPUtils.isSignalAlignLeft(xsp);
         mSignalAlignLeft = XPrefContainer.isSignalAlignLeft();

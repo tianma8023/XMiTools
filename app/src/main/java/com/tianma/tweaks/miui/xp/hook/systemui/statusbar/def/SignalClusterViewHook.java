@@ -16,7 +16,6 @@ import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import java.util.List;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
 public class SignalClusterViewHook extends BaseSubHook {
@@ -32,8 +31,8 @@ public class SignalClusterViewHook extends BaseSubHook {
     private boolean mCustomMobileNetworkTypeEnabled;
     private String mCustomMobileNetworkType = "";
 
-    public SignalClusterViewHook(ClassLoader classLoader, XSharedPreferences xsp, MiuiVersion miuiVersion) {
-        super(classLoader, xsp, miuiVersion);
+    public SignalClusterViewHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
+        super(classLoader, miuiVersion);
 
         // mDualMobileSignal = XSPUtils.isDualMobileSignal(xsp);
         mDualMobileSignal = XPrefContainer.isDualMobileSignal();

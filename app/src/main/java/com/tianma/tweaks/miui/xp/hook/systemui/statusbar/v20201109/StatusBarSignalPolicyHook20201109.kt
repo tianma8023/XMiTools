@@ -7,7 +7,6 @@ import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper
-import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedHelpers
 
 /**
@@ -15,10 +14,9 @@ import de.robv.android.xposed.XposedHelpers
  * 适用版本 MIUISystemUI(versionCode >= 202011090)
  */
 class StatusBarSignalPolicyHook20201109(
-        classLoader: ClassLoader,
-        xsp: XSharedPreferences,
-        appInfo: AppInfo
-) : BaseSubHook(classLoader, xsp, appInfo) {
+    classLoader: ClassLoader,
+    appInfo: AppInfo
+) : BaseSubHook(classLoader, appInfo) {
 
     companion object {
         private const val CLASS_STATUS_BAR_POLICY = "com.android.systemui.statusbar.phone.StatusBarSignalPolicy"

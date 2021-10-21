@@ -17,14 +17,13 @@ import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper
-import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedHelpers
 
 /**
  * 锁屏时钟基类 Hook
  * 适用版本 20.4.27+
  */
-class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, appInfo: AppInfo?) : BaseSubHook(classLoader, xsp, appInfo) {
+class MiuiBaseClockHook(classLoader: ClassLoader?, appInfo: AppInfo?) : BaseSubHook(classLoader, appInfo) {
 
     private var miuiBaseClockClass: Class<*>? = null
     private val clockList = mutableListOf<View>()
@@ -81,11 +80,11 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
                                 layoutParams.leftMargin = ResolutionUtils.dp2px(context, 10f).toInt()
                                 layoutParams.rightMargin = ResolutionUtils.dp2px(context, 10f).toInt()
                             }
-                            MiuiLeftToplClockHook.CLASS_MIUI_LEFT_TOP_CLOCK -> {
+                            MiuiLeftTopClockHook.CLASS_MIUI_LEFT_TOP_CLOCK -> {
                                 layoutParams.leftMargin = ResolutionUtils.dp2px(context, 2f).toInt()
                                 layoutParams.rightMargin = ResolutionUtils.dp2px(context, 20f).toInt()
                             }
-                            MiuiLeftToplLargeClockHook.CLASS_MIUI_LEFT_TOP_LARGE_CLOCK -> {
+                            MiuiLeftTopLargeClockHook.CLASS_MIUI_LEFT_TOP_LARGE_CLOCK -> {
                                 layoutParams.leftMargin = ResolutionUtils.dp2px(context, 2f).toInt()
                                 layoutParams.rightMargin = ResolutionUtils.dp2px(context, 20f).toInt()
                             }
@@ -157,7 +156,7 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, xsp: XSharedPreferences?, app
 
     private fun loadOneSentence() {
         modContext?.let {
-            OneSentenceManager.getInstance().loadOneSentence(it, xsp, object : OneSentenceManager.OneSentenceLoadListener {
+            OneSentenceManager.getInstance().loadOneSentence(it, object : OneSentenceManager.OneSentenceLoadListener {
                 override fun onSuccess(oneSentence: String) {
                     showOneSentence(oneSentence)
                 }

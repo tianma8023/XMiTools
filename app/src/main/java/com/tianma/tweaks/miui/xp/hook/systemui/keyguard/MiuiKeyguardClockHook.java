@@ -32,7 +32,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
 /**
@@ -64,8 +63,8 @@ public class MiuiKeyguardClockHook extends BaseSubHook implements TickObserver {
     private static final String M_VERTICAL_TO_HORIZONTAL_ANIM_2 = "mVerticalToHorizontalAnim2";
     private static final String M_HORIZONTAL_TO_VERTICAL_ANIM_2 = "mHorizontalToVerticalAnim2";
 
-    public MiuiKeyguardClockHook(ClassLoader classLoader, XSharedPreferences xsp) {
-        super(classLoader, xsp);
+    public MiuiKeyguardClockHook(ClassLoader classLoader) {
+        super(classLoader);
 
         // mShowHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp);
         mShowHorizontalSec = XPrefContainer.getShowSecInKeyguardHorizontal();

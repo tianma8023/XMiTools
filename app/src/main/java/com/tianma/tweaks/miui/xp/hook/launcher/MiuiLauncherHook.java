@@ -2,11 +2,9 @@ package com.tianma.tweaks.miui.xp.hook.launcher;
 
 import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.XLogKt;
-import com.tianma.tweaks.miui.utils.XSPUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiUtils;
 import com.tianma.tweaks.miui.xp.hook.BaseHook;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class MiuiLauncherHook extends BaseHook {
@@ -21,14 +19,12 @@ public class MiuiLauncherHook extends BaseHook {
         if (PACKAGE_NAME.equals(lpparam.packageName)) {
             XLogKt.logI("Hooking MIUI Launcher...");
 
-            XSharedPreferences xsp = XSPUtils.getXSharedPreferences();
-
             ClassLoader classLoader = lpparam.classLoader;
             if (XPrefContainer.getMainSwitchEnable()) {
                 if(!MiuiUtils.isMiui()) {
                     return;
                 }
-                new WorkSpaceHook(classLoader, xsp).startHook();
+                new WorkSpaceHook(classLoader).startHook();
             }
 
         }

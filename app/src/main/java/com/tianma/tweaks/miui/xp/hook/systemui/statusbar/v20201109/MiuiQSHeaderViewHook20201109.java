@@ -20,8 +20,6 @@ import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper;
 
-import de.robv.android.xposed.XSharedPreferences;
-
 /**
  * 下拉状态栏头部View Hook（下拉状态栏显示天气等)，适用版本 MiuiSystemUI(versionCode>=202011090)
  */
@@ -40,8 +38,8 @@ public class MiuiQSHeaderViewHook20201109 extends BaseSubHook implements Weather
     private int mWeatherTextColor;
     private float mWeatherTextSize;
 
-    public MiuiQSHeaderViewHook20201109(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
-        super(classLoader, xsp, appInfo);
+    public MiuiQSHeaderViewHook20201109(ClassLoader classLoader, AppInfo appInfo) {
+        super(classLoader, appInfo);
 
         // mWeatherEnabled = XSPUtils.isDropdownStatusBarWeatherEnabled(xsp);
         mWeatherEnabled = XPrefContainer.isDropdownStatusBarWeatherEnabled();
