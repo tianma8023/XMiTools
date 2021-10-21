@@ -26,7 +26,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
     private boolean mAlwaysShowStatusBarClock;
 
     public CollapsedStatusBarFragmentHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
-        super(classLoader, miuiVersion);
+        super(classLoader, null, miuiVersion);
 
         // mSignalAlignLeft = XSPUtils.isSignalAlignLeft(xsp);
         mSignalAlignLeft = XPrefContainer.isSignalAlignLeft();
@@ -53,7 +53,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
     // CollapsedStatusBarFragment#onViewCreated()
     private void hookOnViewCreated() {
         findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
-                mClassLoader,
+                getMClassLoader(),
                 "onViewCreated",
                 View.class,
                 Bundle.class,
@@ -67,7 +67,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
                                 .findViewById(ResHelpers.getId(res, "signal_cluster_view"));
                         ((ViewGroup) signalClusterViewContainer.getParent()).removeView(signalClusterViewContainer);
 
-                        if (mMiuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
+                        if (getMMiuiVersion().getTime() >= MiuiVersion.V_19_5_7.getTime()) {
                             try {
                                 LinearLayout contentsContainer = phoneStatusBarView
                                         .findViewById(ResHelpers.getId(res, "phone_status_bar_contents_container"));
@@ -91,7 +91,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
 
     private void hookClockVisibleAnimate() {
         findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
-                mClassLoader,
+                getMClassLoader(),
                 "clockVisibleAnimate",
                 boolean.class,
                 boolean.class,

@@ -67,7 +67,7 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
 
     private void hookSetBar() {
         findAndHookMethod(CLASS_PHONE_STATUS_BAR_VIEW,
-                mClassLoader,
+                getMClassLoader(),
                 "setBar",
                 CLASS_STATUS_BAR,
                 new MethodHookWrapper() {
@@ -114,7 +114,7 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
 
     private void hookGetActualWidth() {
         findAndHookMethod(CLASS_NOTIFICATION_ICON_CONTAINER,
-                mClassLoader,
+                getMClassLoader(),
                 "getActualWidth",
                 new MethodHookWrapper() {
                     @Override

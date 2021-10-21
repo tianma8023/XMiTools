@@ -50,7 +50,7 @@ public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
     // CollapsedStatusBarFragment#onViewCreated()
     private void hookOnViewCreated() {
         findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
-                mClassLoader,
+                getMClassLoader(),
                 "onViewCreated",
                 View.class,
                 Bundle.class,
@@ -118,7 +118,7 @@ public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
     private void hookClockVisibleAnimate() {
         // TODO
         findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
-                mClassLoader,
+                getMClassLoader(),
                 "clockVisibleAnimate",
                 boolean.class,
                 boolean.class,

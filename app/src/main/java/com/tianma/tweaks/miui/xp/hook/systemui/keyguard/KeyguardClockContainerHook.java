@@ -52,10 +52,10 @@ public class KeyguardClockContainerHook extends BaseSubHook {
         }
         try {
             XLogKt.logD("Hooking KeyguardClockContainerHook...");
-            if (mAppInfo.getVersionCode() >= AppVersionConst.SYSTEM_UI_V201912130) {
-                mKeyguardClockContainerClass = findClass(CLASS_KEYGUARD_CLOCK_CONTAINER_NEW, mClassLoader);
+            if (getMAppInfo().getVersionCode() >= AppVersionConst.SYSTEM_UI_V201912130) {
+                mKeyguardClockContainerClass = findClass(CLASS_KEYGUARD_CLOCK_CONTAINER_NEW, getMClassLoader());
             } else {
-                mKeyguardClockContainerClass = findClass(CLASS_KEYGUARD_CLOCK_CONTAINER_OLD, mClassLoader);
+                mKeyguardClockContainerClass = findClass(CLASS_KEYGUARD_CLOCK_CONTAINER_OLD, getMClassLoader());
             }
 
             hookOnAttachedToWindow();
@@ -82,7 +82,7 @@ public class KeyguardClockContainerHook extends BaseSubHook {
 
                         BroadcastReceiver mIntentReceiver = (BroadcastReceiver) getObjectField(clockContainer, "mIntentReceiver");
                         Object USER_HANDLE_ALL = getStaticObjectField(UserHandle.class, "ALL");
-                        Class<?> dependencyClass = findClass(CLASS_DEPENDENCY, mClassLoader);
+                        Class<?> dependencyClass = findClass(CLASS_DEPENDENCY, getMClassLoader());
                         Object TIME_TICK_HANDLER = getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
                         Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
 

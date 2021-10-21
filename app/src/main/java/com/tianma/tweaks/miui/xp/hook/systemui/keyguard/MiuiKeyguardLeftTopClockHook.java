@@ -55,7 +55,7 @@ public class MiuiKeyguardLeftTopClockHook extends BaseSubHook implements TickObs
     public void startHook() {
         try {
             XLogKt.logD("Hooking MiuiKeyguardLeftTopClock...");
-            mMiuiKeyguardLeftTopClockCls = XposedHelpers.findClass(CLASS_MIUI_KEYGUARD_LEFT_TOP_CLOCK, mClassLoader);
+            mMiuiKeyguardLeftTopClockCls = XposedHelpers.findClass(CLASS_MIUI_KEYGUARD_LEFT_TOP_CLOCK, getMClassLoader());
 
             if (mShowHorizontalSec) {
                 hookConstructor();

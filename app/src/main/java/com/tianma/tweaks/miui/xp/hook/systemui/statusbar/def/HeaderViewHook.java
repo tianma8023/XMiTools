@@ -41,7 +41,7 @@ public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
     private float mWeatherTextSize;
 
     public HeaderViewHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
-        super(classLoader, miuiVersion);
+        super(classLoader, null, miuiVersion);
 
         // mWeatherEnabled = XSPUtils.isDropdownStatusBarWeatherEnabled(xsp);
         mWeatherEnabled = XPrefContainer.isDropdownStatusBarWeatherEnabled();
@@ -57,7 +57,7 @@ public class HeaderViewHook extends BaseSubHook implements WeatherObserver {
     public void startHook() {
         XLogKt.logD("Hooking HeaderView...");
         if (mWeatherEnabled) {
-            mHeaderViewClass = findClass(CLASS_HEADER_VIEW, mClassLoader);
+            mHeaderViewClass = findClass(CLASS_HEADER_VIEW, getMClassLoader());
             hookConstructor();
             hookOnFinishInflate();
             hookOnAttachedToWindow();

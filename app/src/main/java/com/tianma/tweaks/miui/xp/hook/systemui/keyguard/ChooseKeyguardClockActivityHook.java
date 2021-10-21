@@ -48,7 +48,7 @@ public class ChooseKeyguardClockActivityHook extends BaseSubHook {
     // com.android.keyguard.setting.ChooseKeyguardClockActivity#onStop()
     private void hookOnStop() {
         findAndHookMethod(CLASS_CHOOSE_KEYGUARD_CLOCK_ACTIVITY,
-                mClassLoader,
+                getMClassLoader(),
                 "onStop",
                 new MethodHookWrapper() {
                     @Override

@@ -81,7 +81,7 @@ public class MiuiKeyguardVerticalClockHook extends BaseSubHook implements TickOb
         try {
             XLogKt.logD("Hooking MiuiKeyguardVerticalClock...");
             mMiuiKeyguardVerticalClockCls = XposedHelpers
-                    .findClass(CLASS_MIUI_KEYGUARD_VERTICAL_CLOCK, mClassLoader);
+                    .findClass(CLASS_MIUI_KEYGUARD_VERTICAL_CLOCK, getMClassLoader());
 
             if (mShowHorizontalSec || mShowVerticalSec) {
                 hookOnFinishInflate();

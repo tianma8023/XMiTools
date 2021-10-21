@@ -32,7 +32,7 @@ public class SignalClusterViewHook extends BaseSubHook {
     private String mCustomMobileNetworkType = "";
 
     public SignalClusterViewHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
-        super(classLoader, miuiVersion);
+        super(classLoader, null, miuiVersion);
 
         // mDualMobileSignal = XSPUtils.isDualMobileSignal(xsp);
         mDualMobileSignal = XPrefContainer.isDualMobileSignal();
@@ -76,14 +76,14 @@ public class SignalClusterViewHook extends BaseSubHook {
     // SignalClusterView#hookSetSubs()
     private void hookSetSubs() {
         findAndHookMethod(CLASS_SIGNAL_CLUSTER_VIEW,
-                mClassLoader,
+                getMClassLoader(),
                 "setSubs",
                 List.class,
                 new MethodHookWrapper() {
                     @Override
                     protected void before(MethodHookParam param) {
                         XposedHelpers.setBooleanField(param.thisObject, "mNotchEar", true);
-                        if (mMiuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
+                        if (getMMiuiVersion().getTime() >= MiuiVersion.V_19_5_7.getTime()) {
                             XposedHelpers.setBooleanField(param.thisObject, "mNotchEarDualEnable", true);
                         }
                     }
@@ -93,7 +93,7 @@ public class SignalClusterViewHook extends BaseSubHook {
     // SignalClusterView#apply()
     private void hookApply() {
         findAndHookMethod(CLASS_SIGNAL_CLUSTER_VIEW,
-                mClassLoader,
+                getMClassLoader(),
                 "apply",
                 new MethodHookWrapper() {
                     @Override
@@ -111,7 +111,7 @@ public class SignalClusterViewHook extends BaseSubHook {
     // SignalClusterView$PhoneState#apply()
     private void hookPhoneStateApply() {
         findAndHookMethod(CLASS_PHONE_STATE,
-                mClassLoader,
+                getMClassLoader(),
                 "apply",
                 boolean.class,
                 new MethodHookWrapper() {
@@ -132,7 +132,7 @@ public class SignalClusterViewHook extends BaseSubHook {
     // SignalClusterView$PhoneState#isImdRegisted()
     private void hookIsImsRegisted() {
         findAndHookMethod(CLASS_PHONE_STATE,
-                mClassLoader,
+                getMClassLoader(),
                 "setIsImsRegisted",
                 boolean.class,
                 new MethodHookWrapper() {

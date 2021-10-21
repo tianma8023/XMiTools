@@ -55,7 +55,7 @@ public class MiuiQSHeaderViewHook20201109 extends BaseSubHook implements Weather
     public void startHook() {
         XLogKt.logD("Hooking MiuiQSHeaderView...");
         if (mWeatherEnabled) {
-            mHeaderViewClass = XposedWrapper.findClass(CLASS_HEADER_VIEW, mClassLoader);
+            mHeaderViewClass = XposedWrapper.findClass(CLASS_HEADER_VIEW, getMClassLoader());
             if (mHeaderViewClass != null) {
                 hookConstructor();
                 hookOnFinishInflate();

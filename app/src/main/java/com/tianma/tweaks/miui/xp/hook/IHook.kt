@@ -1,12 +1,13 @@
-package com.tianma.tweaks.miui.xp.hook;
+package com.tianma.tweaks.miui.xp.hook
 
-import de.robv.android.xposed.IXposedHookZygoteInit;
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import kotlin.Throws
+import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 
-public interface IHook {
+interface IHook {
+    @Throws(Throwable::class)
+    fun initZygote(startupParam: StartupParam?)
 
-    void initZygote(IXposedHookZygoteInit.StartupParam startupParam) throws Throwable;
-
-    void onLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable;
-
+    @Throws(Throwable::class)
+    fun onLoadPackage(lpparam: LoadPackageParam?)
 }

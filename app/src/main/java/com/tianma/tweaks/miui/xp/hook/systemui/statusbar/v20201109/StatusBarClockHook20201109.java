@@ -126,7 +126,7 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
     public void startHook() {
         try {
             XLogKt.logD("Hooking StatusBar Clock...");
-            mMiuiClockClass = XposedHelpers.findClass(CLASS_MIUI_CLOCK, mClassLoader);
+            mMiuiClockClass = XposedHelpers.findClass(CLASS_MIUI_CLOCK, getMClassLoader());
 
             hookClockConstructor();
 
@@ -253,9 +253,9 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
 
     // com.android.systemui.statusbar.phone.StatusBar#makeStatusBarView()
     private void hookMakeStatusBarView() {
-        Class<?> statusBarClass = XposedHelpers.findClass(CLASS_STATUS_BAR, mClassLoader);
+        Class<?> statusBarClass = XposedHelpers.findClass(CLASS_STATUS_BAR, getMClassLoader());
         // Android 11 起，出现 RegisterStatusBarResult 类
-        Class<?> registerStatusBarResultClass = XposedHelpers.findClassIfExists(CLASS_REGISTER_STATUS_BAR_RESULT, mClassLoader);
+        Class<?> registerStatusBarResultClass = XposedHelpers.findClassIfExists(CLASS_REGISTER_STATUS_BAR_RESULT, getMClassLoader());
 
         Method targetMethod = XposedHelpers.findMethodBestMatch(
                 statusBarClass,
@@ -296,7 +296,7 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
                 intentFilter.addAction("android.intent.action.CONFIGURATION_CHANGED");
                 intentFilter.addAction("android.intent.action.USER_SWITCHED");
                 Object USER_HANDLE_ALL = XposedHelpers.getStaticObjectField(UserHandle.class, "ALL");
-                Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, mClassLoader);
+                Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, getMClassLoader());
                 Object TIME_TICK_HANDLER = XposedHelpers.getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
                 Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
                 // this.mBroadcastDispatcher.registerReceiverWithHandler(this.mIntentReceiver, intentFilter,

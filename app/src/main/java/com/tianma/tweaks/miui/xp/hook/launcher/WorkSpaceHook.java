@@ -35,7 +35,7 @@ public class WorkSpaceHook extends BaseSubHook {
     // #isScreenHasClockGadget()
     private void hookIsScreenHasClockGadgets() {
         findAndHookMethod(CLASS_WORK_SPACE,
-                mClassLoader,
+                getMClassLoader(),
                 "isScreenHasClockGadget",
                 long.class,
                 new MethodHookWrapper() {

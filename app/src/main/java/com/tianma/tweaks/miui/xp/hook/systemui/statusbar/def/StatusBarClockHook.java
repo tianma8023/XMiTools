@@ -121,7 +121,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
     public void startHook() {
         try {
             XLogKt.logD("Hooking StatusBar Clock...");
-            mClockCls = XposedHelpers.findClass(CLASS_CLOCK, mClassLoader);
+            mClockCls = XposedHelpers.findClass(CLASS_CLOCK, getMClassLoader());
 
             hookClockConstructor();
 
@@ -243,7 +243,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
     // com.android.systemui.statusbar.phone.StatusBar#makeStatusBarView()
     private void hookMakeStatusBarView() {
         findAndHookMethod(CLASS_STATUS_BAR,
-                mClassLoader,
+                getMClassLoader(),
                 "makeStatusBarView",
                 new MethodHookWrapper() {
                     @Override
@@ -297,7 +297,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
     // com.android.systemui.statusbar.policy.Clock$ReceiverInfo#register()
     private void hookRegister() {
         findAndHookMethod(CLASS_RECEIVER_INFO,
-                mClassLoader,
+                getMClassLoader(),
                 "register",
                 Context.class,
                 new MethodHookWrapper() {
@@ -314,7 +314,7 @@ public class StatusBarClockHook extends BaseSubHook implements TickObserver {
                         filter.addAction("android.intent.action.USER_SWITCHED");
                         Object receiver = XposedHelpers.getObjectField(thisObject, "mReceiver");
                         Object USER_HANDLE_ALL = XposedHelpers.getStaticObjectField(UserHandle.class, "ALL");
-                        Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, mClassLoader);
+                        Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, getMClassLoader());
                         Object TIME_TICK_HANDLER = XposedHelpers.getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
                         Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
                         // context.registerReceiverAsUser(this.mReceiver, UserHandle.ALL, filter, null, (Handler) Dependency.get(Dependency.TIME_TICK_HANDLER));

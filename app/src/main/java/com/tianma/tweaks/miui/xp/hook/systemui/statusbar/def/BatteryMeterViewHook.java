@@ -21,7 +21,7 @@ public class BatteryMeterViewHook extends BaseSubHook {
     private boolean mShowSmallPercentSign;
 
     public BatteryMeterViewHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
-        super(classLoader, miuiVersion);
+        super(classLoader, null, miuiVersion);
 
         // mShowSmallPercentSign = XSPUtils.showSmallBatteryPercentSign(xsp);
         mShowSmallPercentSign = XPrefContainer.getShowSmallBatteryPercentSign();
@@ -37,7 +37,7 @@ public class BatteryMeterViewHook extends BaseSubHook {
 
     private void hookUpdateShowPercent() {
         XposedWrapper.findAndHookMethod(CLASS_BATTERY_VIEW,
-                mClassLoader,
+                getMClassLoader(),
                 "updateShowPercent",
                 new MethodHookWrapper() {
                     @Override

@@ -62,7 +62,7 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
     @Override
     public void startHook() {
         try {
-            mKeyguardBaseClockClass = XposedWrapper.findClass(CLASS_MIUI_KEYGUARD_BASE_CLOCK, mClassLoader);
+            mKeyguardBaseClockClass = XposedWrapper.findClass(CLASS_MIUI_KEYGUARD_BASE_CLOCK, getMClassLoader());
             if (oneSentenceEnabled) {
                 XLogKt.logD("OneSentence enabled, hooking MiuiKeyguardBaseClock...");
 

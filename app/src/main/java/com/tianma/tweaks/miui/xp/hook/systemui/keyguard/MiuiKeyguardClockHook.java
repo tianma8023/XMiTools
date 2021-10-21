@@ -80,7 +80,7 @@ public class MiuiKeyguardClockHook extends BaseSubHook implements TickObserver {
         try {
             XLogKt.logD("Hooking MiuiKeyguardClock...");
             mMiuiKeyguardClockCls = XposedHelpers
-                    .findClass(CLASS_MIUI_KEYGUARD_CLOCK, mClassLoader);
+                    .findClass(CLASS_MIUI_KEYGUARD_CLOCK, getMClassLoader());
             hookOnFinishInflate();
             hookUpdateViewTextSize();
             hookUpdateTime();
