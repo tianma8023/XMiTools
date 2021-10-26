@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
+package com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20190507;
 
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
@@ -22,6 +22,7 @@ import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
 import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.def.Ease;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener;
 import com.tianma.tweaks.miui.xp.hook.systemui.tick.TickObserver;

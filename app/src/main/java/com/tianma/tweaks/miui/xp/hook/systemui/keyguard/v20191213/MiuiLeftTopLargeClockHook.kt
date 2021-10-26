@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.keyguard
+package com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20191213
 
 import android.view.View
 import android.view.ViewTreeObserver.OnWindowAttachListener
@@ -17,27 +17,28 @@ import de.robv.android.xposed.XposedHelpers
 import java.util.*
 
 /**
- * 锁屏居中水平时钟
+ * 锁屏左上角大时钟
  * 适用版本 20.4.27+
  */
-class MiuiCenterHorizontalClockHook(classLoader: ClassLoader?, appInfo: AppInfo?) : BaseSubHook(classLoader, appInfo), TickObserver {
+class MiuiLeftTopLargeClockHook(classLoader: ClassLoader?, appInfo: AppInfo?) : BaseSubHook(classLoader, appInfo), TickObserver {
 
     companion object {
-        const val CLASS_MIUI_CENTER_HORIZONTAL_CLOCK = "miui.keyguard.clock.MiuiCenterHorizontalClock"
+        const val CLASS_MIUI_LEFT_TOP_LARGE_CLOCK = "miui.keyguard.clock.MiuiLeftTopLargeClock"
     }
 
-    private var centerHorizontalClockClass: Class<*>? = null
+    private var leftTopLargeClockClass: Class<*>? = null
 
     private val clockList = mutableListOf<View?>()
 
+    // private val showHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp)
     private val showHorizontalSec = XPrefContainer.showSecInKeyguardHorizontal
 
     override fun startHook() {
         if (showHorizontalSec) {
-            logD("Hooking MiuiCenterHorizontalClock...")
-            centerHorizontalClockClass = XposedWrapper.findClass(CLASS_MIUI_CENTER_HORIZONTAL_CLOCK, mClassLoader)
+            logD("Hooking MiuiLeftTopLargeClock...")
+            leftTopLargeClockClass = XposedWrapper.findClass(CLASS_MIUI_LEFT_TOP_LARGE_CLOCK, mClassLoader)
 
-            centerHorizontalClockClass?.let {
+            leftTopLargeClockClass?.let {
                 hookConstructor()
                 hookUpdateTime()
             }
@@ -45,7 +46,7 @@ class MiuiCenterHorizontalClockHook(classLoader: ClassLoader?, appInfo: AppInfo?
     }
 
     private fun hookConstructor() {
-        XposedWrapper.hookAllConstructors(centerHorizontalClockClass,
+        XposedWrapper.hookAllConstructors(leftTopLargeClockClass,
                 object : MethodHookWrapper() {
                     override fun after(param: MethodHookParam?) {
                         param?.let {
@@ -96,19 +97,19 @@ class MiuiCenterHorizontalClockHook(classLoader: ClassLoader?, appInfo: AppInfo?
 
     private val screenListener: SimpleScreenListener = object : SimpleScreenListener() {
         override fun onScreenOn() {
-            TimeTicker.get().registerObserver(this@MiuiCenterHorizontalClockHook)
+            TimeTicker.get().registerObserver(this@MiuiLeftTopLargeClockHook)
         }
 
         override fun onScreenOff() {
-            TimeTicker.get().unregisterObserver(this@MiuiCenterHorizontalClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftTopLargeClockHook)
         }
 
         override fun onUserPresent() {
-            TimeTicker.get().unregisterObserver(this@MiuiCenterHorizontalClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftTopLargeClockHook)
         }
 
         override fun onStopTimeTick() {
-            TimeTicker.get().unregisterObserver(this@MiuiCenterHorizontalClockHook)
+            TimeTicker.get().unregisterObserver(this@MiuiLeftTopLargeClockHook)
         }
     }
 
@@ -121,7 +122,7 @@ class MiuiCenterHorizontalClockHook(classLoader: ClassLoader?, appInfo: AppInfo?
     }
 
     private fun hookUpdateTime() {
-        XposedWrapper.findAndHookMethod(centerHorizontalClockClass,
+        XposedWrapper.findAndHookMethod(leftTopLargeClockClass,
                 "updateTime",
                 object : MethodHookWrapper() {
                     override fun after(param: MethodHookParam?) {

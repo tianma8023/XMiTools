@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
+package com.tianma.tweaks.miui.xp.hook.systemui.keyguard.def;
 
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;

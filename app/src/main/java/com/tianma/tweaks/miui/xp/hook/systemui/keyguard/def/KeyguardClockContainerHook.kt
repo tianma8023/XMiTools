@@ -1,4 +1,4 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.keyguard
+package com.tianma.tweaks.miui.xp.hook.systemui.keyguard.def
 
 import android.content.BroadcastReceiver
 import android.content.IntentFilter

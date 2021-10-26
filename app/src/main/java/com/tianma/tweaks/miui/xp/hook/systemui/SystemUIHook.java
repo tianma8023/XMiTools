@@ -6,17 +6,17 @@ import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.rom.MiuiUtils;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.ChooseKeyguardClockActivityHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.KeyguardClockContainerHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiBaseClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiCenterHorizontalClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardBaseClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardLeftTopClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiKeyguardVerticalClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiLeftTopClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiLeftTopLargeClockHook;
-import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.MiuiVerticalClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20190507.ChooseKeyguardClockActivityHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.def.KeyguardClockContainerHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20191213.MiuiBaseClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20191213.MiuiCenterHorizontalClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20190507.MiuiKeyguardBaseClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.def.MiuiKeyguardClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20190507.MiuiKeyguardLeftTopClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20190507.MiuiKeyguardVerticalClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20191213.MiuiLeftTopClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20191213.MiuiLeftTopLargeClockHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.keyguard.v20191213.MiuiVerticalClockHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def.BatteryMeterViewHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def.CollapsedStatusBarFragmentHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def.HeaderViewHook;
@@ -117,16 +117,18 @@ public class SystemUIHook extends BaseHook {
                                     MiuiVersion miuiVersion,
                                     AppInfo appInfo) {
         XLogKt.logD("hook after v201912130");
+        // 锁屏
         new MiuiCenterHorizontalClockHook(classLoader, appInfo).startHook();
         new MiuiVerticalClockHook(classLoader, appInfo).startHook();
         new MiuiLeftTopClockHook(classLoader, appInfo).startHook();
         new MiuiLeftTopLargeClockHook(classLoader, appInfo).startHook();
         new ChooseKeyguardClockActivityHook(classLoader, appInfo).startHook();
         new MiuiBaseClockHook(classLoader, appInfo).startHook();
+        new KeyguardClockContainerHook(classLoader, appInfo).startHook();
 
+        // 状态栏 + 下拉状态栏
         new PhoneStatusBarViewHook(classLoader, appInfo).startHook();
         new StatusBarClockHook(classLoader).startHook();
-        new KeyguardClockContainerHook(classLoader, appInfo).startHook();
 
         new CollapsedStatusBarFragmentHook(classLoader, miuiVersion).startHook();
         new SignalClusterViewHook(classLoader, miuiVersion).startHook();
