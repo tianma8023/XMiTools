@@ -1,13 +1,26 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.screen;
+package com.tianma.tweaks.miui.xp.hook.systemui.screen
 
-public interface ScreenListener {
+/**
+ * Screen Listener
+ */
+interface ScreenListener {
+    /**
+     * called when screen on
+     */
+    fun onScreenOn()
 
-    void onScreenOn();
+    /**
+     * called when screen off
+     */
+    fun onScreenOff()
 
-    void onScreenOff();
+    /**
+     * called when user present
+     */
+    fun onUserPresent()
 
-    void onUserPresent();
-
-    void onStopTimeTick();
-
+    /**
+     * called when stop time tick
+     */
+    fun onStopTimeTick()
 }

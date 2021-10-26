@@ -51,11 +51,8 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
     public MiuiKeyguardBaseClockHook(ClassLoader classLoader) {
         super(classLoader);
         mCompositeDisposable = new CompositeDisposable();
-        // oneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp);
         oneSentenceEnabled = XPrefContainer.getOneSentenceEnabled();
-        // oneSentenceColor = XSPUtils.getOneSentenceColor(xsp);
         oneSentenceColor = XPrefContainer.getOneSentenceColor();
-        // oneSentenceTextSize = XSPUtils.getOneSentenceTextSize(xsp);
         oneSentenceTextSize = XPrefContainer.getOneSentenceTextSize();
     }
 
@@ -83,26 +80,14 @@ public class MiuiKeyguardBaseClockHook extends BaseSubHook {
                     protected void after(MethodHookParam param) {
                         LinearLayout miuiKeyguardBaseClock = (LinearLayout) param.thisObject;
                         Context context = miuiKeyguardBaseClock.getContext();
-//                        miuiKeyguardBaseClock.setBackgroundColor(Color.parseColor("#892719"));
-
-//                        TextView mLunarCalendarInfo = (TextView) XposedHelpers.getObjectField(miuiKeyguardBaseClock, "mLunarCalendarInfo");
-//                        mLunarCalendarInfo.setBackgroundColor(Color.parseColor("#791230"));
 
                         TextView mOwnerInfo = (TextView) XposedHelpers.getObjectField(miuiKeyguardBaseClock, "mOwnerInfo");
-//                        LinearLayout.LayoutParams mOwnerInfoLayoutParams = (LinearLayout.LayoutParams) mOwnerInfo.getLayoutParams();
-//                        mOwnerInfo.setBackgroundColor(Color.parseColor("#ff4081"));
-//                        mOwnerInfoLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-
                         int mOwnerInfoIndex = miuiKeyguardBaseClock.indexOfChild(mOwnerInfo);
-//                        XLogKt.logD("mOwnerInfoIndex = " + mOwnerInfoIndex);
 
                         TextView hitokotoTextView = new TextView(context);
                         hitokotoTextView.setTextSize(oneSentenceTextSize);
                         hitokotoTextView.setTextColor(oneSentenceColor);
-//                        hitokotoTextView.setBackgroundColor(Color.parseColor("#402384"));
                         hitokotoTextView.setId(R.id.hitokoto_info_text_view);
-//                        hitokotoTextView.setText("Hitokoto");
-//                        hitokotoTextView.setVisibility(View.GONE);
 
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         hitokotoTextView.setLayoutParams(params);

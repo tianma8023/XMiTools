@@ -30,7 +30,6 @@ class MiuiCenterHorizontalClockHook(classLoader: ClassLoader?, appInfo: AppInfo?
 
     private val clockList = mutableListOf<View?>()
 
-    // private val showHorizontalSec = XSPUtils.showSecInKeyguardHorizontal(xsp)
     private val showHorizontalSec = XPrefContainer.showSecInKeyguardHorizontal
 
     override fun startHook() {

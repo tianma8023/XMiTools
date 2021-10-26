@@ -1,23 +1,8 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.screen;
+package com.tianma.tweaks.miui.xp.hook.systemui.screen
 
-public class SimpleScreenListener implements ScreenListener {
-    @Override
-    public void onScreenOn() {
-
-    }
-
-    @Override
-    public void onScreenOff() {
-
-    }
-
-    @Override
-    public void onUserPresent() {
-
-    }
-
-    @Override
-    public void onStopTimeTick() {
-
-    }
+open class SimpleScreenListener : ScreenListener {
+    override fun onScreenOn() {}
+    override fun onScreenOff() {}
+    override fun onUserPresent() {}
+    override fun onStopTimeTick() {}
 }

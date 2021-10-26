@@ -30,11 +30,8 @@ class MiuiBaseClockHook(classLoader: ClassLoader?, appInfo: AppInfo?) : BaseSubH
 
     private var modContext: Context? = null
 
-    // private val oneSentenceEnabled = XSPUtils.oneSentenceEnabled(xsp)
     private val oneSentenceEnabled = XPrefContainer.oneSentenceEnabled
-    // private val oneSentenceColor = XSPUtils.getOneSentenceColor(xsp)
     private val oneSentenceColor = XPrefContainer.oneSentenceColor
-    // private val oneSentenceTextSize = XSPUtils.getOneSentenceTextSize(xsp)
     private val oneSentenceTextSize = XPrefContainer.getOneSentenceTextSize()
 
     companion object {

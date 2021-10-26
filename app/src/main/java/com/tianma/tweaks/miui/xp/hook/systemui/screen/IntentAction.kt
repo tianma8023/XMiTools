@@ -1,7 +1,5 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.keyguard;
+package com.tianma.tweaks.miui.xp.hook.systemui.screen
 
-public class IntentAction {
-
-    public static String KEYGUARD_STOP_TIME_TICK = "com.tianma.tweaks.miui.KEYGUARD_STOP_TIME_TICK";
-
+object IntentAction {
+    const val KEYGUARD_STOP_TIME_TICK = "com.tianma.tweaks.miui.KEYGUARD_STOP_TIME_TICK"
 }
