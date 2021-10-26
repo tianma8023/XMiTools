@@ -1,135 +1,110 @@
-package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109;
+package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109
 
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import com.tianma.tweaks.miui.data.sp.XPrefContainer
+import com.tianma.tweaks.miui.utils.callMethod
+import com.tianma.tweaks.miui.utils.logD
+import com.tianma.tweaks.miui.utils.logE
+import com.tianma.tweaks.miui.xp.hook.BaseSubHook
+import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager
+import com.tianma.tweaks.miui.xp.hook.systemui.screen.SimpleScreenListener
+import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
+import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
+import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper
+import de.robv.android.xposed.XposedHelpers
 
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
+class CollapsedStatusBarFragmentHook20201109(classLoader: ClassLoader?, appInfo: AppInfo?) :
+    BaseSubHook(classLoader, appInfo) {
 
-import com.tianma.tweaks.miui.data.sp.XPrefContainer;
-import com.tianma.tweaks.miui.utils.XLogKt;
-import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
-import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
-import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
-
-import de.robv.android.xposed.XposedHelpers;
-
-public class CollapsedStatusBarFragmentHook20201109 extends BaseSubHook {
-
-    private static final String CLASS_STATUS_BAR_FRAGMENT = "com.android.systemui.statusbar.phone.CollapsedStatusBarFragment";
-
-    private boolean mSignalAlignLeft;
-    private boolean mAlwaysShowStatusBarClock;
-
-    public CollapsedStatusBarFragmentHook20201109(ClassLoader classLoader, AppInfo appInfo) {
-        super(classLoader, appInfo);
-
-        // mSignalAlignLeft = XSPUtils.isSignalAlignLeft(xsp);
-        mSignalAlignLeft = XPrefContainer.isSignalAlignLeft();
-        // mAlwaysShowStatusBarClock = XSPUtils.alwaysShowStatusBarClock(xsp);
-        mAlwaysShowStatusBarClock = XPrefContainer.getAlwaysShowStatusBarClock();
+    companion object {
+        private const val CLASS_STATUS_BAR_FRAGMENT =
+            "com.android.systemui.statusbar.phone.CollapsedStatusBarFragment"
     }
 
-    @Override
-    public void startHook() {
-        try {
-            XLogKt.logD("Hooking CollapsedStatusBarFragment... ");
-            if (mSignalAlignLeft) {
-                hookOnViewCreated();
-            }
+    private val mSignalAlignLeft: Boolean = XPrefContainer.isSignalAlignLeft
+    private val mAlwaysShowStatusBarClock: Boolean = XPrefContainer.alwaysShowStatusBarClock
 
-            if (mAlwaysShowStatusBarClock) {
-                hookClockVisibleAnimate();
+    // 是否可以展示状态栏时钟 (锁屏状态下不展示，梁平状态下有可能展示)
+    private var canShowStatusBarClock = false
+
+    override fun startHook() {
+        try {
+            logD("Hooking CollapsedStatusBarFragment... ")
+            if (mSignalAlignLeft) {
+                // nothing
             }
-        } catch (Throwable t) {
-            XLogKt.logE("Error occurs when hook CollapsedStatusBarFragment", t);
+            if (mAlwaysShowStatusBarClock) {
+                hookOnViewCreated()
+                hookHideClock()
+            }
+        } catch (t: Throwable) {
+            logE("Error occurs when hook CollapsedStatusBarFragment", t)
         }
     }
 
     // CollapsedStatusBarFragment#onViewCreated()
-    private void hookOnViewCreated() {
-        findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
-                getMClassLoader(),
-                "onViewCreated",
-                View.class,
-                Bundle.class,
-                new MethodHookWrapper() {
-                    @Override
-                    protected void after(MethodHookParam param) {
-                        ViewGroup phoneStatusBarView = (ViewGroup) XposedHelpers.getObjectField(param.thisObject, "mStatusBar");
-                        // XLogKt.logE("PhoneStatusBarView:");
-                        // DebugHelper.printViewTree(phoneStatusBarView);
+    private fun hookOnViewCreated() {
+        XposedWrapper.findAndHookMethod(
+            CLASS_STATUS_BAR_FRAGMENT,
+            mClassLoader,
+            "onViewCreated",
+            View::class.java,
+            Bundle::class.java,
+            object : MethodHookWrapper() {
+                override fun after(param: MethodHookParam) {
+                    val phoneStatusBarView =
+                        XposedHelpers.getObjectField(param.thisObject, "mStatusBar") as ViewGroup
 
-                        Resources res = phoneStatusBarView.getResources();
+                    val context = phoneStatusBarView.context
+                    val statusBarFragment = param.thisObject
 
-                        // TODO
-//                        View headsUpStatusBarView = phoneStatusBarView.findViewById(ResHelpers.getId(res, "heads_up_status_bar_view"));
-//                        headsUpStatusBarView.setBackgroundColor(Color.parseColor("#FF0000"));
-//
-//                        View statusBarLeftSide = phoneStatusBarView.findViewById(
-//                                ResHelpers.getId(res, "status_bar_left_side")
-//                        );
-//                        statusBarLeftSide.setBackgroundColor(Color.parseColor("#00FF00"));
-//
-//                        View systemIconArea = phoneStatusBarView.findViewById(
-//                                ResHelpers.getId(res, "system_icon_area")
-//                        );
-//                        systemIconArea.setBackgroundColor(Color.parseColor("#0000FF"));
-//
-//                        // drip_network_speed_view
-//                        View dripNetworkSpeedView = phoneStatusBarView.findViewById(
-//                                ResHelpers.getId(res, "drip_network_speed_view")
-//                        );
-//                        dripNetworkSpeedView.setBackgroundColor(Color.parseColor("#FFFF00"));
-//
-//                        // fullscreen_network_speed_view
-//                        View fullScreenNetworkSpeedView = phoneStatusBarView.findViewById(
-//                                ResHelpers.getId(res, "fullscreen_network_speed_view")
-//                        );
-//                        fullScreenNetworkSpeedView.setBackgroundColor(Color.parseColor("#00FFFF"));
-                        // TODO
-//                        View signalClusterViewContainer = phoneStatusBarView
-//                                .findViewById(ResHelpers.getId(res, "signal_cluster_view"));
-//                        ((ViewGroup) signalClusterViewContainer.getParent()).removeView(signalClusterViewContainer);
-//
-//                        if (mMiuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
-//                            try {
-//                                LinearLayout contentsContainer = phoneStatusBarView
-//                                        .findViewById(ResHelpers.getId(res, "phone_status_bar_contents_container"));
-//                                contentsContainer.setGravity(Gravity.CENTER_VERTICAL);
-//                                contentsContainer.addView(signalClusterViewContainer, 0);
-//                            } catch (Throwable t) {
-//                                LinearLayout statusBarContents = phoneStatusBarView
-//                                        .findViewById(ResHelpers.getId(res, "status_bar_contents"));
-//                                statusBarContents.setGravity(Gravity.CENTER_VERTICAL);
-//                                statusBarContents.addView(signalClusterViewContainer, 0);
-//                            }
-//                        } else {
-//                            LinearLayout statusBarContents = phoneStatusBarView
-//                                    .findViewById(ResHelpers.getId(res, "status_bar_contents"));
-//                            statusBarContents.setGravity(Gravity.CENTER_VERTICAL);
-//                            statusBarContents.addView(signalClusterViewContainer, 0);
-//                        }
+                    val screenListener = object : SimpleScreenListener() {
+                        override fun onUserPresent() {
+                            // 屏幕解锁时，可以展示状态栏时钟
+                            canShowStatusBarClock = true
+
+                            // 展示时钟
+                            statusBarFragment.callMethod(
+                                "showClock",
+                                arrayOf(Boolean::class.java),
+                                arrayOf(true)
+                            )
+                        }
+
+                        override fun onScreenOff() {
+                            // 屏幕锁定时，不可以展示状态栏时钟
+                            canShowStatusBarClock = false
+
+                            statusBarFragment.callMethod(
+                                "hideClock",
+                                arrayOf(Boolean::class.java),
+                                arrayOf(true)
+                            )
+                        }
                     }
-                });
+                    ScreenBroadcastManager.getInstance(context).registerListener(screenListener)
+                }
+            })
     }
 
-    private void hookClockVisibleAnimate() {
-        // TODO
-        findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
-                getMClassLoader(),
-                "clockVisibleAnimate",
-                boolean.class,
-                boolean.class,
-                new MethodHookWrapper() {
-                    @Override
-                    protected void before(MethodHookParam param) {
-                        View mStatusClock = (View) XposedHelpers.getObjectField(param.thisObject, "mStatusClock");
-                        mStatusClock.setVisibility(View.VISIBLE);
-                        param.setResult(null);
+    private fun hookHideClock() {
+        XposedWrapper.findAndHookMethod(
+            CLASS_STATUS_BAR_FRAGMENT,
+            mClassLoader,
+            "hideClock",
+            Boolean::class.java,
+            object : MethodHookWrapper() {
+                override fun before(param: MethodHookParam?) {
+                    param ?: return
+                    // 拦截 hideClock()
+                    if (canShowStatusBarClock) {
+                        param.result = null
                     }
-                });
+                }
+            }
+        )
     }
 
 }

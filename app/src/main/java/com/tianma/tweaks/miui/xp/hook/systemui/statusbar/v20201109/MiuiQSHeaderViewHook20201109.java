@@ -14,6 +14,7 @@ import com.tianma.tweaks.miui.data.sp.XPrefContainer;
 import com.tianma.tweaks.miui.utils.ResolutionUtils;
 import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
+import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.hook.systemui.weather.WeatherMonitor;
 import com.tianma.tweaks.miui.xp.hook.systemui.weather.WeatherObserver;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
@@ -41,12 +42,9 @@ public class MiuiQSHeaderViewHook20201109 extends BaseSubHook implements Weather
     public MiuiQSHeaderViewHook20201109(ClassLoader classLoader, AppInfo appInfo) {
         super(classLoader, appInfo);
 
-        // mWeatherEnabled = XSPUtils.isDropdownStatusBarWeatherEnabled(xsp);
         mWeatherEnabled = XPrefContainer.isDropdownStatusBarWeatherEnabled();
         if (mWeatherEnabled) {
-            // mWeatherTextColor = XSPUtils.getDropdownStatusBarWeatherTextColor(xsp);
             mWeatherTextColor = XPrefContainer.getDropdownStatusBarWeatherTextColor();
-            // mWeatherTextSize = XSPUtils.getDropdownStatusBarWeatherTextSize(xsp);
             mWeatherTextSize = XPrefContainer.getDropdownStatusBarWeatherTextSize();
         }
     }
@@ -96,7 +94,9 @@ public class MiuiQSHeaderViewHook20201109 extends BaseSubHook implements Weather
                         ViewGroup miuiQSHeaderView = (ViewGroup) param.thisObject;
 
                         // 右上角齿轮快捷按钮
-                        ImageView shortcutView = (ImageView) miuiQSHeaderView.getChildAt(miuiQSHeaderView.getChildCount() - 1);
+                        Context context = miuiQSHeaderView.getContext();
+                        int shortcutViewId = ResHelpers.getId(context.getResources(), "notification_shade_shortcut");
+                        ImageView shortcutView = (ImageView) miuiQSHeaderView.findViewById(shortcutViewId);
 
                         mWeatherInfoTv = new TextView(miuiQSHeaderView.getContext());
                         RelativeLayout.LayoutParams weatherInfoLp = new RelativeLayout.LayoutParams(
