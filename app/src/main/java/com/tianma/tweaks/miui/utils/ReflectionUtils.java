@@ -8,7 +8,8 @@ import java.lang.reflect.Method;
  * Utils for reflection
  */
 public final class ReflectionUtils {
-    private ReflectionUtils() { }
+    private ReflectionUtils() {
+    }
 
     public static Class<?> getClass(ClassLoader classLoader, String name) {
         try {
@@ -56,24 +57,14 @@ public final class ReflectionUtils {
         }
     }
 
-    public static Method getDeclaredMethod(Class<?> cls, String methodName, Class<?>... paramTypes) {
-        Method method;
-        try {
-            method = cls.getDeclaredMethod(methodName, paramTypes);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+    public static Method getDeclaredMethod(Class<?> cls, String methodName, Class<?>... paramTypes) throws NoSuchMethodException {
+        Method method = cls.getDeclaredMethod(methodName, paramTypes);
         method.setAccessible(true);
         return method;
     }
 
-    public static Method getMethod(Class<?> cls, String methodName, Class<?>... paramTypes) {
-        Method method;
-        try {
-            method = cls.getMethod(methodName, paramTypes);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+    public static Method getMethod(Class<?> cls, String methodName, Class<?>... paramTypes) throws NoSuchMethodException {
+        Method method = cls.getMethod(methodName, paramTypes);
         method.setAccessible(true);
         return method;
     }
@@ -84,7 +75,7 @@ public final class ReflectionUtils {
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
             if (cause instanceof RuntimeException) {
-                throw (RuntimeException)cause;
+                throw (RuntimeException) cause;
             } else {
                 throw new RuntimeException(e);
             }
