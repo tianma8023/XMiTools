@@ -1,5 +1,7 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -7,17 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 public class CollapsedStatusBarFragmentHook extends BaseSubHook {
 
@@ -26,17 +25,19 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
     private boolean mSignalAlignLeft;
     private boolean mAlwaysShowStatusBarClock;
 
-    public CollapsedStatusBarFragmentHook(ClassLoader classLoader, XSharedPreferences xsp, MiuiVersion miuiVersion) {
-        super(classLoader, xsp, miuiVersion);
+    public CollapsedStatusBarFragmentHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
+        super(classLoader, null, miuiVersion);
 
-        mSignalAlignLeft = XSPUtils.isSignalAlignLeft(xsp);
-        mAlwaysShowStatusBarClock = XSPUtils.alwaysShowStatusBarClock(xsp);
+        // mSignalAlignLeft = XSPUtils.isSignalAlignLeft(xsp);
+        mSignalAlignLeft = XPrefContainer.isSignalAlignLeft();
+        // mAlwaysShowStatusBarClock = XSPUtils.alwaysShowStatusBarClock(xsp);
+        mAlwaysShowStatusBarClock = XPrefContainer.getAlwaysShowStatusBarClock();
     }
 
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking CollapsedStatusBarFragment... ");
+            XLogKt.logD("Hooking CollapsedStatusBarFragment... ");
             if (mSignalAlignLeft) {
                 hookOnViewCreated();
             }
@@ -45,14 +46,14 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
                 hookClockVisibleAnimate();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook CollapsedStatusBarFragment", t);
+            XLogKt.logE("Error occurs when hook CollapsedStatusBarFragment", t);
         }
     }
 
     // CollapsedStatusBarFragment#onViewCreated()
     private void hookOnViewCreated() {
         findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
-                mClassLoader,
+                getMClassLoader(),
                 "onViewCreated",
                 View.class,
                 Bundle.class,
@@ -66,7 +67,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
                                 .findViewById(ResHelpers.getId(res, "signal_cluster_view"));
                         ((ViewGroup) signalClusterViewContainer.getParent()).removeView(signalClusterViewContainer);
 
-                        if (mMiuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
+                        if (getMMiuiVersion().getTime() >= MiuiVersion.V_19_5_7.getTime()) {
                             try {
                                 LinearLayout contentsContainer = phoneStatusBarView
                                         .findViewById(ResHelpers.getId(res, "phone_status_bar_contents_container"));
@@ -90,7 +91,7 @@ public class CollapsedStatusBarFragmentHook extends BaseSubHook {
 
     private void hookClockVisibleAnimate() {
         findAndHookMethod(CLASS_STATUS_BAR_FRAGMENT,
-                mClassLoader,
+                getMClassLoader(),
                 "clockVisibleAnimate",
                 boolean.class,
                 boolean.class,

@@ -2,9 +2,11 @@ package com.tianma.tweaks.miui.app.fragment
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 
-class SettingsFragmentPagerAdapter(fm: FragmentManager, private var fragments: List<BasePreferenceFragment>) : FragmentPagerAdapter(fm) {
+class SettingsFragmentPagerAdapter(
+    fm: FragmentManager,
+    private var fragments: List<BaseSettingsFragment>
+) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int) = fragments[position]
 

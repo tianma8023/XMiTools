@@ -16,8 +16,8 @@ def static releaseTime() {
 }
 
 ext {
-    VERSION_CODE = 16
-    VERSION_NAME = "1.3.0"
+    VERSION_CODE = 17
+    VERSION_NAME = "1.4.0"
 }
 
 android {
@@ -56,6 +56,8 @@ android {
                 println "using keystore"
                 signingConfig signingConfigs.release
             }
+
+            debuggable false
         }
 
         release {
@@ -77,6 +79,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 
     applicationVariants.all { variant ->

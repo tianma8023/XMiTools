@@ -13,7 +13,7 @@ import android.text.TextUtils;
 import com.tianma.tweaks.miui.R;
 import com.tianma.tweaks.miui.cons.AppConst;
 import com.tianma.tweaks.miui.utils.PackageUtils;
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +97,7 @@ public class WeatherMonitor {
                     }
                 }
             } catch (Throwable t) {
-                XLog.e("", t);
+                XLogKt.logE("", t);
             } finally {
                 if (c != null) {
                     c.close();

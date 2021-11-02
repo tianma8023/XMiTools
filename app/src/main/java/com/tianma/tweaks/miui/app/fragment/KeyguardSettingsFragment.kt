@@ -5,14 +5,13 @@ import android.text.InputType
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import com.tianma.tweaks.miui.R
-import com.tianma.tweaks.miui.app.base.BasePreferenceFragment
 import com.tianma.tweaks.miui.app.widget.dialog.OneSentenceSettingsDialogWrapper
 import com.tianma.tweaks.miui.cons.PrefConst
 
 /**
  * Settings fragment for LockScreen
  */
-class KeyguardSettingsFragment(title: CharSequence? = "") : BasePreferenceFragment(title), Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+class KeyguardSettingsFragment(title: CharSequence? = "") : BaseSettingsFragment(title), Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)

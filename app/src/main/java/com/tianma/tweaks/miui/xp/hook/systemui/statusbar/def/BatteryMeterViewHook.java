@@ -5,14 +5,13 @@ import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.widget.TextView;
 
-import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
 public class BatteryMeterViewHook extends BaseSubHook {
@@ -21,15 +20,16 @@ public class BatteryMeterViewHook extends BaseSubHook {
 
     private boolean mShowSmallPercentSign;
 
-    public BatteryMeterViewHook(ClassLoader classLoader, XSharedPreferences xsp, MiuiVersion miuiVersion) {
-        super(classLoader, xsp, miuiVersion);
+    public BatteryMeterViewHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
+        super(classLoader, null, miuiVersion);
 
-        mShowSmallPercentSign = XSPUtils.showSmallBatteryPercentSign(xsp);
+        // mShowSmallPercentSign = XSPUtils.showSmallBatteryPercentSign(xsp);
+        mShowSmallPercentSign = XPrefContainer.getShowSmallBatteryPercentSign();
     }
 
     @Override
     public void startHook() {
-        XLog.d("Hooking BatteryMeterView...");
+        XLogKt.logD("Hooking BatteryMeterView...");
         if (mShowSmallPercentSign) {
             hookUpdateShowPercent();
         }
@@ -37,7 +37,7 @@ public class BatteryMeterViewHook extends BaseSubHook {
 
     private void hookUpdateShowPercent() {
         XposedWrapper.findAndHookMethod(CLASS_BATTERY_VIEW,
-                mClassLoader,
+                getMClassLoader(),
                 "updateShowPercent",
                 new MethodHookWrapper() {
                     @Override

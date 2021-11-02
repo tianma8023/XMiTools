@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Hitokoto Info TextView ID-->
     <item name="hitokoto_info_text_view" type="id" />
+
+    <!-- Weather Info TextView ID -->
+    <item name="weather_info_text_view" type="id"/>
 </resources>

@@ -12,8 +12,11 @@ import com.tianma.tweaks.miui.app.widget.tag.ItemClickCallback
 import com.tianma.tweaks.miui.app.widget.tag.TagAdapter
 import com.tianma.tweaks.miui.app.widget.tag.TagBean
 import com.tianma.tweaks.miui.cons.PrefConst
-import com.tianma.tweaks.miui.utils.SPUtils
+import com.tianma.tweaks.miui.data.sp.PreferenceContainer
 
+/**
+ * OneSentence Settings Dialog
+ */
 class OneSentenceSettingsDialogWrapper(private val context: Context) {
 
     private val apiSourceKeys = arrayOf(
@@ -113,12 +116,14 @@ class OneSentenceSettingsDialogWrapper(private val context: Context) {
         val hitokotoTagList = getHitokotoTagList()
         hitokotoTagAdapter?.setDataList(hitokotoTagList)
 
-        hitokotoSourceCheckBox?.isChecked = SPUtils.getShowHitokotoSource(context)
+        // hitokotoSourceCheckBox?.isChecked = SPUtils.getShowHitokotoSource(context)
+        hitokotoSourceCheckBox?.isChecked = PreferenceContainer.showHitokotoSource
 
         val onePoemTagList = getOnePoemTagList()
         onePoemTagAdapter?.setDataList(onePoemTagList)
 
-        onePoemAuthorCheckBox?.isChecked = SPUtils.getShowPoemAuthor(context)
+        // onePoemAuthorCheckBox?.isChecked = SPUtils.getShowPoemAuthor(context)
+        onePoemAuthorCheckBox?.isChecked = PreferenceContainer.showOnePoemAuthor
 
         for (tagBean in apiSources) {
             onApiSourceChanged(tagBean)
@@ -154,7 +159,8 @@ class OneSentenceSettingsDialogWrapper(private val context: Context) {
             list.add(TagBean(apiSourceKeys[i], cateValueArray[i]))
         }
 
-        val selectedSet = SPUtils.getOneSentenceApiSources(context)
+        // val selectedSet = SPUtils.getOneSentenceApiSources(context)
+        val selectedSet = PreferenceContainer.oneSentenceApiSources
         if (!selectedSet.isNullOrEmpty()) {
             for (key in selectedSet) {
                 for (tagBean in list) {
@@ -178,7 +184,8 @@ class OneSentenceSettingsDialogWrapper(private val context: Context) {
             list.add(TagBean(hitokotoCategoryKeys[i], cateValueArray[i]))
         }
 
-        val selectedSet = SPUtils.getHitokotoCategories(context)
+        // val selectedSet = SPUtils.getHitokotoCategories(context)
+        val selectedSet = PreferenceContainer.hitokotoCategories
         if (!selectedSet.isNullOrEmpty()) {
             for (key in selectedSet) {
                 for (tagBean in list) {
@@ -203,7 +210,8 @@ class OneSentenceSettingsDialogWrapper(private val context: Context) {
             list.add(TagBean(onePoemCategoryKeys[i], cateValueArray[i]))
         }
 
-        val selectedSet = SPUtils.getOnePoemCategories(context)
+        // val selectedSet = SPUtils.getOnePoemCategories(context)
+        val selectedSet = PreferenceContainer.onePoemCategories
         if (!selectedSet.isNullOrEmpty()) {
             for (key in selectedSet) {
                 for (tagBean in list) {
@@ -271,27 +279,32 @@ class OneSentenceSettingsDialogWrapper(private val context: Context) {
 
     private fun saveApiSources() {
         apiSourceAdapter?.let {
-            SPUtils.setOneSentenceApiSources(context, getSelectedTagsFromTagAdapter(it))
+            // SPUtils.setOneSentenceApiSources(context, getSelectedTagsFromTagAdapter(it))
+            PreferenceContainer.oneSentenceApiSources = getSelectedTagsFromTagAdapter(it)
         }
     }
 
     private fun saveAboutHitokoto() {
         hitokotoTagAdapter?.let {
-            SPUtils.setHitokotoCategories(context, getSelectedTagsFromTagAdapter(it))
+            // SPUtils.setHitokotoCategories(context, getSelectedTagsFromTagAdapter(it))
+            PreferenceContainer.hitokotoCategories = getSelectedTagsFromTagAdapter(it)
         }
 
         hitokotoSourceCheckBox?.let {
-            SPUtils.setShowHitokotoSource(context, it.isChecked)
+            // SPUtils.setShowHitokotoSource(context, it.isChecked)
+            PreferenceContainer.showHitokotoSource = it.isChecked
         }
     }
 
     private fun saveAboutOnePoem() {
         onePoemTagAdapter?.let {
-            SPUtils.setOnePoemCategories(context, getSelectedTagsFromTagAdapter(it))
+            // SPUtils.setOnePoemCategories(context, getSelectedTagsFromTagAdapter(it))
+            PreferenceContainer.onePoemCategories = getSelectedTagsFromTagAdapter(it)
         }
 
         onePoemAuthorCheckBox?.let {
-            SPUtils.setShowOnePoemAuthor(context, it.isChecked)
+            // SPUtils.setShowOnePoemAuthor(context, it.isChecked)
+            PreferenceContainer.showOnePoemAuthor = it.isChecked
         }
     }
 

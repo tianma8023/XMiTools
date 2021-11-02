@@ -1,5 +1,7 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.Gravity;
@@ -9,17 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tianma.tweaks.miui.cons.PrefConst;
-import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.SystemUIHook;
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
 
 /**
  * 状态栏时钟居中显示
@@ -39,9 +38,10 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
     private boolean mAlignmentCenter = false;
     private boolean mAlignmentRight = false;
 
-    public PhoneStatusBarViewHook(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
-        super(classLoader, xsp, appInfo);
-        String alignment = XSPUtils.getStatusBarClockAlignment(xsp);
+    public PhoneStatusBarViewHook(ClassLoader classLoader, AppInfo appInfo) {
+        super(classLoader, appInfo);
+        // String alignment = XSPUtils.getStatusBarClockAlignment(xsp);
+        String alignment = XPrefContainer.getStatusBarClockAlignment();
         if (PrefConst.ALIGNMENT_CENTER.equals(alignment)) {
             mAlignmentCenter = true;
             mAlignmentRight = false;
@@ -54,20 +54,20 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
     public void startHook() {
         if (mAlignmentCenter || mAlignmentRight) {
             try {
-                XLog.d("Hooking PhoneStatusBarView...");
+                XLogKt.logD("Hooking PhoneStatusBarView...");
                 hookSetBar();
                 if (mAlignmentCenter) {
                     hookGetActualWidth();
                 }
             } catch (Throwable t) {
-                XLog.e("Error occurs when hook PhoneStatusBarView", t);
+                XLogKt.logE("Error occurs when hook PhoneStatusBarView", t);
             }
         }
     }
 
     private void hookSetBar() {
         findAndHookMethod(CLASS_PHONE_STATUS_BAR_VIEW,
-                mClassLoader,
+                getMClassLoader(),
                 "setBar",
                 CLASS_STATUS_BAR,
                 new MethodHookWrapper() {
@@ -114,7 +114,7 @@ public class PhoneStatusBarViewHook extends BaseSubHook {
 
     private void hookGetActualWidth() {
         findAndHookMethod(CLASS_NOTIFICATION_ICON_CONTAINER,
-                mClassLoader,
+                getMClassLoader(),
                 "getActualWidth",
                 new MethodHookWrapper() {
                     @Override

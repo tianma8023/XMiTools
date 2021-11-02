@@ -1,6 +1,6 @@
 package com.tianma.tweaks.miui.xp.utils.appinfo
 
-import com.tianma.tweaks.miui.utils.XLog
+import com.tianma.tweaks.miui.utils.logE
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import java.io.File
@@ -23,7 +23,7 @@ object AppInfoHelper {
                 versionName = XposedHelpers.getObjectField(pkg, "mVersionName") as String
                 packageName = lpparam.packageName
             } catch (throwable: Throwable) {
-                XLog.e("Parse package info failed", throwable)
+                logE("Parse package info failed", throwable)
             }
         }
 

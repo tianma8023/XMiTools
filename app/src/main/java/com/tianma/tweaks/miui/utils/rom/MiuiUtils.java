@@ -3,7 +3,7 @@ package com.tianma.tweaks.miui.utils.rom;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.tianma.tweaks.miui.utils.XLog;
+import com.tianma.tweaks.miui.utils.XLogKt;
 
 /**
  * MIUI Rom 相关工具类
@@ -40,7 +40,7 @@ public class MiuiUtils {
             try {
                 return Integer.parseInt(versionCode) + 2;
             } catch (Exception e) {
-                XLog.e("get MIUI version code failed: %s", versionCode, e);
+                XLogKt.logE("get MIUI version code failed: %s", versionCode, e);
             }
         }
         return -1;
@@ -64,7 +64,7 @@ public class MiuiUtils {
             try {
                 return Long.parseLong(versionCodeTime) * 1000;
             } catch (Exception e) {
-                XLog.e("get MIUI version code time failed: %s", versionCodeTime, e);
+                XLogKt.logE("get MIUI version code time failed: %s", versionCodeTime, e);
             }
         }
         return 0L;

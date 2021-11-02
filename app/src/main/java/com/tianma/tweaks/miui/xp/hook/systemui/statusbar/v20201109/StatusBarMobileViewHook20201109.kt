@@ -1,13 +1,13 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109
 
 import android.widget.TextView
-import com.tianma.tweaks.miui.utils.XLog
-import com.tianma.tweaks.miui.utils.XSPUtils
+import com.tianma.tweaks.miui.data.sp.XPrefContainer
+import com.tianma.tweaks.miui.utils.logE
+import com.tianma.tweaks.miui.utils.logI
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook
 import com.tianma.tweaks.miui.xp.utils.appinfo.AppInfo
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper
 import com.tianma.tweaks.miui.xp.wrapper.XposedWrapper
-import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 
@@ -16,34 +16,35 @@ import de.robv.android.xposed.XposedHelpers
  * 适用版本 MIUISystemUI(versionCode >= 202011090)
  */
 class StatusBarMobileViewHook20201109(
-        classLoader: ClassLoader,
-        xsp: XSharedPreferences,
-        appInfo: AppInfo
-) : BaseSubHook(classLoader, xsp, appInfo) {
+    classLoader: ClassLoader,
+    appInfo: AppInfo
+) : BaseSubHook(classLoader, appInfo) {
 
     companion object {
         private const val CLASS_STATUS_BAR_MOBILE_VIEW = "com.android.systemui.statusbar.StatusBarMobileView"
     }
 
-    private val isCustomNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp)
+    // private val isCustomNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp)
+    private val isCustomNetworkTypeEnabled = XPrefContainer.isCustomMobileNetworkEnabled
     private var customNetworkType: String = ""
 
     init {
         if (isCustomNetworkTypeEnabled) {
-            customNetworkType = XSPUtils.customMobileNetwork(xsp)
+            // customNetworkType = XSPUtils.customMobileNetwork(xsp)
+            customNetworkType = XPrefContainer.customMobileNetwork
         }
     }
 
     override fun startHook() {
         try {
-            XLog.i("Hooking StatusBarMobileView...")
+            logI("Hooking StatusBarMobileView...")
 
             if (isCustomNetworkTypeEnabled) {
                 hookUpdateState()
             }
 
         }catch (t: Throwable) {
-            XLog.e("Error occurs when hook StatusBarMobileView", t)
+            logE("Error occurs when hook StatusBarMobileView", t)
         }
     }
 

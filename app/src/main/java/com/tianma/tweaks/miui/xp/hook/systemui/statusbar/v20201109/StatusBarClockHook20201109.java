@@ -1,13 +1,15 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.v20201109;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
+
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.UserHandle;
 import android.widget.TextView;
 
-import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.hook.systemui.helper.ResHelpers;
 import com.tianma.tweaks.miui.xp.hook.systemui.screen.ScreenBroadcastManager;
@@ -28,11 +30,8 @@ import java.util.Locale;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.hookAllConstructors;
 
 /**
  * 状态栏时钟 Hook
@@ -88,27 +87,36 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
     // 是否拦截系统的 TIME_TICK Action
     private final boolean mBlockSystemTimeTick;
 
-    public StatusBarClockHook20201109(ClassLoader classLoader, XSharedPreferences xsp, AppInfo appInfo) {
-        super(classLoader, xsp, appInfo);
+    public StatusBarClockHook20201109(ClassLoader classLoader, AppInfo appInfo) {
+        super(classLoader, appInfo);
 
-        mShowSecInStatusBar = XSPUtils.showSecInStatusBar(xsp);
-        mStatusBarClockFormatEnabled = XSPUtils.isStatusBarClockFormatEnabled(xsp);
-        mShowSecInDropdownStatusBar = XSPUtils.showSecInDropdownStatusBar(xsp);
+        // mShowSecInStatusBar = XSPUtils.showSecInStatusBar(xsp);
+        mShowSecInStatusBar = XPrefContainer.getShowSecInStatusBar();
+        // mStatusBarClockFormatEnabled = XSPUtils.isStatusBarClockFormatEnabled(xsp);
+        mStatusBarClockFormatEnabled = XPrefContainer.getStatusBarClockFormatEnabled();
+        // mShowSecInDropdownStatusBar = XSPUtils.showSecInDropdownStatusBar(xsp);
+        mShowSecInDropdownStatusBar = XPrefContainer.getShowSecInDropdownStatusBar();
 
         if (mStatusBarClockFormatEnabled) {
-            String timeFormat = XSPUtils.getStatusBarClockFormat(xsp);
+            // String timeFormat = XSPUtils.getStatusBarClockFormat(xsp);
+            String timeFormat = XPrefContainer.getStatusBarClockFormat();
             mStatusBarClockFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
         }
 
-        mStatusBarClockColorEnabled = XSPUtils.isStatusBarClockColorEnabled(xsp);
+        // mStatusBarClockColorEnabled = XSPUtils.isStatusBarClockColorEnabled(xsp);
+        mStatusBarClockColorEnabled = XPrefContainer.getStatusBarClockColorEnabled();
         if (mStatusBarClockColorEnabled) {
-            mStatusBarClockColor = XSPUtils.getStatusBarClockColor(xsp);
+            // mStatusBarClockColor = XSPUtils.getStatusBarClockColor(xsp);
+            mStatusBarClockColor = XPrefContainer.getStatusBarClockColor();
         }
 
-        mDropdownStatusBarClockColorEnabled = XSPUtils.isDropdownStatusBarClockColorEnabled(xsp);
+        // mDropdownStatusBarClockColorEnabled = XSPUtils.isDropdownStatusBarClockColorEnabled(xsp);
+        mDropdownStatusBarClockColorEnabled = XPrefContainer.getDropdownStatusBarClockColorEnabled();
         if (mDropdownStatusBarClockColorEnabled) {
-            mDropdownStatusBarClockColor = XSPUtils.getDropdownStatusBarClockColor(xsp);
-            mDropdownStatusBarDateColor = XSPUtils.getDropdownStatusBarDateColor(xsp);
+            // mDropdownStatusBarClockColor = XSPUtils.getDropdownStatusBarClockColor(xsp);
+            mDropdownStatusBarClockColor = XPrefContainer.getDropdownStatusBarClockColor();
+            // mDropdownStatusBarDateColor = XSPUtils.getDropdownStatusBarDateColor(xsp);
+            mDropdownStatusBarDateColor = XPrefContainer.getDropdownStatusBarDateColor();
         }
 
         mBlockSystemTimeTick = mShowSecInStatusBar || mShowSecInDropdownStatusBar;
@@ -117,8 +125,8 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking StatusBar Clock...");
-            mMiuiClockClass = XposedHelpers.findClass(CLASS_MIUI_CLOCK, mClassLoader);
+            XLogKt.logD("Hooking StatusBar Clock...");
+            mMiuiClockClass = XposedHelpers.findClass(CLASS_MIUI_CLOCK, getMClassLoader());
 
             hookClockConstructor();
 
@@ -134,7 +142,7 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
                 hookOnDarkChanged();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook StatusBar Clock", t);
+            XLogKt.logE("Error occurs when hook StatusBar Clock", t);
         }
     }
 
@@ -225,7 +233,7 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
             Method targetMethod = XposedWrapper.findMethodByNameIfExists(mMiuiClockClass, methodName);
 
             if (targetMethod == null) {
-                XLog.e("method %s#%s not found", CLASS_MIUI_CLOCK, methodName);
+                XLogKt.logE("method %s#%s not found", CLASS_MIUI_CLOCK, methodName);
                 return;
             }
 
@@ -245,9 +253,9 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
 
     // com.android.systemui.statusbar.phone.StatusBar#makeStatusBarView()
     private void hookMakeStatusBarView() {
-        Class<?> statusBarClass = XposedHelpers.findClass(CLASS_STATUS_BAR, mClassLoader);
+        Class<?> statusBarClass = XposedHelpers.findClass(CLASS_STATUS_BAR, getMClassLoader());
         // Android 11 起，出现 RegisterStatusBarResult 类
-        Class<?> registerStatusBarResultClass = XposedHelpers.findClassIfExists(CLASS_REGISTER_STATUS_BAR_RESULT, mClassLoader);
+        Class<?> registerStatusBarResultClass = XposedHelpers.findClassIfExists(CLASS_REGISTER_STATUS_BAR_RESULT, getMClassLoader());
 
         Method targetMethod = XposedHelpers.findMethodBestMatch(
                 statusBarClass,
@@ -288,7 +296,7 @@ public class StatusBarClockHook20201109 extends BaseSubHook implements TickObser
                 intentFilter.addAction("android.intent.action.CONFIGURATION_CHANGED");
                 intentFilter.addAction("android.intent.action.USER_SWITCHED");
                 Object USER_HANDLE_ALL = XposedHelpers.getStaticObjectField(UserHandle.class, "ALL");
-                Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, mClassLoader);
+                Class<?> dependencyClass = XposedHelpers.findClass(CLASS_DEPENDENCY, getMClassLoader());
                 Object TIME_TICK_HANDLER = XposedHelpers.getStaticObjectField(dependencyClass, "TIME_TICK_HANDLER");
                 Object handler = XposedHelpers.callStaticMethod(dependencyClass, "get", TIME_TICK_HANDLER);
                 // this.mBroadcastDispatcher.registerReceiverWithHandler(this.mIntentReceiver, intentFilter,

@@ -1,23 +1,22 @@
 package com.tianma.tweaks.miui.xp.hook.systemui.statusbar.def;
 
+import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.getSurroundingThis;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tianma.tweaks.miui.utils.XLog;
-import com.tianma.tweaks.miui.utils.XSPUtils;
+import com.tianma.tweaks.miui.data.sp.XPrefContainer;
+import com.tianma.tweaks.miui.utils.XLogKt;
 import com.tianma.tweaks.miui.utils.rom.MiuiVersion;
 import com.tianma.tweaks.miui.xp.hook.BaseSubHook;
 import com.tianma.tweaks.miui.xp.wrapper.MethodHookWrapper;
 
 import java.util.List;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.tianma.tweaks.miui.xp.wrapper.XposedWrapper.findAndHookMethod;
-import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.getSurroundingThis;
 
 public class SignalClusterViewHook extends BaseSubHook {
 
@@ -32,23 +31,28 @@ public class SignalClusterViewHook extends BaseSubHook {
     private boolean mCustomMobileNetworkTypeEnabled;
     private String mCustomMobileNetworkType = "";
 
-    public SignalClusterViewHook(ClassLoader classLoader, XSharedPreferences xsp, MiuiVersion miuiVersion) {
-        super(classLoader, xsp, miuiVersion);
+    public SignalClusterViewHook(ClassLoader classLoader, MiuiVersion miuiVersion) {
+        super(classLoader, null, miuiVersion);
 
-        mDualMobileSignal = XSPUtils.isDualMobileSignal(xsp);
-        mHideVpnIcon = XSPUtils.isHideVpnIcon(xsp);
-        mHideHDIcon = XSPUtils.isHideHDIcon(xsp);
+        // mDualMobileSignal = XSPUtils.isDualMobileSignal(xsp);
+        mDualMobileSignal = XPrefContainer.isDualMobileSignal();
+        // mHideVpnIcon = XSPUtils.isHideVpnIcon(xsp);
+        mHideVpnIcon = XPrefContainer.isHideVpnIcon();
+        // mHideHDIcon = XSPUtils.isHideHDIcon(xsp);
+        mHideHDIcon = XPrefContainer.isHideHDIcon();
 
-        mCustomMobileNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp);
+        // mCustomMobileNetworkTypeEnabled = XSPUtils.isCustomMobileNetworkEnabled(xsp);
+        mCustomMobileNetworkTypeEnabled = XPrefContainer.isCustomMobileNetworkEnabled();
         if (mCustomMobileNetworkTypeEnabled) {
-            mCustomMobileNetworkType = XSPUtils.customMobileNetwork(xsp);
+            // mCustomMobileNetworkType = XSPUtils.customMobileNetwork(xsp);
+            mCustomMobileNetworkType = XPrefContainer.getCustomMobileNetwork();
         }
     }
 
     @Override
     public void startHook() {
         try {
-            XLog.d("Hooking SignalClusterView... ");
+            XLogKt.logD("Hooking SignalClusterView... ");
             if (mDualMobileSignal) {
                 hookSetSubs();
             }
@@ -65,21 +69,21 @@ public class SignalClusterViewHook extends BaseSubHook {
                 hookIsImsRegisted();
             }
         } catch (Throwable t) {
-            XLog.e("Error occurs when hook SignalClusterView", t);
+            XLogKt.logE("Error occurs when hook SignalClusterView", t);
         }
     }
 
     // SignalClusterView#hookSetSubs()
     private void hookSetSubs() {
         findAndHookMethod(CLASS_SIGNAL_CLUSTER_VIEW,
-                mClassLoader,
+                getMClassLoader(),
                 "setSubs",
                 List.class,
                 new MethodHookWrapper() {
                     @Override
                     protected void before(MethodHookParam param) {
                         XposedHelpers.setBooleanField(param.thisObject, "mNotchEar", true);
-                        if (mMiuiVersion.getTime() >= MiuiVersion.V_19_5_7.getTime()) {
+                        if (getMMiuiVersion().getTime() >= MiuiVersion.V_19_5_7.getTime()) {
                             XposedHelpers.setBooleanField(param.thisObject, "mNotchEarDualEnable", true);
                         }
                     }
@@ -89,7 +93,7 @@ public class SignalClusterViewHook extends BaseSubHook {
     // SignalClusterView#apply()
     private void hookApply() {
         findAndHookMethod(CLASS_SIGNAL_CLUSTER_VIEW,
-                mClassLoader,
+                getMClassLoader(),
                 "apply",
                 new MethodHookWrapper() {
                     @Override
@@ -107,7 +111,7 @@ public class SignalClusterViewHook extends BaseSubHook {
     // SignalClusterView$PhoneState#apply()
     private void hookPhoneStateApply() {
         findAndHookMethod(CLASS_PHONE_STATE,
-                mClassLoader,
+                getMClassLoader(),
                 "apply",
                 boolean.class,
                 new MethodHookWrapper() {
@@ -128,7 +132,7 @@ public class SignalClusterViewHook extends BaseSubHook {
     // SignalClusterView$PhoneState#isImdRegisted()
     private void hookIsImsRegisted() {
         findAndHookMethod(CLASS_PHONE_STATE,
-                mClassLoader,
+                getMClassLoader(),
                 "setIsImsRegisted",
                 boolean.class,
                 new MethodHookWrapper() {
