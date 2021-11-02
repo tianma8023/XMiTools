@@ -58,8 +58,7 @@ class XPreferenceDelegate<T>(
             is Float -> sharedPrefs.getFloat(key, defaultValue)
             is Set<*> -> sharedPrefs.getStringSet(key, defaultValue.safeAs()).safeAs()
             else -> throw IllegalArgumentException("Unsupported type. $key $defaultValue")
-        } as T).also { value ->
-            // logD("XPreferenceDelegate: $key = $value")
+        } as T).also {
         }
     }
 

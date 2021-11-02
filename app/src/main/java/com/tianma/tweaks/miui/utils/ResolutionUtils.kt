@@ -20,7 +20,7 @@ object ResolutionUtils {
     }
 
     fun getScreenWidth(context: Context): Int {
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager?
         val outMetrics = DisplayMetrics()
         return if (wm != null) {
             wm.defaultDisplay.getMetrics(outMetrics)
@@ -31,7 +31,7 @@ object ResolutionUtils {
     }
 
     fun getScreenHeight(context: Context): Int {
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager?
         val outMetrics = DisplayMetrics()
         return if (wm != null) {
             wm.defaultDisplay.getMetrics(outMetrics)

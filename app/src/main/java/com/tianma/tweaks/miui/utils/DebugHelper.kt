@@ -12,14 +12,13 @@ object DebugHelper {
     }
 
     private fun traverseViewTree(rootView: View, depth: Int) {
-        var depth = depth
-        print(depth, rootView)
+        var tmpDepth = depth
+        print(tmpDepth, rootView)
         if (rootView is ViewGroup) {
-            val vg = rootView
-            depth++
-            for (i in 0 until vg.childCount) {
-                val view = vg.getChildAt(i)
-                traverseViewTree(view, depth)
+            tmpDepth++
+            for (i in 0 until rootView.childCount) {
+                val view = rootView.getChildAt(i)
+                traverseViewTree(view, tmpDepth)
             }
         }
     }

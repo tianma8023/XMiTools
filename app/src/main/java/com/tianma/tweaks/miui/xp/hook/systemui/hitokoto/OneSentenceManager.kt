@@ -36,7 +36,7 @@ class OneSentenceManager private constructor(){
         try {
             // val apiSources = XSPUtils.getOneSentenceApiSources(xsp)
             val apiSources = XPrefContainer.oneSentenceApiSources
-            if (apiSources == null || apiSources.isEmpty()) {
+            if (apiSources.isEmpty()) {
                 logE("No OneSentence API chosen")
                 return
             }
