@@ -1,5 +1,5 @@
 # XMiTools
-MIUI 10 / MIUI 11 / MIUI 12 系统界面模块
+MIUI 10 / MIUI 11 / MIUI 12 / MIUI 12.5 系统界面模块
 
 [English README](/README-EN.md)
 # 效果截图
@@ -12,8 +12,8 @@ MIUI 10 / MIUI 11 / MIUI 12 系统界面模块
 - [Xposed仓库](https://repo.xposed.info/module/com.tianma.tweaks.miui)
 
 # 注意
-- 仅适用于MIUI 10，其他版本的 MIUI 系统以及非 MIUI 系统，请慎用。
-- 支持 Xposed，EdXposed 和 太极阳。
+- 仅适用于MIUI，其他版本的系统，请慎用。
+- 支持 Xposed，EdXposed，LSPosed 和 太极阳。
 
 # 功能
 - 状态栏
@@ -31,6 +31,7 @@ MIUI 10 / MIUI 11 / MIUI 12 系统界面模块
 - 锁屏界面
   1. 水平时钟显示秒数
   2. 垂直时钟显示秒数
+- 等等...
 
 # 感谢
  - [custoMIUIzer](https://code.highspec.ru/Mikanoshi/CustoMIUIzer/)

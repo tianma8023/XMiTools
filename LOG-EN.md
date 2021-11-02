@@ -1,4 +1,8 @@
 # Update Logs
+- 21.11.02 1.4.0
+  1. Adapt to MIUI 12.5 (21.10.13)
+  2. Fix: weather info showing issues.
+  3. Fix: always show status bar clock in status bar.
 - 21.03.04 1.3.0
   1. Adapt MIUI 12.5+
 - 20.05.11 1.2.3

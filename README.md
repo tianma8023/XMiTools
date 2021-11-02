@@ -1,5 +1,5 @@
 # XMiTools
-An xposed module for MIUI 10 / MIUI 11 / MIUI 12 SystemUI.
+An xposed module for MIUI 10 / MIUI 11 / MIUI 12 / MIUI 12.5 SystemUI.
 
 [中文说明](/README-CN.md)
 # Screenshots
@@ -12,8 +12,8 @@ You can download in the following sites：
 - [Xposed Repository](https://repo.xposed.info/module/com.tianma.tweaks.miui)
 
 # Attention
-- Only compatible for MIUI 10. Other ROM may not suitable. 
-- Support Xposed, EdXposed and TaiChi.
+- Only compatible for MIUI. Other ROM may not suitable. 
+- Support Xposed, EdXposed, LSPosed and TaiChi.
 
 # Features
 - Status Bar
@@ -31,6 +31,7 @@ You can download in the following sites：
 - Lock Screen
   1. Show seconds in horizontal clock
   2. Show seconds in vertical clock
+- And so on...
 
 
 # Credits
